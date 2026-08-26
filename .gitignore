@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+
+# Next.js and build output
+.next/
+out/
+dist/
+coverage/
+test-results/
+playwright-report/
+blob-report/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Local Supabase/runtime data
+.supabase/
+supabase/.temp/
+
+# Logs and local diagnostics
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# TypeScript and tool caches
+*.tsbuildinfo
+.eslintcache
+.turbo/
+.cache/
+
+# Local certificates and keys
+*.pem
+*.key
+*.p12
+*.pfx
+

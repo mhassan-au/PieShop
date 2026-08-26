@@ -1,0 +1,24 @@
+lets brain stom a small app for small business below is the pupose 
+
+user will be small business who sells few selected items - they can have a website but they will use whats app or messenger or sms 
+or email or direct phone call to get order then they will fullfill the order and mark the progress in the app 
+
+user will get tracking in whats app or sms or email or web site 
+
+its basically a small scale e commerse app 
+
+for example 
+i am browsing the catalog in whats app 
+i will sat i want to order 2 qty toilet roll 
+the system will placd the order send the paymewnt link user will pay 
+then owner will get oeder in app 
+owner will then fullfill order once payment is cleared 
+ship order 
+deliverery tracking 
+
+
+like a fullfilment and order place,ent app using multi channel 
+
+i will charge a small amount to each vendor - they will only see one app -
+
+suggest me tech stack - pricing etc 
