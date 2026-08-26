@@ -53,7 +53,8 @@ src/
   server/               repositories, services, jobs and integrations
   channels/             normalised message contract and provider adapters
   messages/             central user-facing copy and templates
-  observability/        logger, errors, tracing and alert adapters
+  errors/               typed application errors and public error envelopes
+  observability/        logger, tracing and alert adapters
   config/               validated environment configuration
   lib/                  small generic utilities only
 ```

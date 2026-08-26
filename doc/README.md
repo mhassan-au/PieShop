@@ -22,6 +22,7 @@ This folder is the source of truth for the MVP. If implementation and documentat
 | [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md)       | Planned environment-variable names, classification, ownership, and introduction point   |
 | [UI_MAP.md](UI_MAP.md)                                     | Initial platform, merchant, support, customer, and shared-state screen map              |
 | [PART_0_1_ACCEPTANCE.md](PART_0_1_ACCEPTANCE.md)           | Test-first acceptance examples for the first development part                           |
+| [PART_0_2_ACCEPTANCE.md](PART_0_2_ACCEPTANCE.md)           | Test-first acceptance examples for central messages and safe application errors         |
 | [AI_CONTEXT.md](AI_CONTEXT.md)                             | Compact operating context and instructions for AI coding agents                         |
 | [DECISIONS.md](DECISIONS.md)                               | Architecture and product decision log                                                   |
 

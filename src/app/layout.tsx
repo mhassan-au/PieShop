@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Fraunces, Manrope } from "next/font/google";
 
+import { formatMessage } from "@/messages/catalogue";
+
 import "./globals.css";
 
 const bodyFont = Manrope({
@@ -16,8 +18,8 @@ const displayFont = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "PieShop",
-  description: "Simple conversational ordering for small merchants.",
+  title: formatMessage("brand.name"),
+  description: formatMessage("brand.description"),
 };
 
 export default function RootLayout({

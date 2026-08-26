@@ -1,5 +1,5 @@
-import { FoundationShell } from "@/components/FoundationShell";
+import { MessageShowcase } from "@/components/MessageShowcase";
 
 export default function HomePage() {
-  return <FoundationShell />;
+  return <MessageShowcase />;
 }

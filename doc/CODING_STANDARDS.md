@@ -18,9 +18,10 @@ All user-facing messages, validation errors, confirmations, pop-ups, notificatio
 
 ```text
 src/messages/
-  en-AU.ts
-  keys.ts
-  format.ts
+  catalogue.ts          typed keys, templates, placeholders and formatter
+  en-AU.ts              locale entry point
+src/errors/
+  app-error.ts          typed internal error and safe public envelope
 ```
 
 Rules:
@@ -31,6 +32,7 @@ Rules:
 - Channel-specific formatting wraps shared semantic content.
 - No important user-facing literal strings are scattered through feature code.
 - Message changes require tests for required placeholders.
+- Formatted catalogue output is plain text. Encode it for its eventual output context and never pass it to raw-HTML rendering.
 
 ## 3. Errors
 

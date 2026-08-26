@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("renders the accessible PieShop foundation without horizontal overflow", async ({
+test("renders the accessible message showcase without horizontal overflow", async ({
   page,
 }) => {
   const browserErrors: string[] = [];
@@ -11,9 +11,16 @@ test("renders the accessible PieShop foundation without horizontal overflow", as
   await page.goto("/");
 
   await expect(
-    page.getByRole("heading", { level: 1, name: "PieShop" }),
+    page.getByRole("heading", {
+      level: 1,
+      name: /PieShop.*Clear words when they matter/i,
+    }),
   ).toBeVisible();
   await expect(page.getByRole("main")).toBeVisible();
+  await expect(page.getByText("Validation", { exact: true })).toBeVisible();
+  await expect(page.getByText("Confirmation", { exact: true })).toBeVisible();
+  await expect(page.getByText("Success", { exact: true })).toBeVisible();
+  await expect(page.getByText("Failure", { exact: true })).toBeVisible();
 
   const hasHorizontalOverflow = await page.evaluate(
     () =>
