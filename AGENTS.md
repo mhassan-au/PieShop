@@ -36,6 +36,13 @@ The documentation in `doc/` is the source of truth. Record material product, sec
 - Update `doc/DEVELOPMENT_STATUS.md` with evidence and user acceptance; do not mark work complete speculatively.
 - If implementation conflicts with documented requirements, stop and surface the conflict.
 
+## Standing workflow authorisation
+
+- Within an explicitly approved roadmap part, Codex may implement, install planned dependencies, run local development services and non-destructive checks, update documentation, create commits, and push passing checkpoint commits to `origin/main` without additional confirmation.
+- Codex may continue automatically between backend-only steps within that approved part.
+- Stop for owner approval at every documented UI/process checkpoint.
+- Also stop before destructive or irreversible operations, staging or production changes, paid actions, transmitting credentials or personal data, changing access or security permissions, contacting external recipients, or materially expanding the approved scope.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
