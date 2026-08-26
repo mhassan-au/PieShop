@@ -6,9 +6,7 @@ The MVP uses a Progressive Web App for merchants. Customers do not create accoun
 
 ## Current status
 
-The project is in pre-development setup. The next approved unit is **Part 0.1: Repository and quality pipeline**. See [development status](doc/DEVELOPMENT_STATUS.md).
-
-No application framework or dependencies have been scaffolded yet.
+**Part 0.1: Repository and quality pipeline** is implemented and awaiting the owner's UI/process acceptance. Part 0.2 is not authorised. See [development status](doc/DEVELOPMENT_STATUS.md).
 
 ## Documentation
 
@@ -37,9 +35,25 @@ Only one roadmap part is active at a time. Repeatable testing is automated; manu
 
 ## Local setup
 
-Setup commands will be added during Part 0.1 after runtime and package-manager versions are selected and pinned. Do not invent setup commands before the scaffold exists.
+Install Node.js 22.18.0 and npm 10.9.3, then run:
+
+```powershell
+npm ci
+Copy-Item .env.example .env.local
+npm run dev
+```
+
+Open `http://localhost:3000`. The local defaults are safe and require no provider credentials.
+
+## Verification
+
+```powershell
+npm run check
+npm run test:e2e
+```
+
+`npm run check` runs formatting, lint, strict type checking, unit/component tests, a production build, the repository secret scan, and the high-severity dependency audit.
 
 ## Git remote
 
-The repository is initialised locally without a remote. Add the user-provided remote URL later; do not guess or create one.
-
+The `main` branch tracks [mhassan-au/PieShop](https://github.com/mhassan-au/PieShop.git).

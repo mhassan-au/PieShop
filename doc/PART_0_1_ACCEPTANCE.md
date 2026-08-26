@@ -4,7 +4,7 @@
 
 Create a reproducible Next.js/TypeScript foundation with pinned tooling, automated quality checks, isolated configuration, and a real-browser smoke test.
 
-These examples are proposed and require user confirmation before application scaffolding begins.
+These examples were used as the agreed implementation contract. Owner acceptance of the resulting UI/process checkpoint is still required before Part 0.2.
 
 ## In scope
 
@@ -79,16 +79,16 @@ The repository documents and CI uses consistent commands for:
 
 ## Automated evidence required
 
-- [ ] Configuration test initially failed and later passed.
-- [ ] Browser smoke test initially failed and later passed.
-- [ ] Formatting check passed.
-- [ ] Lint passed.
-- [ ] Type check passed.
-- [ ] Unit/component tests passed.
-- [ ] Browser smoke test passed.
-- [ ] Build passed.
-- [ ] Dependency scan passed or findings were documented and accepted.
-- [ ] Secret scan passed.
+- [x] Configuration test initially failed and later passed.
+- [x] Browser smoke test initially failed and later passed.
+- [x] Formatting check passed.
+- [x] Lint passed.
+- [x] Type check passed.
+- [x] Unit/component tests passed.
+- [x] Browser smoke test passed.
+- [x] Build passed.
+- [x] Dependency scan passed or findings were documented and accepted.
+- [x] Secret scan passed.
 - [ ] CI run passed.
 
 ## User UI/process checkpoint
@@ -102,4 +102,3 @@ The user opens the shell at phone and desktop sizes and confirms:
 - The developer setup/verification process is understandable.
 
 Part 0.2 remains unauthorised until these checks pass and the user accepts Part 0.1.
-

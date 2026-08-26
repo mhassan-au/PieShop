@@ -2,26 +2,26 @@
 
 ## 1. Recommended stack
 
-| Area | MVP technology |
-|---|---|
-| Application | Next.js with TypeScript |
-| UI | React, Tailwind CSS, shadcn/ui |
-| Mobile experience | Progressive Web App |
-| Database | Supabase PostgreSQL |
-| Authentication | Supabase Auth |
-| Product/evidence/archive storage | Private and purpose-specific Supabase Storage buckets |
-| Realtime UI updates | Supabase Realtime where useful |
-| WhatsApp | Meta WhatsApp Cloud API |
-| SMS | Twilio |
-| Outbound email | Resend |
-| Inbound email | Provider selected during channel milestone, behind adapter |
-| Messenger | Meta Messenger Platform |
-| Jobs/retries | Trigger.dev or a durable PostgreSQL-backed job system |
-| Merchant push | Standards-based Web Push |
-| Exceptions | Sentry |
-| Structured application logs | Pino-compatible schema |
-| Critical alerts | Telegram Bot API through server-only adapter |
-| Hosting | Vercel |
+| Area                             | MVP technology                                             |
+| -------------------------------- | ---------------------------------------------------------- |
+| Application                      | Next.js with TypeScript                                    |
+| UI                               | React, Tailwind CSS, shadcn/ui                             |
+| Mobile experience                | Progressive Web App                                        |
+| Database                         | Supabase PostgreSQL                                        |
+| Authentication                   | Supabase Auth                                              |
+| Product/evidence/archive storage | Private and purpose-specific Supabase Storage buckets      |
+| Realtime UI updates              | Supabase Realtime where useful                             |
+| WhatsApp                         | Meta WhatsApp Cloud API                                    |
+| SMS                              | Twilio                                                     |
+| Outbound email                   | Resend                                                     |
+| Inbound email                    | Provider selected during channel milestone, behind adapter |
+| Messenger                        | Meta Messenger Platform                                    |
+| Jobs/retries                     | Trigger.dev or a durable PostgreSQL-backed job system      |
+| Merchant push                    | Standards-based Web Push                                   |
+| Exceptions                       | Sentry                                                     |
+| Structured application logs      | Pino-compatible schema                                     |
+| Critical alerts                  | Telegram Bot API through server-only adapter               |
+| Hosting                          | Vercel                                                     |
 
 Pin exact package versions when scaffolding. Re-evaluate service pricing and platform policy before production launch.
 

@@ -94,7 +94,7 @@ Initial retention targets, subject to legal/privacy review:
 - Application: 30–90 days.
 - Security: 12 months.
 - Audit: 12 months or required business/legal duration.
-Payment evidence is disabled for the MVP, so its target retention is zero. Replace provisional ranges with an approved field-level retention schedule before launch. Retention jobs must cover live tables, Storage objects, temporary exports, logs, archives, provider-held data, and backups. Verify deletion/de-identification and record exceptions; test re-identification risk before treating data as de-identified.
+  Payment evidence is disabled for the MVP, so its target retention is zero. Replace provisional ranges with an approved field-level retention schedule before launch. Retention jobs must cover live tables, Storage objects, temporary exports, logs, archives, provider-held data, and backups. Verify deletion/de-identification and record exceptions; test re-identification risk before treating data as de-identified.
 
 Archive/backup access uses credentials separated from application and support roles. Manifests include cryptographic checksums and sequence coverage. Use object versioning/retention protection where available and alert on missing, changed, duplicated, or out-of-order batches.
 

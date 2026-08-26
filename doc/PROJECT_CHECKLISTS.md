@@ -504,4 +504,3 @@ Production hosting gate:
 - [ ] Recover, reconcile data/jobs/messages, and validate security before reopening.
 - [ ] Document root cause, timeline, decisions, notifications, and corrective actions.
 - [ ] Add regression/security tests and update threat model/runbooks.
-

@@ -6,24 +6,24 @@ This folder is the source of truth for the MVP. If implementation and documentat
 
 ## Document map
 
-| Document | Purpose |
-|---|---|
-| [MVP_PRODUCT_REQUIREMENTS.md](MVP_PRODUCT_REQUIREMENTS.md) | Product scope, actors, requirements, acceptance criteria, and exclusions |
-| [WORKFLOWS_AND_STATES.md](WORKFLOWS_AND_STATES.md) | Customer, merchant, payment, delivery, notification, and order-state flows |
-| [TECHNICAL_ARCHITECTURE.md](TECHNICAL_ARCHITECTURE.md) | Proposed stack, system boundaries, integrations, tenancy, and deployment |
-| [DATA_MODEL.md](DATA_MODEL.md) | Initial entities, relationships, constraints, and data-handling rules |
-| [CODING_STANDARDS.md](CODING_STANDARDS.md) | Mandatory implementation, error-handling, messaging, testing, and time standards |
-| [SECURITY_OBSERVABILITY.md](SECURITY_OBSERVABILITY.md) | Security controls, structured logging, audit history, Telegram alerts, and retention |
-| [SECURITY_PRIVACY_REVIEW.md](SECURITY_PRIVACY_REVIEW.md) | Security/privacy assessment, hardening baseline, required tests, and residual decisions |
-| [DELIVERY_PLAN.md](DELIVERY_PLAN.md) | Milestones, priorities, test strategy, launch gates, and deferred work |
-| [DEVELOPMENT_ROADMAP.md](DEVELOPMENT_ROADMAP.md) | TDD roadmap split into 1–2 day parts with UI acceptance gates |
-| [PROJECT_CHECKLISTS.md](PROJECT_CHECKLISTS.md) | Prerequisite, development-tool, MVP hosting, production hosting, and operations gates |
-| [DEVELOPMENT_STATUS.md](DEVELOPMENT_STATUS.md) | Current roadmap part, automated evidence, blockers, and user acceptance |
-| [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md) | Planned environment-variable names, classification, ownership, and introduction point |
-| [UI_MAP.md](UI_MAP.md) | Initial platform, merchant, support, customer, and shared-state screen map |
-| [PART_0_1_ACCEPTANCE.md](PART_0_1_ACCEPTANCE.md) | Test-first acceptance examples for the first development part |
-| [AI_CONTEXT.md](AI_CONTEXT.md) | Compact operating context and instructions for AI coding agents |
-| [DECISIONS.md](DECISIONS.md) | Architecture and product decision log |
+| Document                                                   | Purpose                                                                                 |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| [MVP_PRODUCT_REQUIREMENTS.md](MVP_PRODUCT_REQUIREMENTS.md) | Product scope, actors, requirements, acceptance criteria, and exclusions                |
+| [WORKFLOWS_AND_STATES.md](WORKFLOWS_AND_STATES.md)         | Customer, merchant, payment, delivery, notification, and order-state flows              |
+| [TECHNICAL_ARCHITECTURE.md](TECHNICAL_ARCHITECTURE.md)     | Proposed stack, system boundaries, integrations, tenancy, and deployment                |
+| [DATA_MODEL.md](DATA_MODEL.md)                             | Initial entities, relationships, constraints, and data-handling rules                   |
+| [CODING_STANDARDS.md](CODING_STANDARDS.md)                 | Mandatory implementation, error-handling, messaging, testing, and time standards        |
+| [SECURITY_OBSERVABILITY.md](SECURITY_OBSERVABILITY.md)     | Security controls, structured logging, audit history, Telegram alerts, and retention    |
+| [SECURITY_PRIVACY_REVIEW.md](SECURITY_PRIVACY_REVIEW.md)   | Security/privacy assessment, hardening baseline, required tests, and residual decisions |
+| [DELIVERY_PLAN.md](DELIVERY_PLAN.md)                       | Milestones, priorities, test strategy, launch gates, and deferred work                  |
+| [DEVELOPMENT_ROADMAP.md](DEVELOPMENT_ROADMAP.md)           | TDD roadmap split into 1–2 day parts with UI acceptance gates                           |
+| [PROJECT_CHECKLISTS.md](PROJECT_CHECKLISTS.md)             | Prerequisite, development-tool, MVP hosting, production hosting, and operations gates   |
+| [DEVELOPMENT_STATUS.md](DEVELOPMENT_STATUS.md)             | Current roadmap part, automated evidence, blockers, and user acceptance                 |
+| [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md)       | Planned environment-variable names, classification, ownership, and introduction point   |
+| [UI_MAP.md](UI_MAP.md)                                     | Initial platform, merchant, support, customer, and shared-state screen map              |
+| [PART_0_1_ACCEPTANCE.md](PART_0_1_ACCEPTANCE.md)           | Test-first acceptance examples for the first development part                           |
+| [AI_CONTEXT.md](AI_CONTEXT.md)                             | Compact operating context and instructions for AI coding agents                         |
+| [DECISIONS.md](DECISIONS.md)                               | Architecture and product decision log                                                   |
 
 ## Product statement
 
