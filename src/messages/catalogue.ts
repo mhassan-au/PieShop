@@ -70,6 +70,79 @@ const catalogue = {
     template: "Failure",
     placeholders: [],
   },
+  "observability.status.label": {
+    template: "Part 0.3",
+    placeholders: [],
+  },
+  "observability.status.value": {
+    template: "Privacy-first observability",
+    placeholders: [],
+  },
+  "observability.eyebrow": {
+    template: "Signal workshop",
+    placeholders: [],
+  },
+  "observability.title": {
+    template: "Useful evidence. Less exposure.",
+    placeholders: [],
+  },
+  "observability.description": {
+    template:
+      "Logs keep the operational facts needed to investigate a problem while sensitive values are removed before they reach any destination.",
+    placeholders: [],
+  },
+  "observability.notice": {
+    template:
+      "Local deterministic previews only. Nothing was transmitted to Telegram or Sentry.",
+    placeholders: [],
+  },
+  "observability.debug.title": {
+    template: "Structured debug event",
+    placeholders: [],
+  },
+  "observability.debug.label": {
+    template: "JSONL / local",
+    placeholders: [],
+  },
+  "observability.debug.description": {
+    template:
+      "One machine-readable JSONL record with UTC time and request/trace correlation.",
+    placeholders: [],
+  },
+  "observability.alert.title": {
+    template: "Telegram critical alert",
+    placeholders: [],
+  },
+  "observability.alert.label": {
+    template: "Telegram / preview",
+    placeholders: [],
+  },
+  "observability.alert.description": {
+    template:
+      "A short operator signal with safe identifiers—never the full log or stack trace.",
+    placeholders: [],
+  },
+  "observability.controls.title": {
+    template: "Safety controls active",
+    placeholders: [],
+  },
+  "observability.controls.redaction": {
+    template: "Recursive redaction",
+    placeholders: [],
+  },
+  "observability.controls.correlation": {
+    template: "Request + trace correlation",
+    placeholders: [],
+  },
+  "observability.controls.providers": {
+    template: "External providers off",
+    placeholders: [],
+  },
+  "observability.next": {
+    template:
+      "Durable live storage and immutable daily Supabase archives begin after the database security foundation.",
+    placeholders: [],
+  },
   "validation.phone.invalid": {
     template: "Enter a valid phone number, including the area or country code.",
     placeholders: [],

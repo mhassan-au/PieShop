@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("renders the accessible message showcase without horizontal overflow", async ({
+test("renders the accessible observability showcase without horizontal overflow", async ({
   page,
 }) => {
   const browserErrors: string[] = [];
@@ -13,14 +13,13 @@ test("renders the accessible message showcase without horizontal overflow", asyn
   await expect(
     page.getByRole("heading", {
       level: 1,
-      name: /PieShop.*Clear words when they matter/i,
+      name: /PieShop.*Useful evidence. Less exposure/i,
     }),
   ).toBeVisible();
   await expect(page.getByRole("main")).toBeVisible();
-  await expect(page.getByText("Validation", { exact: true })).toBeVisible();
-  await expect(page.getByText("Confirmation", { exact: true })).toBeVisible();
-  await expect(page.getByText("Success", { exact: true })).toBeVisible();
-  await expect(page.getByText("Failure", { exact: true })).toBeVisible();
+  await expect(page.getByText("Structured debug event")).toBeVisible();
+  await expect(page.getByText("Telegram critical alert")).toBeVisible();
+  await expect(page.getByText(/Nothing was transmitted/i)).toBeVisible();
 
   const hasHorizontalOverflow = await page.evaluate(
     () =>

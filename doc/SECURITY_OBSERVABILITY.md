@@ -115,6 +115,8 @@ Telegram messages include environment, stable code, UTC time, service, safe IDs,
 
 Implement rate limiting, fingerprint-based deduplication, grouping, escalation thresholds, and retry. Telegram failure never blocks the user operation and is itself logged.
 
+The Part 0.3 local implementation provides sanitisation, timeout, failure isolation, fingerprint deduplication, and window rate limiting behind injected interfaces. Its in-memory gate is deterministic test/local infrastructure, not a production coordination mechanism. Durable shared alert state, retries, escalation links, and real provider credentials remain disabled until their later hosting/operations checkpoints.
+
 ## 6. Audit events
 
 Audit at minimum:

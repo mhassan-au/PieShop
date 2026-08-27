@@ -62,6 +62,8 @@ Never return stack traces, SQL details, provider secrets, raw exceptions, or int
 - Do not log entire request/response bodies by default.
 - Never log passwords, tokens, secrets, full bank data, raw payment evidence, session cookies, or unnecessary message contents.
 
+The Part 0.3 implementation keeps these responsibilities under `src/observability/`: recursive redaction, structured event construction, sink interfaces, critical-alert policy, Telegram transport, and the sanitised Sentry boundary. Provider SDKs and transports must remain outside feature and domain code.
+
 ## 5. Date and time
 
 - Database fields use `timestamptz` for instants.

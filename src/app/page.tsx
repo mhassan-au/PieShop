@@ -1,5 +1,5 @@
-import { MessageShowcase } from "@/components/MessageShowcase";
+import { ObservabilityShowcase } from "@/components/ObservabilityShowcase";
 
-export default function HomePage() {
-  return <MessageShowcase />;
+export default async function HomePage() {
+  return <ObservabilityShowcase />;
 }

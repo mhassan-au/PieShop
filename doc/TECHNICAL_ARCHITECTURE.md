@@ -61,6 +61,12 @@ src/
 
 Domain code must not import provider SDKs or UI components. Provider adapters translate external payloads into internal contracts.
 
+### 3.1 Observability boundary
+
+Application code emits schema-versioned events through the central logger. Redaction occurs before a sink receives an event. Local console and in-memory sinks implement the same contract; durable database/archive sinks are deferred until Part 0.4 establishes Supabase security.
+
+Critical alerts pass through a separate dispatcher that applies fingerprint deduplication and rate limiting before calling a bounded Telegram transport. The current in-memory alert gate is for local/test use only; a shared durable implementation is required before multi-instance production use. Sentry is manually initialised with default integrations and default PII collection disabled, and only receives exceptions rebuilt by the sanitising adapter. Provider failure never changes the original application result.
+
 ## 4. Multi-tenancy
 
 - `business_id` is required on every merchant-owned record.
