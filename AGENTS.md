@@ -43,6 +43,17 @@ The documentation in `doc/` is the source of truth. Record material product, sec
 - Stop for owner approval at every documented UI/process checkpoint.
 - Also stop before destructive or irreversible operations, staging or production changes, paid actions, transmitting credentials or personal data, changing access or security permissions, contacting external recipients, or materially expanding the approved scope.
 
+## Token-efficient collaboration
+
+- Default to giving the owner an `Owner Actions` checklist for work they can perform cheaply: starting/stopping the local server, opening the local URL, desktop/mobile visual review, wording/usability review, checking browser-console errors, confirming GitHub Actions, creating provider accounts, and configuring dashboard environment-variable names.
+- Do not start a local development server or perform automated browser review unless the owner asks, the current acceptance contract requires automated browser evidence, or diagnosis cannot reasonably proceed without it.
+- The owner supplies credentials only through local environment files or provider dashboards, never through chat. Stop if a task would expose or transmit credentials or personal data.
+- During TDD, run focused tests as needed. Run formatting, lint, strict type checking, the complete automated suite, production build, dependency audit, secret scan, and end-to-end suite once at the end of an approved batch unless a failure or material cross-cutting change requires another run.
+- Combine closely related roadmap parts only when the owner explicitly approves the complete batch. Security-sensitive boundaries such as authentication, RLS/tenant isolation, support access, payments, and production deployment retain their dedicated acceptance gates.
+- Within an approved batch, continue through backend-only steps and consolidate documentation updates, the final quality gate, commit, and push where safe. Prefer one owner UI/process review and one correction round at the batch boundary.
+- Keep progress updates compact. Report material decisions, blockers, failed checks, and final evidence; avoid repeating established context.
+- Before the final commit when owner testing is required, provide a concise checklist containing the exact command, URL, scenarios, and expected results. Treat the owner's reported visual/CI results as checkpoint evidence and record them in `doc/DEVELOPMENT_STATUS.md`.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
