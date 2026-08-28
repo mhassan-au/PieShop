@@ -9,6 +9,8 @@
 
 This document is an engineering baseline, not legal advice. Privacy notices, merchant terms, retention periods, and Notifiable Data Breaches obligations require Australian legal/privacy review before production use.
 
+Phase-specific threat models are maintained separately under `PHASE_N_THREAT_MODEL.md` using `THREAT_MODELING_STANDARD.md`. The broad controls in this review do not by themselves satisfy a phase threat-model gate.
+
 ## Strengths already present
 
 - Explicit tenant isolation using `business_id`, RLS, and server authorization.

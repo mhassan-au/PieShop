@@ -61,7 +61,8 @@ See `doc/PART_0_4_ACCEPTANCE.md` and Part 0.4 in `doc/DEVELOPMENT_ROADMAP.md`.
 - `20260827050000_foundation_security.sql` and `20260827060000_immutable_record_guards.sql` are applied to the confirmed development project.
 - The owner explicitly authorised the disposable development database reset on 2026-08-28 Australia/Sydney. The guarded reset reapplied both migrations and deterministic seed data; all post-reset cloud checks passed.
 - Authentication policy was revised on 2026-08-28: the owner manually creates the single platform-owner user in Supabase Auth, which uses email/password without MVP MFA; invited merchants use magic links with a server-enforced 30-day absolute session maximum. MFA and stricter sessions are mandatory before any real-vendor demo, real data, staging pilot, or production rollout.
-- Part 1.1 remains unauthorised until the owner accepts Part 0.4.
+- The retrospective Phase 0 threat model is recorded in `PHASE_0_THREAT_MODEL.md`. Phase 0 is acceptable for synthetic internal development, but TM0-01 (callable cross-user authorization oracles) must be mitigated and verified before Phase 1 begins.
+- Part 1.1 remains unauthorised pending the Phase 0 threat-model remediation and the Phase 1 threat-model/acceptance gate.
 
 ## Completion record template
 

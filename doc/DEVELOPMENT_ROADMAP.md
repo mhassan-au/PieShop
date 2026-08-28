@@ -15,6 +15,8 @@ Do not begin the next part merely because code exists. A part is complete only w
 7. The user performs the listed short UI/process check.
 8. The user accepts the flow or requested corrections are completed.
 
+Before the first part of every phase, complete or refresh that phase's threat model using `THREAT_MODELING_STANDARD.md`. Resolve all phase-entry blockers, map affected invariants to acceptance tests, and record owner acceptance of residual risk. Material changes to actors, assets, data flows, trust boundaries, providers, authorization, storage, or deployment reopen the model.
+
 This is the project loop:
 
 ```text

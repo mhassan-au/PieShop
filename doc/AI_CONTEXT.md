@@ -82,6 +82,7 @@ Only first transition to `delivered` or `collected` creates one billable fulfilm
 - Do not claim a feature is complete without appropriate automated verification.
 - When implementation conflicts with these requirements, stop and report the conflict rather than silently changing product behaviour.
 - Follow `DEVELOPMENT_ROADMAP.md` one part at a time. Do not start the next part until the current part's automated checks pass and the user accepts the UI/process flow.
+- Before each phase begins, create or refresh its threat model using `THREAT_MODELING_STANDARD.md`, resolve all phase-entry blockers, and record owner acceptance of residual risk. Material trust-boundary changes reopen the active model.
 - Use TDD: agree acceptance examples, observe a relevant test fail, implement the minimum behaviour, refactor under green tests, and record evidence. Manual testing is for UI/usability/device judgement, not repeatable business-rule regression.
 
 ## Task reading guide
@@ -90,5 +91,6 @@ Only first transition to `delivered` or `collected` creates one billable fulfilm
 - Backend/integration work: `TECHNICAL_ARCHITECTURE.md`, `DATA_MODEL.md`, and `CODING_STANDARDS.md`.
 - Logging/security work: `SECURITY_OBSERVABILITY.md` and `CODING_STANDARDS.md`.
 - Planning/release work: `DELIVERY_PLAN.md` and `DECISIONS.md`.
+- Threat modeling: `THREAT_MODELING_STANDARD.md` and the active `PHASE_N_THREAT_MODEL.md`.
 - Day-to-day implementation order and acceptance gates: `DEVELOPMENT_ROADMAP.md`.
 - Environment, hosting, release, and operational readiness: `PROJECT_CHECKLISTS.md`.

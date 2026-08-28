@@ -150,3 +150,11 @@ Use this file for decisions that materially affect scope, data, security, provid
 - **Decision:** The owner manually creates the single platform-owner user in Supabase Auth. It signs in with email and password without MFA during internal synthetic-data MVP development, and PieShop exposes no owner-registration flow. Invited merchant owners use server-side PKCE magic links and may restore the same revocable browser session for an absolute maximum of 30 days. Automatic user creation and public sign-up remain disabled.
 - **Reason:** Reduce authentication friction while the owner develops and evaluates the MVP internally.
 - **Consequence:** The reduced-assurance mode must contain synthetic data only. Sessions end earlier on logout, revocation, suspension, recovery, privilege change, or security events. MFA/AAL2, step-up authentication, stricter session controls, and recovery tests are a blocking release gate before any demo to a real vendor, real merchant/customer data, staging pilot, or production rollout. ADR-013 and ADR-018 remain the required target for that gate.
+
+## ADR-020: Threat modeling is a phase-entry gate
+
+- **Status:** Accepted
+- **Date:** 2026-08-28
+- **Decision:** Create or refresh a structured threat model before the first part of every roadmap phase. Resolve phase-entry blockers and obtain owner acceptance of explicitly recorded residual risks before implementation begins. Material trust-boundary changes reopen the active model.
+- **Reason:** The general security/privacy baseline identifies controls but does not prove that the implemented data flows and phase-specific abuse cases have been reviewed.
+- **Consequence:** Each phase has a versioned `PHASE_N_THREAT_MODEL.md` following `THREAT_MODELING_STANDARD.md`; affected invariants map into part acceptance tests. A completed phase may receive retrospective findings that block the next phase without erasing its earlier acceptance evidence.
