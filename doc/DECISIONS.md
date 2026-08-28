@@ -147,6 +147,6 @@ Use this file for decisions that materially affect scope, data, security, provid
 
 - **Status:** Accepted; supersedes ADR-013 and ADR-018 only for internal synthetic-data MVP development
 - **Date:** 2026-08-28
-- **Decision:** The pre-provisioned platform owner signs in with an email/login identifier and password. Invited merchant owners use server-side PKCE magic links and may restore the same revocable browser session for an absolute maximum of 30 days. Automatic user creation and public sign-up remain disabled.
+- **Decision:** The owner manually creates the single platform-owner user in Supabase Auth. It signs in with email and password without MFA during internal synthetic-data MVP development, and PieShop exposes no owner-registration flow. Invited merchant owners use server-side PKCE magic links and may restore the same revocable browser session for an absolute maximum of 30 days. Automatic user creation and public sign-up remain disabled.
 - **Reason:** Reduce authentication friction while the owner develops and evaluates the MVP internally.
 - **Consequence:** The reduced-assurance mode must contain synthetic data only. Sessions end earlier on logout, revocation, suspension, recovery, privilege change, or security events. MFA/AAL2, step-up authentication, stricter session controls, and recovery tests are a blocking release gate before any demo to a real vendor, real merchant/customer data, staging pilot, or production rollout. ADR-013 and ADR-018 remain the required target for that gate.

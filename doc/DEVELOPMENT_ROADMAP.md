@@ -156,7 +156,7 @@ Phase gate: CI is green, tenant denial tests pass, test alerts are redacted, and
 
 Build:
 
-- Private password sign-in for the single pre-provisioned platform-owner email/login identifier; automatic user creation and public sign-up disabled.
+- Private email-and-password sign-in for the single platform-owner user manually created by the owner in Supabase Auth; no in-app owner registration, automatic user creation, public sign-up, or MVP MFA.
 - Enumeration-safe responses, throttling/lockout controls, secure recovery baseline, and revocable session listing/logout.
 - Keep the authentication boundary ready for mandatory MFA/AAL2 and stricter privileged sessions before any real-vendor demo, real data, staging pilot, or production rollout.
 

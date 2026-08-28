@@ -20,7 +20,7 @@ Build PieShop, a simple multi-tenant PWA for small merchants to manage a small c
 - Merchant owners may grant a support administrator explicit, scoped, expiring support access. Support uses the administrator's own identity, shows a persistent banner, is revocable, and is fully audited.
 - No role can hard-delete orders, payments, state history, billable events, invoices, or audit events. Correct with append-only cancel/void/refund/adjust/supersede operations.
 - Payment-evidence uploads are excluded from MVP; never add them without a new threat/privacy decision.
-- The internal synthetic-data MVP uses a pre-provisioned platform-owner email/login identifier and password. Merchant owners use invitation-only email magic links and may retain the same revocable browser session for at most 30 days.
+- The internal synthetic-data MVP uses one platform-owner account manually created by the owner in Supabase Auth; it signs in with email and password and has no MFA yet. Merchant owners use invitation-only email magic links and may retain the same revocable browser session for at most 30 days.
 - MFA/AAL2 and stricter privileged-session controls are a mandatory release gate before any demo to a real vendor, real merchant/customer data, staging pilot, or production rollout. They are not optional production backlog.
 - Support grants default to catalogue-only, four hours, maximum 24 hours; support sessions idle-expire after 15 minutes and terminate on revocation/role change/suspension.
 - Payment and fulfilment states are independent.

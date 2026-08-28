@@ -40,7 +40,7 @@ The platform has two initial administrative roles:
 
 Every platform action and support session is audited.
 
-For internal MVP development with synthetic data, the platform owner signs in using a pre-provisioned email/login identifier and password. Public sign-up and automatic account creation remain disabled. MFA/AAL2 and stricter privileged-session controls must be implemented and verified before any demo to a real vendor, use of real merchant/customer data, staging pilot, or production rollout.
+For internal MVP development with synthetic data, the owner manually creates the single platform-owner user in Supabase Auth. That user signs in with email and password without MFA. PieShop provides no in-app platform-owner registration; public sign-up and automatic account creation remain disabled. MFA/AAL2 and stricter privileged-session controls must be implemented and verified before any demo to a real vendor, use of real merchant/customer data, staging pilot, or production rollout.
 
 Invited merchant owners use a one-time email magic link with server-side PKCE confirmation; token material is removed from the browser URL immediately. The authenticated browser session may restore without another email for no more than 30 days from authentication. It ends earlier on logout, explicit revocation, account suspension, recovery, privilege change, or a security event. A new or cleared browser must use a new magic link. Automatic user creation and public merchant sign-up remain disabled. Custom SMTP with link tracking disabled and MFA/AAL2 are required before inviting or demonstrating to a real vendor.
 

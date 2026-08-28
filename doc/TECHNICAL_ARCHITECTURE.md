@@ -86,7 +86,7 @@ Critical alerts pass through a separate dispatcher that applies fingerprint dedu
 - Customers use secure, random, expiring tokens for order confirmation/tracking; no customer account is required.
 - Never store raw tracking tokens; store a cryptographic hash and compare safely.
 - Sensitive settings changes require recent step-up authentication.
-- During internal synthetic-data MVP development, authenticate the pre-provisioned platform owner with an email/login identifier and password. Invited merchant owners use magic links with a server-enforced 30-day absolute session maximum.
+- During internal synthetic-data MVP development, the owner manually creates the single platform-owner identity in Supabase Auth and it authenticates with email/password without MFA. The application exposes no platform-owner registration. Invited merchant owners use magic links with a server-enforced 30-day absolute session maximum.
 - Before any real-vendor demo, real data, staging pilot, or production rollout, enforce MFA/AAL2 for platform owners, support administrators, and merchant owners and require recent step-up authentication for support access, role/staff changes, payment-instruction changes, exports, and security/account changes.
 - Session recovery or MFA-factor reset revokes existing sessions, notifies the account owner, and produces a high-severity audit/security event.
 
