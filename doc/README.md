@@ -22,6 +22,7 @@ This folder is the source of truth for the MVP. If implementation and documentat
 | [DEVELOPER_WALKTHROUGH.md](DEVELOPER_WALKTHROUGH.md)       | Repository tour, change guide, and end-to-end login development case study              |
 | [THREAT_MODELING_STANDARD.md](THREAT_MODELING_STANDARD.md) | Required phase-entry threat-model process, risk rating, evidence, and review triggers   |
 | [PHASE_0_THREAT_MODEL.md](PHASE_0_THREAT_MODEL.md)         | Retrospective threat model and remediation register for completed foundation work       |
+| [PHASE_1_THREAT_MODEL.md](PHASE_1_THREAT_MODEL.md)         | Phase-entry threat assessment for owner login and merchant account administration       |
 | [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md)       | Planned environment-variable names, classification, ownership, and introduction point   |
 | [UI_MAP.md](UI_MAP.md)                                     | Initial platform, merchant, support, customer, and shared-state screen map              |
 | [PART_0_1_ACCEPTANCE.md](PART_0_1_ACCEPTANCE.md)           | Test-first acceptance examples for the first development part                           |

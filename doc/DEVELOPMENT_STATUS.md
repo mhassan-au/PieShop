@@ -4,17 +4,17 @@ This file records the single current roadmap part and its acceptance evidence. I
 
 ## Project state
 
-- **Overall state:** Safe project foundation
-- **Current approved part:** Part 0.4 — Supabase schema, migrations, and security harness
-- **Part status:** Complete — automated checks and owner health-screen acceptance passed
-- **Next part:** Part 1.1 — Internal platform-owner password login
+- **Overall state:** Phase 1 security planning
+- **Current approved part:** Phase 1 threat-model gate only
+- **Part status:** Assessment complete — awaiting owner acceptance of the six security decisions
+- **Next part:** Part 1.1 — Internal platform-owner password login, after the threat-model gate passes
 - **Next part authorised:** No
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
 - **Last updated:** 2026-08-28 Australia/Sydney
 
 ## Current part objective
 
-Create a reproducible Supabase Cloud development migration/test foundation with least privilege, tenant isolation, platform privacy, and append-only audit/transaction protections.
+Review and accept the Phase 1 authentication and merchant-administration threat assessment before authorising product implementation.
 
 ## Acceptance source
 
@@ -64,6 +64,7 @@ See `doc/PART_0_4_ACCEPTANCE.md` and Part 0.4 in `doc/DEVELOPMENT_ROADMAP.md`.
 - The retrospective Phase 0 threat model is recorded in `PHASE_0_THREAT_MODEL.md`. TM0-01 was mitigated by migration `20260828010000_self_bound_authorization_helpers.sql`: authorization helpers now derive identity from `auth.uid()`, unsafe signatures were removed, and the owner reported the hardening plus 12-assertion transactional security suites passed on 2026-08-28.
 - The Windows secret-scan failure `spawnSync git ENOENT` was corrected with a tested Git executable resolver. Four tooling regression tests cover explicit configuration, invalid configuration, standard Windows installation discovery, and non-Windows PATH behaviour; the secret scan and complete quality gate passed afterward.
 - Part 1.1 remains unauthorised pending the Phase 1 threat-model and acceptance gates.
+- `PHASE_1_THREAT_MODEL.md` version 0.1 assesses 24 threats, defines verification requirements for Parts 1.1–1.4, records six security decisions and four phase-entry gates, and restricts the current design to private development with synthetic data. No Phase 1 product code has started.
 
 ## Completion record template
 
