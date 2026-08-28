@@ -192,11 +192,25 @@ if (!databaseUrl) {
         await tx`select id from public.businesses order by id`;
       const merchantCatalogue =
         await tx`select business_id from public.catalogue_entries order by business_id`;
+      const [merchantAuthorization] = await tx`
+        select
+          app_private.is_current_user_active_platform_owner() as is_platform_owner,
+          app_private.current_user_has_active_membership(${businessA}) as has_own_membership,
+          app_private.current_user_has_active_membership(${businessB}) as has_other_membership
+      `;
       await tx.unsafe("reset role");
       assert(
         merchantBusinesses.length === 1 &&
           merchantBusinesses[0]?.id === businessA,
         "merchant crossed the business boundary",
+      );
+      assertions += 1;
+      assert(
+        merchantAuthorization &&
+          !merchantAuthorization.is_platform_owner &&
+          merchantAuthorization.has_own_membership &&
+          !merchantAuthorization.has_other_membership,
+        "authorization helpers are not bound to the current merchant identity",
       );
       assertions += 1;
       assert(
@@ -217,10 +231,22 @@ if (!databaseUrl) {
         await tx`select id from public.catalogue_entries`;
       const platformTransactions =
         await tx`select id from public.transaction_records`;
+      const [platformAuthorization] = await tx`
+        select
+          app_private.is_current_user_active_platform_owner() as is_platform_owner,
+          app_private.current_user_has_active_membership(${businessA}) as has_merchant_membership
+      `;
       await tx.unsafe("reset role");
       assert(
         platformBusinesses.length === 2,
         "platform owner cannot read account metadata",
+      );
+      assertions += 1;
+      assert(
+        platformAuthorization &&
+          platformAuthorization.is_platform_owner &&
+          !platformAuthorization.has_merchant_membership,
+        "platform authorization helper grants an unintended merchant membership",
       );
       assertions += 1;
       assert(

@@ -59,6 +59,35 @@ if (!databaseUrl) {
         and t.relname = 'invitations'
         and c.contype in ('c', 'u')
     `;
+    const authorizationHelpers = await sql`
+      select
+        p.proname as function_name,
+        pg_get_function_identity_arguments(p.oid) as arguments
+      from pg_proc p
+      join pg_namespace n on n.oid = p.pronamespace
+      where n.nspname = 'app_private'
+        and p.proname in (
+          'is_active_platform_owner',
+          'has_active_membership',
+          'is_current_user_active_platform_owner',
+          'current_user_has_active_membership'
+        )
+      order by p.proname
+    `;
+    const helperSignatures = new Set(
+      authorizationHelpers.map(
+        (helper) => `${helper.function_name}(${helper.arguments})`,
+      ),
+    );
+    const hasSafeAuthorizationHelpers =
+      helperSignatures.has("is_current_user_active_platform_owner()") &&
+      helperSignatures.has(
+        "current_user_has_active_membership(check_business_id uuid)",
+      ) &&
+      !helperSignatures.has("is_active_platform_owner(check_user_id uuid)") &&
+      !helperSignatures.has(
+        "has_active_membership(check_user_id uuid, check_business_id uuid)",
+      );
 
     if (protectedTables.length !== rlsTables.length) {
       fail("RLS is not enabled on every foundation table");
@@ -66,9 +95,11 @@ if (!databaseUrl) {
       fail("immutable-record protection triggers are missing");
     } else if ((invitationChecks[0]?.count ?? 0) < 4) {
       fail("invitation hash/lifecycle constraints are incomplete");
+    } else if (!hasSafeAuthorizationHelpers) {
+      fail("authorization helpers accept caller-supplied user identities");
     } else {
       process.stdout.write(
-        "Foundation hardening check passed: RLS coverage, immutable-record triggers, and invitation constraints verified.\n",
+        "Foundation hardening check passed: RLS coverage, self-bound authorization helpers, immutable-record triggers, and invitation constraints verified.\n",
       );
     }
   } catch {

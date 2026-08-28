@@ -48,7 +48,7 @@ The documentation in `doc/` is the source of truth. Record material product, sec
 
 ### Workflow modes
 
-- **Slow mode (default):** The owner runs routine green tests, cloud integration tests, full quality gates, browser checks, Git staging, commits, and pushes using commands supplied by Codex.
+- **Slow mode (default):** Codex runs and explains focused tests, cloud integration tests, full quality gates, and browser checks while keeping the owner informed about files, architecture, security, and results. Git staging, commits, and pushes remain owner-operated using commands supplied by Codex.
 - **Quick mode (explicit opt-in):** When the owner says to use quick mode, Codex runs tests and approved development-only migration/seed commands, completes documentation, stages changes, commits, and pushes passing checkpoints. Quick mode never broadens product scope or overrides the safeguards and approval boundaries in this file.
 - A mode remains active until the owner explicitly switches modes or says `break`. After `break`, revert to slow mode unless the owner selects quick mode again.
 - Current owner selection: **Quick mode**, active from 2026-08-28 until the owner says `break` or requests slow mode.
@@ -62,8 +62,8 @@ The documentation in `doc/` is the source of truth. Record material product, sec
 - Keep progress updates compact. Report material decisions, blockers, failed checks, and final evidence; avoid repeating established context.
 - Before the final commit when owner testing is required, provide a concise checklist containing the exact command, URL, scenarios, and expected results. Treat the owner's reported visual/CI results as checkpoint evidence and record them in `doc/DEVELOPMENT_STATUS.md`.
 - At the end of a completed milestone, state `Milestone achieved` clearly, then render the necessary owner commands in one copyable PowerShell code block. Include only commands the owner still needs to run, ordered safely, including Git staging, commit, and push when applicable.
-- Make development interactive through owner-run test checkpoints. When a meaningful test file or cohesive test batch is ready, stop before running it, alert the owner with `Owner test ready`, provide one copyable PowerShell command, describe the expected passing output and the most useful failure details to return, and wait for the owner's result. Do not keep the owner waiting while Codex runs long test suites when the owner can run them directly.
-- Codex may still run narrowly focused tests when required to observe the TDD red state, diagnose a reported failure, or verify a small corrective change. Delegate routine green runs, cloud integration tests, full quality gates, builds, browser tests, and CI confirmation to the owner by default.
+- In slow mode, Codex announces each meaningful test batch before running it, explains what it verifies and the expected result, and reports failures and security implications promptly. The owner is not required to run tests unless Codex cannot access the relevant local/provider environment or explicitly asks for independent confirmation.
+- Codex may run narrowly focused tests to observe TDD red, diagnose failures, verify corrections, and complete routine green, cloud, build, browser, and quality-gate checks. Owner-reported results remain valid evidence when the owner runs a check independently.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

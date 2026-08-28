@@ -50,4 +50,6 @@ The owner configures the dedicated cloud-development credentials locally, starts
 
 Accepted by the owner on 2026-08-28 Australia/Sydney. The guarded disposable-development reset reapplied all migrations and deterministic seed data, and the post-reset cloud verification suite passed.
 
+Post-acceptance threat-model remediation on 2026-08-28 replaced authorization helpers that accepted arbitrary user IDs with self-bound helpers derived from `auth.uid()`. The unsafe signatures were removed, six dependent RLS policies were migrated forward, the hardening check passed, and 12 transactional isolation/immutability assertions passed with synthetic data rolled back.
+
 Part 1.1 remains unauthorised until the automated security evidence passes and the owner accepts this checkpoint.

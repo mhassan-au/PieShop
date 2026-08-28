@@ -195,7 +195,7 @@ Outcome → approved roadmap part → acceptance examples → failing test
 → owner UI review → documentation → commit and push
 ```
 
-Quick mode lets Codex test, apply approved development-only migrations/seeds, document, stage, commit, and push passing checkpoints. Slow mode leaves routine green checks and Git actions to the owner. Neither authorises production, paid actions, credential transmission, real data, unapproved destructive operations, or expanded scope.
+Quick mode lets Codex test, apply approved development-only migrations/seeds, document, stage, commit, and push passing checkpoints. In slow mode, Codex runs and explains tests while Git staging, commits, and pushes remain with the owner. Neither mode authorises production, paid actions, credential transmission, real data, unapproved destructive operations, or expanded scope.
 
 ## 11. Security and privacy boundaries
 
@@ -364,6 +364,7 @@ Before any real-vendor demo, real data, staging, or production, implement MFA/AA
 - Seed failure: apply deterministic seed and rerun its check.
 - Git rejection: inspect status, branch, remotes, and history; do not force-push reflexively.
 - Secret scan failure: remove and rotate a real secret; do not weaken the scan merely to pass.
+- Git `ENOENT` during secret scan: install/add Git to PATH or set the local `PIESHOP_GIT_EXECUTABLE` variable to the full `git.exe` path. Never commit a machine-specific path.
 
 ## 15. Final rule
 

@@ -2,6 +2,8 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 
+import { resolveGitExecutable } from "./git-executable.mjs";
+
 const allowedFiles = new Set([".env.example", "doc/ENVIRONMENT_VARIABLES.md"]);
 const secretPatterns = [
   /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/u,
@@ -10,19 +12,28 @@ const secretPatterns = [
 ];
 
 const repositoryPath = process.cwd().replaceAll("\\", "/");
-const files = execFileSync(
-  "git",
-  [
-    "-c",
-    `safe.directory=${repositoryPath}`,
-    "ls-files",
-    "-co",
-    "--exclude-standard",
-  ],
-  { encoding: "utf8" },
-)
-  .split(/\r?\n/u)
-  .filter(Boolean);
+let files;
+try {
+  const gitExecutable = resolveGitExecutable();
+  files = execFileSync(
+    gitExecutable,
+    [
+      "-c",
+      `safe.directory=${repositoryPath}`,
+      "ls-files",
+      "-co",
+      "--exclude-standard",
+    ],
+    { encoding: "utf8" },
+  )
+    .split(/\r?\n/u)
+    .filter(Boolean);
+} catch {
+  process.stderr.write(
+    "Secret scan could not start Git. Install Git, add it to PATH, or set PIESHOP_GIT_EXECUTABLE to git.exe.\n",
+  );
+  process.exit(1);
+}
 
 const findings = [];
 

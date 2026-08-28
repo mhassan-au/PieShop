@@ -28,10 +28,10 @@ See `doc/PART_0_4_ACCEPTANCE.md` and Part 0.4 in `doc/DEVELOPMENT_ROADMAP.md`.
 - Refactor completed: Yes — migrations, target guard, cloud command wrapper, read-only probes, transactional security tests, and health presentation are separated
 - Cloud connection smoke: Passed — Auth and Data API accepted the development publishable key
 - Migration/schema check: Passed — two forward migrations applied; six required foundation tables found
-- RLS/authorization tests: Passed — 10 isolation, invitation, platform-privacy, and immutability assertions; synthetic records rolled back
-- Hardening check: Passed — eight RLS tables, two mutation triggers, and invitation constraints verified
+- RLS/authorization tests: Passed — 12 isolation, self-bound authorization, invitation, platform-privacy, and immutability assertions; synthetic records rolled back
+- Hardening check: Passed — eight RLS tables, self-bound authorization helpers, two mutation triggers, and invitation constraints verified
 - Deterministic seed check: Passed — synthetic development business applied idempotently
-- Unit/component tests: Passed — 13 files, 44 tests
+- Unit/component/tooling tests: Passed — 14 files, 48 tests
 - Type check: Passed — TypeScript strict mode
 - Formatting/lint: Passed
 - Production build: Passed — Next.js 16.3.3
@@ -61,8 +61,9 @@ See `doc/PART_0_4_ACCEPTANCE.md` and Part 0.4 in `doc/DEVELOPMENT_ROADMAP.md`.
 - `20260827050000_foundation_security.sql` and `20260827060000_immutable_record_guards.sql` are applied to the confirmed development project.
 - The owner explicitly authorised the disposable development database reset on 2026-08-28 Australia/Sydney. The guarded reset reapplied both migrations and deterministic seed data; all post-reset cloud checks passed.
 - Authentication policy was revised on 2026-08-28: the owner manually creates the single platform-owner user in Supabase Auth, which uses email/password without MVP MFA; invited merchants use magic links with a server-enforced 30-day absolute session maximum. MFA and stricter sessions are mandatory before any real-vendor demo, real data, staging pilot, or production rollout.
-- The retrospective Phase 0 threat model is recorded in `PHASE_0_THREAT_MODEL.md`. Phase 0 is acceptable for synthetic internal development, but TM0-01 (callable cross-user authorization oracles) must be mitigated and verified before Phase 1 begins.
-- Part 1.1 remains unauthorised pending the Phase 0 threat-model remediation and the Phase 1 threat-model/acceptance gate.
+- The retrospective Phase 0 threat model is recorded in `PHASE_0_THREAT_MODEL.md`. TM0-01 was mitigated by migration `20260828010000_self_bound_authorization_helpers.sql`: authorization helpers now derive identity from `auth.uid()`, unsafe signatures were removed, and the owner reported the hardening plus 12-assertion transactional security suites passed on 2026-08-28.
+- The Windows secret-scan failure `spawnSync git ENOENT` was corrected with a tested Git executable resolver. Four tooling regression tests cover explicit configuration, invalid configuration, standard Windows installation discovery, and non-Windows PATH behaviour; the secret scan and complete quality gate passed afterward.
+- Part 1.1 remains unauthorised pending the Phase 1 threat-model and acceptance gates.
 
 ## Completion record template
 
