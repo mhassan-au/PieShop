@@ -19,6 +19,7 @@ This folder is the source of truth for the MVP. If implementation and documentat
 | [DEVELOPMENT_ROADMAP.md](DEVELOPMENT_ROADMAP.md)           | TDD roadmap split into 1–2 day parts with UI acceptance gates                           |
 | [PROJECT_CHECKLISTS.md](PROJECT_CHECKLISTS.md)             | Prerequisite, development-tool, MVP hosting, production hosting, and operations gates   |
 | [DEVELOPMENT_STATUS.md](DEVELOPMENT_STATUS.md)             | Current roadmap part, automated evidence, blockers, and user acceptance                 |
+| [DEVELOPER_WALKTHROUGH.md](DEVELOPER_WALKTHROUGH.md)       | Repository tour, change guide, and end-to-end login development case study              |
 | [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md)       | Planned environment-variable names, classification, ownership, and introduction point   |
 | [UI_MAP.md](UI_MAP.md)                                     | Initial platform, merchant, support, customer, and shared-state screen map              |
 | [PART_0_1_ACCEPTANCE.md](PART_0_1_ACCEPTANCE.md)           | Test-first acceptance examples for the first development part                           |
