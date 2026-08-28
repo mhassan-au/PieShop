@@ -126,3 +126,19 @@ Use this file for decisions that materially affect scope, data, security, provid
 - **Decision:** Encrypt provider credentials, webhook secrets, and merchant bank/PayID settings with versioned managed keys separate from ciphertext. Customer links use hash-only tokens with at least 128 bits of randomness, expiry/revocation/rate limits, no-store/no-referrer responses, and stronger challenges for sensitive actions.
 - **Reason:** Database/storage encryption at rest alone does not limit damage from application-layer disclosure, and forwarded bearer links must not grant unrestricted authority.
 - **Consequence:** Implement key rotation, token lifecycle, browser-header, and recovery tests before pilot launch.
+
+## ADR-017: Cloud-only Supabase development workflow
+
+- **Status:** Accepted
+- **Date:** 2026-08-27
+- **Decision:** Use a dedicated disposable Supabase Cloud project for Part 0.4 development and database security tests instead of running Supabase through local Docker.
+- **Reason:** The owner does not want to operate Docker locally and will manage the cloud project configuration.
+- **Consequence:** Reset/seed tooling must require an explicit development/test environment marker and project identity, refuse staging/production targets, use synthetic data only, and minimise remote test round trips. Credentials remain in ignored local environment files or provider secret stores and are never pasted into chat or committed.
+
+## ADR-018: Passwordless authentication and approved devices
+
+- **Status:** Accepted
+- **Date:** 2026-08-27
+- **Decision:** Merchant staff and platform administrators use passwordless email with a magic link as the primary action and a six-digit email OTP fallback. Automatic sign-up is disabled, confirmation uses server-side PKCE, and token material is removed from the URL after exchange. A successfully authenticated user may register the current browser/device so a still-valid session can restore automatically. Approved devices are individually visible and revocable.
+- **Reason:** Removes password creation and reset friction while keeping the small MVP simple on phones and the web.
+- **Consequence:** Device approval never counts as MFA. Platform owners, support administrators, and merchant owners must still reach AAL2 using TOTP and repeat step-up for sensitive actions. New, cleared, expired, suspicious, or revoked devices reauthenticate. Device/session records use opaque hashed identifiers, server-side validation, idle/absolute expiry, revocation on privilege or recovery events, and append-only security audits. The UI handles expired or email-scanner-consumed links through the OTP fallback. Custom SMTP with link tracking disabled is required before the merchant pilot.

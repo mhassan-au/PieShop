@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { parseEnvironment } from "./env";
+import { loadEnvironment, parseEnvironment } from "./env";
 
 describe("parseEnvironment", () => {
   it("accepts safe local configuration", () => {
@@ -86,5 +86,21 @@ describe("parseEnvironment", () => {
       LOG_LEVEL: "debug",
       DEBUG_MODE: true,
     });
+  });
+
+  it("requires the public Supabase URL and publishable key as a pair", () => {
+    expect(() =>
+      parseEnvironment({
+        APP_ENV: "local",
+        APP_BASE_URL: "http://localhost:3000",
+        NEXT_PUBLIC_SUPABASE_URL: "https://abcdefghijklmnopqrst.supabase.co",
+      }),
+    ).toThrow("Application configuration is invalid");
+  });
+
+  it("uses the localhost base URL when an explicit local environment omits it", () => {
+    expect(loadEnvironment({ APP_ENV: "local" }).APP_BASE_URL).toBe(
+      "http://localhost:3000",
+    );
   });
 });

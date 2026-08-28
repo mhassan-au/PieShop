@@ -5,7 +5,7 @@ import path from "node:path";
 const allowedFiles = new Set([".env.example", "doc/ENVIRONMENT_VARIABLES.md"]);
 const secretPatterns = [
   /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/u,
-  /(?:SUPABASE_SERVICE_ROLE_KEY|TELEGRAM_ALERT_BOT_TOKEN|WHATSAPP_ACCESS_TOKEN|RESEND_API_KEY)\s*=\s*[^<\s][^\r\n]*/u,
+  /(?:SUPABASE_SERVICE_ROLE_KEY|SUPABASE_SECRET_KEY|TELEGRAM_ALERT_BOT_TOKEN|WHATSAPP_ACCESS_TOKEN|RESEND_API_KEY)\s*=\s*[^<\s][^\r\n]*/u,
   /(?:ghp|github_pat)_[A-Za-z0-9_]{20,}/u,
 ];
 

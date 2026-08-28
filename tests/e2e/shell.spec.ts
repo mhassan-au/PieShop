@@ -20,6 +20,10 @@ test("renders the accessible observability showcase without horizontal overflow"
   await expect(page.getByText("Structured debug event")).toBeVisible();
   await expect(page.getByText("Telegram critical alert")).toBeVisible();
   await expect(page.getByText(/Nothing was transmitted/i)).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Cloud database foundation" }),
+  ).toBeVisible();
+  await expect(page.getByText(/No credentials are displayed/i)).toBeVisible();
 
   const hasHorizontalOverflow = await page.evaluate(
     () =>

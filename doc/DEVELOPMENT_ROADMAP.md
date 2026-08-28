@@ -156,15 +156,17 @@ Phase gate: CI is green, tenant denial tests pass, test alerts are redacted, and
 
 Build:
 
-- Private platform-owner sign-in.
+- Private passwordless email sign-in: magic link first, six-digit OTP fallback, server-side PKCE confirmation, and automatic user creation disabled.
 - Mandatory MFA/AAL2 enrolment and challenge.
-- Session list, logout, and recovery/security event baseline.
+- Approved-device registration, session restoration/list, logout/revocation, and recovery/security event baseline.
 
 Tests first:
 
 - AAL1 cannot enter platform control plane.
 - Enumeration-safe login/recovery responses.
-- Session revocation and privilege-change behaviour.
+- Scanned/expired magic links recover through a safe OTP fallback without revealing account existence.
+- Unapproved/revoked devices reauthenticate; approved devices restore only valid sessions.
+- Session/device revocation and privilege-change behaviour.
 
 User check: sign in, enrol MFA, sign out, and sign in again on phone/desktop.
 

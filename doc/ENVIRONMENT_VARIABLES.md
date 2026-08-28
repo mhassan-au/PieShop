@@ -22,12 +22,12 @@ Variables are introduced only when their roadmap part is implemented. Validate r
 
 ## Supabase
 
-| Variable                               | Classification | Purpose                                                      | Introduced |
-| -------------------------------------- | -------------- | ------------------------------------------------------------ | ---------- |
-| `NEXT_PUBLIC_SUPABASE_URL`             | Public         | Supabase project API URL                                     | Part 0.4   |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public         | Browser publishable key protected by RLS                     | Part 0.4   |
-| `SUPABASE_SERVICE_ROLE_KEY`            | Restricted     | Narrow server/job administration only; never browser exposed | Part 0.4   |
-| `SUPABASE_DB_URL`                      | Restricted     | Migration/controlled server database connection              | Part 0.4   |
+| Variable                               | Classification | Purpose                                             | Introduced |
+| -------------------------------------- | -------------- | --------------------------------------------------- | ---------- |
+| `NEXT_PUBLIC_SUPABASE_URL`             | Public         | Supabase project API URL                            | Part 0.4   |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public         | Browser publishable key protected by RLS            | Part 0.4   |
+| `SUPABASE_DB_URL`                      | Restricted     | Migration/controlled server database connection     | Part 0.4   |
+| `SUPABASE_SECRET_KEY`                  | Restricted     | Narrow server/job administration only; bypasses RLS | Part 1.2   |
 
 ## Security and encryption
 

@@ -21,6 +21,7 @@ Build PieShop, a simple multi-tenant PWA for small merchants to manage a small c
 - No role can hard-delete orders, payments, state history, billable events, invoices, or audit events. Correct with append-only cancel/void/refund/adjust/supersede operations.
 - Payment-evidence uploads are excluded from MVP; never add them without a new threat/privacy decision.
 - MFA/AAL2 is mandatory for platform owners, support administrators, and merchant owners. Sensitive actions require recent step-up authentication.
+- Merchant and administrator authentication is passwordless email magic link/OTP. Existing sessions may restore automatically only on a registered, revocable approved device; device trust never replaces required AAL2 or sensitive-action step-up.
 - Support grants default to catalogue-only, four hours, maximum 24 hours; support sessions idle-expire after 15 minutes and terminate on revocation/role change/suspension.
 - Payment and fulfilment states are independent.
 - External-channel interpretation creates drafts; it never silently commits an uncertain order.

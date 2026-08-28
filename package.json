@@ -23,6 +23,15 @@
     "test:e2e:ui": "playwright test --ui",
     "security:audit": "npm audit --audit-level=high",
     "security:secrets": "node scripts/check-secrets.mjs",
+    "test:supabase:connection": "node --env-file=.env.local scripts/check-supabase-connection.mjs",
+    "test:supabase:schema": "node --env-file=.env.local scripts/check-foundation-schema.mjs",
+    "test:supabase:security": "node --env-file=.env.local scripts/test-foundation-security.mjs",
+    "test:supabase:hardening": "node --env-file=.env.local scripts/check-foundation-hardening.mjs",
+    "test:supabase:seed": "node --env-file=.env.local scripts/check-development-seed.mjs",
+    "db:push:dry-run": "node --env-file=.env.local --experimental-strip-types scripts/push-supabase-migrations.ts --dry-run",
+    "db:push:apply": "node --env-file=.env.local --experimental-strip-types scripts/push-supabase-migrations.ts --apply",
+    "db:seed:apply": "node --env-file=.env.local --experimental-strip-types scripts/push-supabase-migrations.ts --seed",
+    "db:reset:development": "node --env-file=.env.local --experimental-strip-types scripts/push-supabase-migrations.ts --reset",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build && npm run security:secrets && npm run security:audit"
   },
   "dependencies": {
@@ -47,6 +56,8 @@
     "jsdom": "29.1.1",
     "prettier": "3.9.6",
     "prettier-plugin-tailwindcss": "0.8.1",
+    "postgres": "3.4.9",
+    "supabase": "^2.116.0",
     "tailwindcss": "4.3.3",
     "typescript": "6.0.3",
     "vitest": "4.1.11"

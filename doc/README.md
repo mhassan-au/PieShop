@@ -24,6 +24,7 @@ This folder is the source of truth for the MVP. If implementation and documentat
 | [PART_0_1_ACCEPTANCE.md](PART_0_1_ACCEPTANCE.md)           | Test-first acceptance examples for the first development part                           |
 | [PART_0_2_ACCEPTANCE.md](PART_0_2_ACCEPTANCE.md)           | Test-first acceptance examples for central messages and safe application errors         |
 | [PART_0_3_ACCEPTANCE.md](PART_0_3_ACCEPTANCE.md)           | Test-first acceptance examples for structured logging and critical alerts               |
+| [PART_0_4_ACCEPTANCE.md](PART_0_4_ACCEPTANCE.md)           | Test-first acceptance examples for the Supabase and RLS security foundation             |
 | [AI_CONTEXT.md](AI_CONTEXT.md)                             | Compact operating context and instructions for AI coding agents                         |
 | [DECISIONS.md](DECISIONS.md)                               | Architecture and product decision log                                                   |
 

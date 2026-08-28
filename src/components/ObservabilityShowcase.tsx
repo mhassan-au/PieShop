@@ -5,6 +5,7 @@ import {
   InMemoryLogSink,
   serializeJsonLine,
 } from "@/observability/logger";
+import { DatabaseHealthPanel } from "./DatabaseHealthPanel";
 
 export async function ObservabilityShowcase() {
   const sink = new InMemoryLogSink();
@@ -144,6 +145,13 @@ export async function ObservabilityShowcase() {
               {formatMessage("observability.next")}
             </p>
           </section>
+          <DatabaseHealthPanel
+            isConfigured={Boolean(
+              process.env.NEXT_PUBLIC_SUPABASE_URL &&
+              process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY &&
+              process.env.SUPABASE_DB_URL,
+            )}
+          />
         </section>
       </div>
     </main>

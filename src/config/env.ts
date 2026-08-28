@@ -23,6 +23,22 @@ const environmentSchema = z
       blankToUndefined,
       z.string().min(1).optional(),
     ),
+    NEXT_PUBLIC_SUPABASE_URL: z.preprocess(
+      blankToUndefined,
+      z.url().optional(),
+    ),
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.preprocess(
+      blankToUndefined,
+      z.string().startsWith("sb_publishable_").optional(),
+    ),
+    SUPABASE_DB_URL: z.preprocess(blankToUndefined, z.url().optional()),
+    SUPABASE_DESTRUCTIVE_CONFIRMATION: z.preprocess(
+      blankToUndefined,
+      z
+        .string()
+        .regex(/^[a-z0-9]{20}$/u)
+        .optional(),
+    ),
   })
   .superRefine((value, context) => {
     const hasTelegramToken = Boolean(value.TELEGRAM_ALERT_BOT_TOKEN);
@@ -39,6 +55,15 @@ const environmentSchema = z
         code: "custom",
         path: ["DEBUG_MODE"],
         message: "Debug mode is unavailable in production",
+      });
+    }
+    const hasSupabaseUrl = Boolean(value.NEXT_PUBLIC_SUPABASE_URL);
+    const hasSupabaseKey = Boolean(value.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+    if (hasSupabaseUrl !== hasSupabaseKey) {
+      context.addIssue({
+        code: "custom",
+        path: ["SUPABASE_PUBLIC_CONFIGURATION"],
+        message: "Supabase public configuration must be complete",
       });
     }
   });
@@ -65,22 +90,28 @@ export function parseEnvironment(
 }
 
 export function loadEnvironment(
-  input: NodeJS.ProcessEnv,
+  input: Record<string, string | undefined>,
 ): ApplicationEnvironment {
-  const isHostedEnvironment = Boolean(
-    input.CI || input.VERCEL || input.APP_ENV,
-  );
+  const inferredEnvironment =
+    input.APP_ENV ?? (input.CI || input.VERCEL ? undefined : "local");
+  const canUseLocalBaseUrl =
+    inferredEnvironment === "local" || inferredEnvironment === "test";
 
   return parseEnvironment({
-    APP_ENV: input.APP_ENV ?? (isHostedEnvironment ? undefined : "local"),
+    APP_ENV: inferredEnvironment,
     APP_BASE_URL:
       input.APP_BASE_URL ??
-      (isHostedEnvironment ? undefined : "http://localhost:3000"),
+      (canUseLocalBaseUrl ? "http://localhost:3000" : undefined),
     LOG_LEVEL: input.LOG_LEVEL,
     DEBUG_MODE: input.DEBUG_MODE,
     SENTRY_DSN: input.SENTRY_DSN,
     NEXT_PUBLIC_SENTRY_DSN: input.NEXT_PUBLIC_SENTRY_DSN,
     TELEGRAM_ALERT_BOT_TOKEN: input.TELEGRAM_ALERT_BOT_TOKEN,
     TELEGRAM_ALERT_CHAT_ID: input.TELEGRAM_ALERT_CHAT_ID,
+    NEXT_PUBLIC_SUPABASE_URL: input.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:
+      input.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+    SUPABASE_DB_URL: input.SUPABASE_DB_URL,
+    SUPABASE_DESTRUCTIVE_CONFIRMATION: input.SUPABASE_DESTRUCTIVE_CONFIRMATION,
   });
 }

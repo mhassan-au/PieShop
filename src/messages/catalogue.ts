@@ -143,6 +143,44 @@ const catalogue = {
       "Durable live storage and immutable daily Supabase archives begin after the database security foundation.",
     placeholders: [],
   },
+  "database.health.label": {
+    template: "Part 0.4 / development",
+    placeholders: [],
+  },
+  "database.health.title": {
+    template: "Cloud database foundation",
+    placeholders: [],
+  },
+  "database.health.ready": {
+    template: "Configuration ready",
+    placeholders: [],
+  },
+  "database.health.incomplete": {
+    template: "Configuration incomplete",
+    placeholders: [],
+  },
+  "database.health.description": {
+    template:
+      "The development database uses guarded migrations and automated isolation checks before merchant features are added.",
+    placeholders: [],
+  },
+  "database.health.privacy": {
+    template:
+      "No credentials are displayed. No merchant catalogue or transaction content is exposed here.",
+    placeholders: [],
+  },
+  "database.health.control.rls": {
+    template: "Row Level Security enabled",
+    placeholders: [],
+  },
+  "database.health.control.tenant": {
+    template: "Cross-tenant access denied",
+    placeholders: [],
+  },
+  "database.health.control.immutable": {
+    template: "Immutable records protected",
+    placeholders: [],
+  },
   "validation.phone.invalid": {
     template: "Enter a valid phone number, including the area or country code.",
     placeholders: [],

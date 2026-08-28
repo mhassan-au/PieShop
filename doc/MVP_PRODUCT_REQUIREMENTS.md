@@ -42,12 +42,14 @@ Every platform action and support session is audited.
 
 Platform owners, support administrators, and merchant owners must enrol and use MFA. Privileged actions require a recent AAL2/step-up authentication, not merely an old authenticated session.
 
+Staff and administrator login is passwordless with a one-time email magic link as the primary action and a six-digit email OTP as the fallback for cross-device use, expired/scanned links, or accessibility preference. Automatic user creation is disabled. Authentication uses server-side PKCE confirmation and removes token material from the browser URL immediately. After successful authentication, a user may explicitly approve the current browser/device. An approved device can restore its existing session without repeating the email step on every visit, subject to server-side session validity, role/account state, idle and absolute expiry, and device revocation. A new, cleared, suspicious, or revoked device must authenticate again. Device approval is not an authentication factor and never bypasses mandatory AAL2 or sensitive-action step-up. Custom SMTP with link tracking disabled is required before inviting pilot merchants.
+
 ### 3.1 Merchant account provisioning
 
 - Merchant self-registration and public sign-up are disabled in the MVP.
 - Only the platform owner can create a merchant account.
 - The platform owner enters the business name and merchant-owner contact, then sends a single-use, expiring invitation.
-- The invited merchant owner sets their own credentials; the platform owner never knows or sets a reusable merchant password.
+- The invited merchant owner accepts the single-use invitation, verifies their email through the passwordless flow, and enrols MFA; no reusable merchant password exists.
 - The platform owner can resend/revoke invitations, suspend/reactivate the merchant account, manage plan and invoice metadata, and view onboarding completion state.
 - Platform management screens expose operational metadata only and must not infer or display what the merchant sells.
 - The MVP is operated for 1–5 merchants, while tenancy rules must not hard-code a maximum of five.
