@@ -1,8 +1,11 @@
 # Phase 1 Threat Model — Platform Owner and Merchant Access
 
-**Version:** 0.1  
-**Assessment date:** 2026-08-28 Australia/Sydney  
-**Scope:** Roadmap Parts 1.1–1.4  
+**Version:** 0.1
+
+**Assessment date:** 2026-08-28 Australia/Sydney
+
+**Scope:** Roadmap Parts 1.1–1.4
+
 **Environment:** Private local development and disposable Supabase development project with synthetic data only
 
 ## Assessment outcome
