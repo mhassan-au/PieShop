@@ -24,6 +24,8 @@ This document is an engineering baseline, not legal advice. Privacy notices, mer
 
 ### Identity and privileged access
 
+The owner has accepted reduced authentication assurance only for internal MVP development using synthetic data. The internal platform owner uses a pre-provisioned email/login identifier and password; synthetic merchant accounts use invitation-only magic links with a 30-day absolute session maximum. No real vendor demonstration, real merchant/customer data, staging pilot, or production rollout is permitted until the MFA/AAL2 and stricter-session controls below are implemented and verified.
+
 - Require MFA/AAL2 for platform owners, support administrators, and merchant owners. Require step-up AAL2 immediately before support grants/sessions, staff/role changes, bank/PayID changes, exports, security changes, or account suspension.
 - Prefer TOTP or phishing-resistant factors when available; SMS recovery is not the sole privileged recovery path.
 - Recovery cannot bypass MFA silently. Recovery and factor reset require re-verification, revoke existing sessions, notify the account owner, and create a high-severity audit/security event.

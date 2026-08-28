@@ -152,23 +152,23 @@ Phase gate: CI is green, tenant denial tests pass, test alerts are redacted, and
 
 ### Phase 1 — Platform owner and merchant access
 
-#### Part 1.1: Platform-owner login and MFA — 1–2 days
+#### Part 1.1: Internal platform-owner password login — 1–2 days
 
 Build:
 
-- Private passwordless email sign-in: magic link first, six-digit OTP fallback, server-side PKCE confirmation, and automatic user creation disabled.
-- Mandatory MFA/AAL2 enrolment and challenge.
-- Approved-device registration, session restoration/list, logout/revocation, and recovery/security event baseline.
+- Private password sign-in for the single pre-provisioned platform-owner email/login identifier; automatic user creation and public sign-up disabled.
+- Enumeration-safe responses, throttling/lockout controls, secure recovery baseline, and revocable session listing/logout.
+- Keep the authentication boundary ready for mandatory MFA/AAL2 and stricter privileged sessions before any real-vendor demo, real data, staging pilot, or production rollout.
 
 Tests first:
 
-- AAL1 cannot enter platform control plane.
-- Enumeration-safe login/recovery responses.
-- Scanned/expired magic links recover through a safe OTP fallback without revealing account existence.
-- Unapproved/revoked devices reauthenticate; approved devices restore only valid sessions.
-- Session/device revocation and privilege-change behaviour.
+- Only the pre-provisioned active platform owner can enter the control plane.
+- Invalid credentials and recovery requests are enumeration-safe and rate limited.
+- Public sign-up and automatic account creation remain disabled.
+- Revoked, expired, suspended, recovered, or privilege-changed sessions cannot restore access.
+- Tests preserve a seam for enforcing AAL2 before the real-vendor/production security gate.
 
-User check: sign in, enrol MFA, sign out, and sign in again on phone/desktop.
+User check: sign in with the pre-provisioned owner login, sign out, and sign in again on phone/desktop.
 
 #### Part 1.2: Merchant list and create form — 1 day
 
@@ -192,7 +192,7 @@ Build:
 
 - Single-use, hashed, expiring invitation tokens.
 - Resend and revoke controls.
-- Merchant owner establishes credentials and MFA.
+- Merchant owner verifies the invitation through a magic link and receives a revocable session with a 30-day absolute maximum.
 
 Tests first:
 
@@ -200,7 +200,7 @@ Tests first:
 - Accepting creates exactly one owner membership.
 - Platform owner never obtains the merchant password.
 
-User check: invite yourself as a test merchant, accept, and complete MFA.
+User check: invite yourself as a synthetic test merchant, accept the magic link, close/reopen the browser, and confirm the session expires or revokes correctly.
 
 #### Part 1.4: Account status and onboarding progress — 1 day
 
@@ -218,7 +218,7 @@ Tests first:
 
 User check: suspend/reactivate the test merchant and confirm clear UI feedback.
 
-Phase gate: only the platform owner creates merchants; merchant owner independently signs in with MFA; privacy boundary tests pass.
+Phase gate: only the platform owner creates merchants; a synthetic test merchant independently signs in by magic link; 30-day absolute expiry and privacy-boundary tests pass. Real-vendor demonstrations remain blocked until the MFA release gate is completed.
 
 ### Phase 2 — Merchant setup and catalogue
 

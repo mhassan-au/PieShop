@@ -86,7 +86,8 @@ Critical alerts pass through a separate dispatcher that applies fingerprint dedu
 - Customers use secure, random, expiring tokens for order confirmation/tracking; no customer account is required.
 - Never store raw tracking tokens; store a cryptographic hash and compare safely.
 - Sensitive settings changes require recent step-up authentication.
-- Enforce MFA/AAL2 for platform owners, support administrators, and merchant owners. Require recent step-up authentication for support access, role/staff changes, payment-instruction changes, exports, and security/account changes.
+- During internal synthetic-data MVP development, authenticate the pre-provisioned platform owner with an email/login identifier and password. Invited merchant owners use magic links with a server-enforced 30-day absolute session maximum.
+- Before any real-vendor demo, real data, staging pilot, or production rollout, enforce MFA/AAL2 for platform owners, support administrators, and merchant owners and require recent step-up authentication for support access, role/staff changes, payment-instruction changes, exports, and security/account changes.
 - Session recovery or MFA-factor reset revokes existing sessions, notifies the account owner, and produces a high-severity audit/security event.
 
 ### 5.1 Privacy boundary for platform roles

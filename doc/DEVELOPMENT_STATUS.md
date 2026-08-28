@@ -7,7 +7,7 @@ This file records the single current roadmap part and its acceptance evidence. I
 - **Overall state:** Safe project foundation
 - **Current approved part:** Part 0.4 — Supabase schema, migrations, and security harness
 - **Part status:** Complete — automated checks and owner health-screen acceptance passed
-- **Next part:** Part 1.1 — Platform-owner login and MFA
+- **Next part:** Part 1.1 — Internal platform-owner password login
 - **Next part authorised:** No
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
 - **Last updated:** 2026-08-28 Australia/Sydney
@@ -60,7 +60,7 @@ See `doc/PART_0_4_ACCEPTANCE.md` and Part 0.4 in `doc/DEVELOPMENT_ROADMAP.md`.
 - Supabase CLI `2.116.0` and Postgres.js `3.4.9` are pinned for the cloud migration/test harness.
 - `20260827050000_foundation_security.sql` and `20260827060000_immutable_record_guards.sql` are applied to the confirmed development project.
 - The owner explicitly authorised the disposable development database reset on 2026-08-28 Australia/Sydney. The guarded reset reapplied both migrations and deterministic seed data; all post-reset cloud checks passed.
-- Passwordless login is recorded for Part 1.1: magic link first, six-digit OTP fallback, approved-device restoration, and TOTP/AAL2 for privileged roles.
+- Authentication policy was revised on 2026-08-28: the synthetic-data MVP platform owner uses a pre-provisioned email/login identifier and password; invited merchants use magic links with a server-enforced 30-day absolute session maximum. MFA and stricter sessions are mandatory before any real-vendor demo, real data, staging pilot, or production rollout.
 - Part 1.1 remains unauthorised until the owner accepts Part 0.4.
 
 ## Completion record template

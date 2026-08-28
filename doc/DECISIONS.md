@@ -142,3 +142,11 @@ Use this file for decisions that materially affect scope, data, security, provid
 - **Decision:** Merchant staff and platform administrators use passwordless email with a magic link as the primary action and a six-digit email OTP fallback. Automatic sign-up is disabled, confirmation uses server-side PKCE, and token material is removed from the URL after exchange. A successfully authenticated user may register the current browser/device so a still-valid session can restore automatically. Approved devices are individually visible and revocable.
 - **Reason:** Removes password creation and reset friction while keeping the small MVP simple on phones and the web.
 - **Consequence:** Device approval never counts as MFA. Platform owners, support administrators, and merchant owners must still reach AAL2 using TOTP and repeat step-up for sensitive actions. New, cleared, expired, suspicious, or revoked devices reauthenticate. Device/session records use opaque hashed identifiers, server-side validation, idle/absolute expiry, revocation on privilege or recovery events, and append-only security audits. The UI handles expired or email-scanner-consumed links through the OTP fallback. Custom SMTP with link tracking disabled is required before the merchant pilot.
+
+## ADR-019: Reduced authentication assurance for internal synthetic-data MVP
+
+- **Status:** Accepted; supersedes ADR-013 and ADR-018 only for internal synthetic-data MVP development
+- **Date:** 2026-08-28
+- **Decision:** The pre-provisioned platform owner signs in with an email/login identifier and password. Invited merchant owners use server-side PKCE magic links and may restore the same revocable browser session for an absolute maximum of 30 days. Automatic user creation and public sign-up remain disabled.
+- **Reason:** Reduce authentication friction while the owner develops and evaluates the MVP internally.
+- **Consequence:** The reduced-assurance mode must contain synthetic data only. Sessions end earlier on logout, revocation, suspension, recovery, privilege change, or security events. MFA/AAL2, step-up authentication, stricter session controls, and recovery tests are a blocking release gate before any demo to a real vendor, real merchant/customer data, staging pilot, or production rollout. ADR-013 and ADR-018 remain the required target for that gate.

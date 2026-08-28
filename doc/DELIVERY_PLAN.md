@@ -13,7 +13,7 @@ The executable day-by-day sequence is maintained in `DEVELOPMENT_ROADMAP.md`. No
 - Implement central message catalogue, `AppError`, logger, request/trace IDs, Sentry, and sanitised Telegram adapter.
 - Create Supabase project/migrations, tenancy model, RLS test harness, audit events, and log archive design.
 - Establish OWASP ASVS 5.0 Level 2 checklist, threat model, data inventory, subprocessor register, privacy/retention draft, security headers, dependency/secret scanning, and backup/restore plan.
-- Enforce MFA/AAL2 and secure recovery/session management for platform owner from the first privileged account.
+- For internal synthetic-data MVP work, use a pre-provisioned platform-owner password account and invitation-only merchant magic links with a 30-day absolute session maximum. Enforce MFA/AAL2 and stricter recovery/session management before any real-vendor demo, real data, staging pilot, or production rollout.
 - Record dependency and environment setup in repository documentation.
 
 Exit: a test merchant can authenticate; tenant isolation tests pass; an intentional test failure is correlated in logs without leaking sensitive data.

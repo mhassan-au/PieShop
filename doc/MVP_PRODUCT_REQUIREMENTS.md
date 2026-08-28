@@ -40,16 +40,16 @@ The platform has two initial administrative roles:
 
 Every platform action and support session is audited.
 
-Platform owners, support administrators, and merchant owners must enrol and use MFA. Privileged actions require a recent AAL2/step-up authentication, not merely an old authenticated session.
+For internal MVP development with synthetic data, the platform owner signs in using a pre-provisioned email/login identifier and password. Public sign-up and automatic account creation remain disabled. MFA/AAL2 and stricter privileged-session controls must be implemented and verified before any demo to a real vendor, use of real merchant/customer data, staging pilot, or production rollout.
 
-Staff and administrator login is passwordless with a one-time email magic link as the primary action and a six-digit email OTP as the fallback for cross-device use, expired/scanned links, or accessibility preference. Automatic user creation is disabled. Authentication uses server-side PKCE confirmation and removes token material from the browser URL immediately. After successful authentication, a user may explicitly approve the current browser/device. An approved device can restore its existing session without repeating the email step on every visit, subject to server-side session validity, role/account state, idle and absolute expiry, and device revocation. A new, cleared, suspicious, or revoked device must authenticate again. Device approval is not an authentication factor and never bypasses mandatory AAL2 or sensitive-action step-up. Custom SMTP with link tracking disabled is required before inviting pilot merchants.
+Invited merchant owners use a one-time email magic link with server-side PKCE confirmation; token material is removed from the browser URL immediately. The authenticated browser session may restore without another email for no more than 30 days from authentication. It ends earlier on logout, explicit revocation, account suspension, recovery, privilege change, or a security event. A new or cleared browser must use a new magic link. Automatic user creation and public merchant sign-up remain disabled. Custom SMTP with link tracking disabled and MFA/AAL2 are required before inviting or demonstrating to a real vendor.
 
 ### 3.1 Merchant account provisioning
 
 - Merchant self-registration and public sign-up are disabled in the MVP.
 - Only the platform owner can create a merchant account.
 - The platform owner enters the business name and merchant-owner contact, then sends a single-use, expiring invitation.
-- The invited merchant owner accepts the single-use invitation, verifies their email through the passwordless flow, and enrols MFA; no reusable merchant password exists.
+- The invited synthetic merchant owner accepts the single-use invitation and verifies their email through the magic-link flow; no reusable merchant password exists. MFA enrolment becomes mandatory before any real-vendor demonstration or pilot.
 - The platform owner can resend/revoke invitations, suspend/reactivate the merchant account, manage plan and invoice metadata, and view onboarding completion state.
 - Platform management screens expose operational metadata only and must not infer or display what the merchant sells.
 - The MVP is operated for 1–5 merchants, while tenancy rules must not hard-code a maximum of five.
