@@ -19,6 +19,7 @@ This folder is the source of truth for the MVP. If implementation and documentat
 | [DEVELOPMENT_ROADMAP.md](DEVELOPMENT_ROADMAP.md)           | TDD roadmap split into 1–2 day parts with UI acceptance gates                           |
 | [PROJECT_CHECKLISTS.md](PROJECT_CHECKLISTS.md)             | Prerequisite, development-tool, MVP hosting, production hosting, and operations gates   |
 | [DEVELOPMENT_STATUS.md](DEVELOPMENT_STATUS.md)             | Current roadmap part, automated evidence, blockers, and user acceptance                 |
+| [WORKFLOW_CLASSIFICATION.md](WORKFLOW_CLASSIFICATION.md)   | Token-efficient task classification, document routing, verification, and approval rules |
 | [DEVELOPER_WALKTHROUGH.md](DEVELOPER_WALKTHROUGH.md)       | Repository tour, change guide, and end-to-end login development case study              |
 | [THREAT_MODELING_STANDARD.md](THREAT_MODELING_STANDARD.md) | Required phase-entry threat-model process, risk rating, evidence, and review triggers   |
 | [PHASE_0_THREAT_MODEL.md](PHASE_0_THREAT_MODEL.md)         | Retrospective threat model and remediation register for completed foundation work       |
