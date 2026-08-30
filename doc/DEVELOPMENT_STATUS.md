@@ -38,9 +38,11 @@ See `doc/PART_1_1_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.1 in
 - Slice 5 development database: Owner-authorized migration applied successfully; the follow-up guarded dry-run reported the remote database up to date with no pending migrations
 - Slice 6 red observed: Yes — the Supabase owner-session repository module was absent and its focused suite failed to resolve the import
 - Slice 6 green: Passed — 4 repository assertions cover hash-only create/touch calls, safe metadata mapping, self-bound revocation calls, runtime response validation, and redacted provider failures; migration plus repository suites total 8 passing assertions, with targeted lint and TypeScript green
+- Slice 7 red observed: Yes — the owner-session cookie contract module was absent and its focused suite failed to resolve the import
+- Slice 7 green: Passed — 5 cookie assertions cover secure `__Host-` behavior outside local HTTP, local/test compatibility, HttpOnly/SameSite/path/priority controls, exact 12-hour browser lifetime, scope-matched clearing, and malformed-token rejection; cookie, token, and repository suites total 18 passing assertions, with targeted lint and TypeScript green
 - Approved dependencies: `@supabase/ssr` `0.12.4` and `@supabase/supabase-js` `2.112.4`, exact-pinned; installation audit reported 0 vulnerabilities
 - UI checkpoint prepared: `UI_TEST_CHECKLISTS.md` contains the shared milestone checklist and Part 1.1 login/session cases
-- Implementation status: In progress — session persistence and its provider adapter are ready; direct server-entry integration, throttling/audit orchestration, and UI remain; manual UI testing is not ready
+- Implementation status: In progress — session persistence, its provider adapter, and the hardened application-cookie contract are ready; server-only Supabase client/login integration, direct server-entry enforcement, throttling/audit orchestration, and UI remain; manual UI testing is not ready
 
 ### Completed foundation
 
