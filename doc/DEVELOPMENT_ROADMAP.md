@@ -292,16 +292,19 @@ Phase gate: merchant can manage a small catalogue entirely from a phone; automat
 
 ### Phase 3 — Customers, delivery, and manual ordering
 
+Phase-entry gate: refresh the threat model for customer personal data and accept the field inventory, plaintext routing derivatives, managed encryption/HMAC provider, rotation/recovery procedure, retention, and key-unavailability behavior before Part 3.1 implementation.
+
 #### Part 3.1: Merchant-scoped customers — 1 day
 
 Build:
 
-- Create/find customer by normalised E.164 phone number.
-- Name, preferred channel, safe merchant note, masking in lists.
+- Create/find customer by normalised E.164 phone using versioned ciphertext and a separately keyed, business-scoped blind index.
+- Encrypt name, optional email, and safe merchant note; mask personal data in lists.
 
 Tests first:
 
 - Phone normalisation and merchant-scoped uniqueness.
+- Encryption round-trip, key-version rotation, blind-index determinism/scope, collision handling, and key-unavailability fail-closed behavior.
 - No cross-merchant customer matching or access.
 - Personal data is redacted from logs.
 
@@ -311,13 +314,14 @@ User check: create and find repeat customers using phone numbers.
 
 Build:
 
-- Structured address fields and delivery instructions.
+- Version-encrypted structured address payload, coordinates, and delivery instructions; retain only approved minimum plaintext routing derivatives.
 - Saved/recent address selection with masked confirmation.
 - Pickup choice bypasses address requirement.
 
 Tests first:
 
 - Delivery requires full address; pickup does not.
+- Address and immutable order-snapshot encryption, rotation, key-unavailability, export/backup, and plaintext-leak tests.
 - Cross-tenant address denial.
 - Reconfirmation required for saved addresses.
 

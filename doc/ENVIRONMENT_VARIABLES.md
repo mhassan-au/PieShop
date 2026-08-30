@@ -31,11 +31,13 @@ Variables are introduced only when their roadmap part is implemented. Validate r
 
 ## Security and encryption
 
-| Variable                      | Classification | Purpose                                                      | Introduced |
-| ----------------------------- | -------------- | ------------------------------------------------------------ | ---------- |
-| `FIELD_ENCRYPTION_KEY_ID`     | Operational    | Active managed key identifier/version, not key material      | Part 4.1   |
-| `FIELD_ENCRYPTION_PROVIDER_*` | Restricted     | Provider-specific managed encryption credentials if required | Part 4.1   |
-| `CRON_JOB_SECRET`             | Server secret  | Authenticates scheduled internal jobs                        | Part 5.3   |
+| Variable                       | Classification | Purpose                                                       | Introduced |
+| ------------------------------ | -------------- | ------------------------------------------------------------- | ---------- |
+| `FIELD_ENCRYPTION_KEY_ID`      | Operational    | Active managed key identifier/version, not key material       | Part 3.1   |
+| `FIELD_ENCRYPTION_PROVIDER_*`  | Restricted     | Provider-specific managed encryption credentials if required  | Part 3.1   |
+| `FIELD_LOOKUP_HMAC_KEY_ID`     | Operational    | Active blind-index key identifier/version, not key material   | Part 3.1   |
+| `FIELD_LOOKUP_HMAC_PROVIDER_*` | Restricted     | Managed blind-index key credentials, separate from encryption | Part 3.1   |
+| `CRON_JOB_SECRET`              | Server secret  | Authenticates scheduled internal jobs                         | Part 5.3   |
 
 ## Observability
 

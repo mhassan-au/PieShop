@@ -56,7 +56,7 @@ The owner has accepted reduced authentication assurance only for internal MVP de
 - Publish a clear collection notice explaining purpose, merchant/platform roles, channels/providers, disclosures, retention, access/correction, complaints, and overseas processing before collecting customer data.
 - Maintain a data inventory and field-level retention schedule. Default to collecting no date of birth, government identifiers, or unrelated free-form personal notes.
 - Mask personal data in lists and support views; reveal only when necessary for the authorised task.
-- Encrypt provider credentials, bank/PayID configuration, webhook secrets, and other restricted fields using managed/envelope encryption with versioned keys and rotation. Do not place keys beside ciphertext in the database.
+- Encrypt provider credentials, bank/PayID configuration, webhook secrets, customer contact/location data, notes/message content, and order-address snapshots using managed/envelope encryption with versioned keys and rotation. Use separately keyed, business-scoped HMAC blind indexes for exact phone/email lookup. Do not place encryption or blind-index keys beside ciphertext in the database.
 - Document deletion/de-identification across live data, Storage, exports, logs, archives, providers, and backups; verify third-party deletion where applicable and assess re-identification risk.
 - Maintain a subprocessor register covering purpose, data category, storage/processing country, retention, contract/DPA, deletion capability, incident notification, and access controls.
 - Disable payment-evidence uploads for the MVP. A customer can report payment; the merchant verifies funds in their bank. Reconsider uploads only after a documented threat/privacy review.

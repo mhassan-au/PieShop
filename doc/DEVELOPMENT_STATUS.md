@@ -83,6 +83,7 @@ See `doc/PART_1_1_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.1 in
 - Part 1.1 remains unauthorised pending the Phase 1 threat-model and acceptance gates.
 - `PHASE_1_THREAT_MODEL.md` version 1.0 assesses 24 threats, defines verification requirements for Parts 1.1–1.4, records six accepted security decisions and four phase-entry gates, and restricts the current design to private development with synthetic data. No Phase 1 product code has started.
 - The owner accepted all six Phase 1 security decisions and authorised Part 1.1 on 2026-08-30 Australia/Sydney. Mehedi Hassan accepted the 26 Part 1.1 examples and authorised TDD implementation on the same date.
+- On 2026-08-30, the owner accepted ADR-022: application-level encryption for customer contact/location data, notes/messages, order-address snapshots, merchant bank/PayID settings, and provider secrets, with separately keyed HMAC blind indexes for exact phone/email lookup. This becomes a blocking Phase 3 entry requirement and does not expand current Part 1.1 implementation.
 
 ## Completion record template
 

@@ -166,7 +166,9 @@ Maintain local, staging, and production environments with separate databases, se
 
 Use validated environment variables and fail startup/deployment checks when required values are absent. Secrets never enter source control, browser bundles, logs, or user-facing errors.
 
-Restricted fields such as provider credentials, webhook secrets, and merchant bank/PayID settings use managed/envelope encryption with versioned keys and a rotation procedure. Keys are held separately from database ciphertext. Production credentials are least-privilege and unavailable to support tooling.
+Restricted fields such as provider credentials, webhook secrets, and merchant bank/PayID settings use managed/envelope encryption with versioned keys and a rotation procedure. Customer names, phone/email contact data, full addresses, coordinates, delivery instructions, notes, stored message content, and order-address snapshots receive the same application-level protection. Keys are held separately from database ciphertext. Production credentials are least-privilege and unavailable to support tooling.
+
+Exact customer phone/email lookup uses separately keyed HMAC blind indexes over canonical, business-scoped inputs. Blind-index keys are distinct from encryption keys. Only approved minimum routing derivatives such as postcode, country code, or delivery-zone ID remain searchable without decryption. Decryption occurs only in an authorised server boundary, returns the minimum required fields, and produces safe audit evidence where the access is sensitive.
 
 ## 10.1 Browser and public-link controls
 

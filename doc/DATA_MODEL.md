@@ -89,22 +89,26 @@ Simple option groups and price adjustments. Avoid a general-purpose configuratio
 ### customers
 
 - `id`, `business_id`
-- `name`
-- `phone_e164` (required)
-- optional email and preferred channel
-- status/blocked flag and merchant note
+- encrypted, versioned name ciphertext
+- encrypted, versioned normalised E.164 phone ciphertext (required)
+- keyed phone blind index for exact merchant-scoped lookup
+- optional encrypted email plus keyed email blind index; preferred channel
+- status/blocked flag and encrypted merchant note
 - consent/opt-out fields
 - `created_at`, `updated_at`
 
-Unique active phone identity is scoped by `(business_id, phone_e164)`.
+Unique active phone identity is scoped by `(business_id, phone_lookup_hmac)`. The HMAC input includes the business identifier and canonical phone value, uses managed key material distinct from field-encryption keys, and is never used as a public identifier. Plaintext phone/email/name values exist only inside the authorised application operation that needs them.
 
 ### customer_addresses
 
 - `id`, `business_id`, `customer_id`
-- address fields, postcode, country code
-- optional coordinates and delivery instructions
+- encrypted, versioned complete address payload
+- minimum searchable routing derivatives such as postcode, country code, and derived delivery-zone ID where justified
+- encrypted optional coordinates and delivery instructions
 - validation status/source
 - `last_used_at`, `created_at`, `updated_at`
+
+Order delivery-address snapshots receive the same application-level encryption; copying an address into immutable history does not downgrade its classification.
 
 ## 4. Delivery
 
@@ -258,7 +262,8 @@ One immutable record when an order first reaches delivered/collected. Unique by 
 - Soft-delete/archive business records that appear in history; do not cascade-delete completed orders.
 - Deny `DELETE` for transactional and audit tables to all application roles; retention/anonymisation is a separate tightly controlled process.
 - Foreign keys and check constraints enforce state and positive quantities.
-- Personally identifiable information is minimised, masked in operational views, and never added casually to logs.
+- Personally identifiable information is minimised, masked in operational views, and never added casually to logs. Customer contact/location fields and their order snapshots use application-level versioned envelope encryption.
 - Restricted configuration fields store versioned ciphertext and key-version metadata, not plaintext.
+- Exact phone/email matching uses separately keyed HMAC blind indexes; ciphertext and blind indexes never reuse key material.
 - Retention applies to derived copies, exports, archives, provider data, and backups—not only primary rows.
 - Use database migrations; never edit production schema manually without a recorded migration and decision.
