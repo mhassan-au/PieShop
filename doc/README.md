@@ -26,10 +26,12 @@ This folder is the source of truth for the MVP. If implementation and documentat
 | [PHASE_1_THREAT_MODEL.md](PHASE_1_THREAT_MODEL.md)         | Phase-entry threat assessment for owner login and merchant account administration       |
 | [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md)       | Planned environment-variable names, classification, ownership, and introduction point   |
 | [UI_MAP.md](UI_MAP.md)                                     | Initial platform, merchant, support, customer, and shared-state screen map              |
+| [UI_TEST_CHECKLISTS.md](UI_TEST_CHECKLISTS.md)             | Reusable owner UI test cases and milestone-specific manual acceptance records           |
 | [PART_0_1_ACCEPTANCE.md](PART_0_1_ACCEPTANCE.md)           | Test-first acceptance examples for the first development part                           |
 | [PART_0_2_ACCEPTANCE.md](PART_0_2_ACCEPTANCE.md)           | Test-first acceptance examples for central messages and safe application errors         |
 | [PART_0_3_ACCEPTANCE.md](PART_0_3_ACCEPTANCE.md)           | Test-first acceptance examples for structured logging and critical alerts               |
 | [PART_0_4_ACCEPTANCE.md](PART_0_4_ACCEPTANCE.md)           | Test-first acceptance examples for the Supabase and RLS security foundation             |
+| [PART_1_1_ACCEPTANCE.md](PART_1_1_ACCEPTANCE.md)           | Threat-mapped acceptance examples for internal platform-owner password login            |
 | [AI_CONTEXT.md](AI_CONTEXT.md)                             | Compact operating context and instructions for AI coding agents                         |
 | [DECISIONS.md](DECISIONS.md)                               | Architecture and product decision log                                                   |
 

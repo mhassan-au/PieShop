@@ -1,6 +1,6 @@
 # Phase 1 Threat Model — Platform Owner and Merchant Access
 
-**Version:** 0.1
+**Version:** 1.0 — accepted
 
 **Assessment date:** 2026-08-28 Australia/Sydney
 
@@ -10,7 +10,7 @@
 
 ## Assessment outcome
 
-Phase 1 may proceed one roadmap part at a time after the owner accepts the decisions and restrictions in this document and the applicable threats are mapped to automated acceptance tests. No Phase 1 product implementation is included in this assessment.
+The owner accepted the six Phase 1 security decisions and authorised Part 1.1 on 2026-08-30 Australia/Sydney. Phase 1 may proceed one roadmap part at a time after applicable threats are mapped to automated acceptance tests. This assessment contains no product implementation.
 
 The current design is suitable for private MVP development with synthetic data. It is **not approved for a real-vendor demo, real personal data, staging, or production** until MFA, durable distributed rate limiting, production email controls, and the production security gate are complete.
 
@@ -135,10 +135,10 @@ The acceptance contract must cover TM1-04, TM1-08, TM1-14, TM1-17, and TM1-23. S
 
 ## Phase-entry gates
 
-- The owner accepts or changes the six decisions above.
-- Part 1.1 gets a TDD acceptance contract mapping every applicable threat ID to automated evidence.
-- The app remains private/local with synthetic data while MFA and durable shared rate limiting are absent.
-- The owner creates a synthetic Supabase Auth owner without sharing credentials in chat; platform role assignment uses a reviewed, auditable development procedure.
+- [x] The owner accepted the six decisions above on 2026-08-30 Australia/Sydney.
+- [x] `PART_1_1_ACCEPTANCE.md` maps applicable threat IDs to proposed automated evidence; owner confirmation of its examples remains pending.
+- [x] The owner accepted that the app remains private/local with synthetic data while MFA and durable shared rate limiting are absent.
+- [ ] The owner creates or confirms a synthetic Supabase Auth owner without sharing credentials in chat; platform role assignment uses a reviewed, auditable development procedure before the cloud login checkpoint.
 
 ## Residual risks
 

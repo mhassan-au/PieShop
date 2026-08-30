@@ -181,6 +181,34 @@ const catalogue = {
     template: "Immutable records protected",
     placeholders: [],
   },
+  "auth.owner.login.title": {
+    template: "Platform owner sign in",
+    placeholders: [],
+  },
+  "auth.owner.login.email.label": {
+    template: "Email",
+    placeholders: [],
+  },
+  "auth.owner.login.password.label": {
+    template: "Password",
+    placeholders: [],
+  },
+  "auth.owner.login.submit": {
+    template: "Sign in",
+    placeholders: [],
+  },
+  "error.auth.invalidCredentials": {
+    template: "We couldn’t sign you in with those details.",
+    placeholders: [],
+  },
+  "error.auth.throttled": {
+    template: "We couldn’t sign you in right now. Wait a moment and try again.",
+    placeholders: [],
+  },
+  "validation.auth.credentials": {
+    template: "Enter a valid email address and password.",
+    placeholders: [],
+  },
   "validation.phone.invalid": {
     template: "Enter a valid phone number, including the area or country code.",
     placeholders: [],

@@ -158,3 +158,11 @@ Use this file for decisions that materially affect scope, data, security, provid
 - **Decision:** Create or refresh a structured threat model before the first part of every roadmap phase. Resolve phase-entry blockers and obtain owner acceptance of explicitly recorded residual risks before implementation begins. Material trust-boundary changes reopen the active model.
 - **Reason:** The general security/privacy baseline identifies controls but does not prove that the implemented data flows and phase-specific abuse cases have been reviewed.
 - **Consequence:** Each phase has a versioned `PHASE_N_THREAT_MODEL.md` following `THREAT_MODELING_STANDARD.md`; affected invariants map into part acceptance tests. A completed phase may receive retrospective findings that block the next phase without erasing its earlier acceptance evidence.
+
+## ADR-021: Phase 1 internal authentication controls
+
+- **Status:** Accepted for private synthetic development
+- **Date:** 2026-08-30
+- **Decision:** The platform-owner application session has a 12-hour absolute maximum and a 2-hour inactivity maximum with fresh authoritative role checks. Merchant sessions have a fixed 30-day absolute maximum enforced by PieShop. Phase 1 provides no self-service recovery UI. Process-local rate limiting and Supabase development email are permitted only while the application is private/local and uses synthetic identities. Supabase Auth packages are exact-pinned behind PieShop adapters.
+- **Reason:** These controls make the internal MVP testable and usable without treating reduced-assurance development authentication as production-ready security.
+- **Consequence:** Activity never extends an absolute session deadline. Durable distributed limiting, controlled SMTP, MFA/AAL2, and stricter privileged session/recovery controls remain mandatory before a real-vendor demo, real data, staging, or production.

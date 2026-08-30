@@ -17,6 +17,27 @@ describe("formatMessage", () => {
     );
   });
 
+  it.each([
+    ["auth.owner.login.title", "Platform owner sign in"],
+    ["auth.owner.login.email.label", "Email"],
+    ["auth.owner.login.password.label", "Password"],
+    ["auth.owner.login.submit", "Sign in"],
+    [
+      "error.auth.invalidCredentials",
+      "We couldn’t sign you in with those details.",
+    ],
+    [
+      "error.auth.throttled",
+      "We couldn’t sign you in right now. Wait a moment and try again.",
+    ],
+    [
+      "validation.auth.credentials",
+      "Enter a valid email address and password.",
+    ],
+  ] as const)("keeps authentication copy central for %s", (key, expected) => {
+    expect(formatMessage(key)).toBe(expected);
+  });
+
   it("rejects missing placeholders without echoing message data", () => {
     const unsafeFormatter = formatMessage as (
       key: string,

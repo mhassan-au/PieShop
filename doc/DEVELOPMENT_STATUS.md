@@ -4,23 +4,38 @@ This file records the single current roadmap part and its acceptance evidence. I
 
 ## Project state
 
-- **Overall state:** Phase 1 security planning
-- **Current approved part:** Phase 1 threat-model gate only
-- **Part status:** Assessment complete — awaiting owner acceptance of the six security decisions
-- **Next part:** Part 1.1 — Internal platform-owner password login, after the threat-model gate passes
+- **Overall state:** Phase 1 implementation
+- **Current approved part:** Part 1.1 — Internal platform-owner password login
+- **Part status:** Acceptance examples accepted — TDD implementation started
+- **Next part:** Part 1.2 — Merchant list and create form
 - **Next part authorised:** No
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
-- **Last updated:** 2026-08-28 Australia/Sydney
+- **Last updated:** 2026-08-30 Australia/Sydney
 
 ## Current part objective
 
-Review and accept the Phase 1 authentication and merchant-administration threat assessment before authorising product implementation.
+Implement the private, synthetic-data-only platform-owner email/password login with authoritative role checks, revocable bounded sessions, enumeration resistance, and a preserved production AAL2 gate.
 
 ## Acceptance source
 
-See `doc/PART_0_4_ACCEPTANCE.md` and Part 0.4 in `doc/DEVELOPMENT_ROADMAP.md`.
+See `doc/PART_1_1_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.1 in `doc/DEVELOPMENT_ROADMAP.md`.
 
 ## TDD evidence
+
+### Current Part 1.1
+
+- Acceptance examples confirmed: Yes — Mehedi Hassan accepted all 26 threat-mapped examples on 2026-08-30 Australia/Sydney
+- Slice 1 red observed: Yes — authentication message keys and the login-input/safe-redirect modules were absent; 3 files failed
+- Slice 1 green: Passed — 34 focused assertions cover central authentication copy, strict/mass-assignment-safe credentials, and control-plane-only redirects
+- Slice 2 red observed: Yes — the Supabase owner-auth adapter was absent; its focused suite failed
+- Slice 2 green: Passed — 4 focused assertions cover token discard, safe credential rejection, provider outage mapping, and missing-identity fail-closed behavior
+- Slice 3 red observed: Yes — the authoritative platform-owner policy and Supabase current-role repository were absent, and the provider identity lacked an explicit assurance level
+- Slice 3 green: Passed — 14 focused assertions cover self-bound active/missing/inactive role lookup, fresh checks after role change, database failure, AAL1 development access, and the blocking AAL2 release policy
+- Approved dependencies: `@supabase/ssr` `0.12.4` and `@supabase/supabase-js` `2.112.4`, exact-pinned; installation audit reported 0 vulnerabilities
+- UI checkpoint prepared: `UI_TEST_CHECKLISTS.md` contains the shared milestone checklist and Part 1.1 login/session cases
+- Implementation status: In progress — application sessions, direct server-entry integration, throttling/audit orchestration, and UI remain
+
+### Completed foundation
 
 - Acceptance examples confirmed: Yes — owner accepted Part 0.3 and authorised Part 0.4 on 2026-08-27 Australia/Sydney
 - Failing tests observed: Yes — missing target guard, absent foundation tables, absent immutable triggers, missing deterministic seed, and missing health component were observed before implementation
@@ -64,7 +79,8 @@ See `doc/PART_0_4_ACCEPTANCE.md` and Part 0.4 in `doc/DEVELOPMENT_ROADMAP.md`.
 - The retrospective Phase 0 threat model is recorded in `PHASE_0_THREAT_MODEL.md`. TM0-01 was mitigated by migration `20260828010000_self_bound_authorization_helpers.sql`: authorization helpers now derive identity from `auth.uid()`, unsafe signatures were removed, and the owner reported the hardening plus 12-assertion transactional security suites passed on 2026-08-28.
 - The Windows secret-scan failure `spawnSync git ENOENT` was corrected with a tested Git executable resolver. Four tooling regression tests cover explicit configuration, invalid configuration, standard Windows installation discovery, and non-Windows PATH behaviour; the secret scan and complete quality gate passed afterward.
 - Part 1.1 remains unauthorised pending the Phase 1 threat-model and acceptance gates.
-- `PHASE_1_THREAT_MODEL.md` version 0.1 assesses 24 threats, defines verification requirements for Parts 1.1–1.4, records six security decisions and four phase-entry gates, and restricts the current design to private development with synthetic data. No Phase 1 product code has started.
+- `PHASE_1_THREAT_MODEL.md` version 1.0 assesses 24 threats, defines verification requirements for Parts 1.1–1.4, records six accepted security decisions and four phase-entry gates, and restricts the current design to private development with synthetic data. No Phase 1 product code has started.
+- The owner accepted all six Phase 1 security decisions and authorised Part 1.1 on 2026-08-30 Australia/Sydney. Mehedi Hassan accepted the 26 Part 1.1 examples and authorised TDD implementation on the same date.
 
 ## Completion record template
 
