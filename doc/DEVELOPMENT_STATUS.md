@@ -31,9 +31,11 @@ See `doc/PART_1_1_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.1 in
 - Slice 2 green: Passed — 4 focused assertions cover token discard, safe credential rejection, provider outage mapping, and missing-identity fail-closed behavior
 - Slice 3 red observed: Yes — the authoritative platform-owner policy and Supabase current-role repository were absent, and the provider identity lacked an explicit assurance level
 - Slice 3 green: Passed — 14 focused assertions cover self-bound active/missing/inactive role lookup, fresh checks after role change, database failure, AAL1 development access, and the blocking AAL2 release policy
+- Slice 4 red observed: Yes — owner session lifecycle and opaque credential modules were absent
+- Slice 4 green: Passed — 18 focused assertions cover exact 12-hour absolute and 2-hour idle boundaries, activity without absolute extension, revocation, invalid chronology, 256-bit base64url credentials, SHA-256 hashes, and malformed-cookie rejection
 - Approved dependencies: `@supabase/ssr` `0.12.4` and `@supabase/supabase-js` `2.112.4`, exact-pinned; installation audit reported 0 vulnerabilities
 - UI checkpoint prepared: `UI_TEST_CHECKLISTS.md` contains the shared milestone checklist and Part 1.1 login/session cases
-- Implementation status: In progress — application sessions, direct server-entry integration, throttling/audit orchestration, and UI remain
+- Implementation status: In progress — session persistence/RPCs, direct server-entry integration, throttling/audit orchestration, and UI remain; manual UI testing is not ready
 
 ### Completed foundation
 
