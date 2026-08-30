@@ -35,9 +35,12 @@ See `doc/PART_1_1_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.1 in
 - Slice 4 green: Passed — 18 focused assertions cover exact 12-hour absolute and 2-hour idle boundaries, activity without absolute extension, revocation, invalid chronology, 256-bit base64url credentials, SHA-256 hashes, and malformed-cookie rejection
 - Slice 5 red observed: Yes — the owner-session persistence migration was absent; 4 migration-contract assertions failed
 - Slice 5 local green: Passed — 4 migration-contract assertions verify hash-only storage, exact deadlines, full table privilege revocation, Data API-accessible but self-bound safe-list/create/touch/revoke RPCs, and append-only audit events; guarded cloud dry-run found exactly one pending migration
+- Slice 5 development database: Owner-authorized migration applied successfully; the follow-up guarded dry-run reported the remote database up to date with no pending migrations
+- Slice 6 red observed: Yes — the Supabase owner-session repository module was absent and its focused suite failed to resolve the import
+- Slice 6 green: Passed — 4 repository assertions cover hash-only create/touch calls, safe metadata mapping, self-bound revocation calls, runtime response validation, and redacted provider failures; migration plus repository suites total 8 passing assertions, with targeted lint and TypeScript green
 - Approved dependencies: `@supabase/ssr` `0.12.4` and `@supabase/supabase-js` `2.112.4`, exact-pinned; installation audit reported 0 vulnerabilities
 - UI checkpoint prepared: `UI_TEST_CHECKLISTS.md` contains the shared milestone checklist and Part 1.1 login/session cases
-- Implementation status: In progress — session migration awaits explicit cloud-apply approval; direct server-entry integration, throttling/audit orchestration, and UI remain; manual UI testing is not ready
+- Implementation status: In progress — session persistence and its provider adapter are ready; direct server-entry integration, throttling/audit orchestration, and UI remain; manual UI testing is not ready
 
 ### Completed foundation
 
