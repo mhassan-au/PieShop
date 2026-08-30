@@ -14,6 +14,7 @@ type PasswordSignInClient = {
       };
       error: { status?: number } | null;
     }>;
+    signOut(options: { scope: "local" }): Promise<{ error: unknown }>;
   };
 };
 
@@ -46,6 +47,15 @@ export class SupabaseOwnerAuthProvider implements OwnerAuthProvider {
       };
     } catch {
       return { status: "unavailable" };
+    }
+  }
+
+  async terminateSession(): Promise<void> {
+    try {
+      const { error } = await this.client.auth.signOut({ scope: "local" });
+      if (error) throw new Error("Owner provider session termination failed");
+    } catch {
+      throw new Error("Owner provider session termination failed");
     }
   }
 }

@@ -16,4 +16,5 @@ export type OwnerAuthenticationResult =
 
 export interface OwnerAuthProvider {
   authenticate(input: OwnerLoginInput): Promise<OwnerAuthenticationResult>;
+  terminateSession(): Promise<void>;
 }

@@ -15,7 +15,7 @@ describe("SupabaseOwnerAuthProvider", () => {
       error: null,
     });
     const provider = new SupabaseOwnerAuthProvider({
-      auth: { signInWithPassword },
+      auth: { signInWithPassword, signOut: vi.fn() },
     });
 
     const result = await provider.authenticate({
@@ -41,6 +41,7 @@ describe("SupabaseOwnerAuthProvider", () => {
   it("maps credential rejection without exposing the provider message", async () => {
     const provider = new SupabaseOwnerAuthProvider({
       auth: {
+        signOut: vi.fn(),
         signInWithPassword: vi.fn().mockResolvedValue({
           data: { user: null, session: null },
           error: {
@@ -64,6 +65,7 @@ describe("SupabaseOwnerAuthProvider", () => {
   it("maps provider outages to a safe unavailable result", async () => {
     const provider = new SupabaseOwnerAuthProvider({
       auth: {
+        signOut: vi.fn(),
         signInWithPassword: vi.fn().mockRejectedValue(new Error("DNS secret")),
       },
     });
@@ -80,6 +82,7 @@ describe("SupabaseOwnerAuthProvider", () => {
   it("fails closed when Supabase returns no error and no verified user", async () => {
     const provider = new SupabaseOwnerAuthProvider({
       auth: {
+        signOut: vi.fn(),
         signInWithPassword: vi.fn().mockResolvedValue({
           data: { user: null, session: null },
           error: null,
@@ -93,5 +96,15 @@ describe("SupabaseOwnerAuthProvider", () => {
         password: "password-secret",
       }),
     ).resolves.toEqual({ status: "unavailable" });
+  });
+
+  it("terminates only the current local provider session", async () => {
+    const signOut = vi.fn().mockResolvedValue({ error: null });
+    const provider = new SupabaseOwnerAuthProvider({
+      auth: { signInWithPassword: vi.fn(), signOut },
+    });
+
+    await expect(provider.terminateSession()).resolves.toBeUndefined();
+    expect(signOut).toHaveBeenCalledWith({ scope: "local" });
   });
 });

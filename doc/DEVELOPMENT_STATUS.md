@@ -40,9 +40,12 @@ See `doc/PART_1_1_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.1 in
 - Slice 6 green: Passed — 4 repository assertions cover hash-only create/touch calls, safe metadata mapping, self-bound revocation calls, runtime response validation, and redacted provider failures; migration plus repository suites total 8 passing assertions, with targeted lint and TypeScript green
 - Slice 7 red observed: Yes — the owner-session cookie contract module was absent and its focused suite failed to resolve the import
 - Slice 7 green: Passed — 5 cookie assertions cover secure `__Host-` behavior outside local HTTP, local/test compatibility, HttpOnly/SameSite/path/priority controls, exact 12-hour browser lifetime, scope-matched clearing, and malformed-token rejection; cookie, token, and repository suites total 18 passing assertions, with targeted lint and TypeScript green
+- Slice 8 red observed: Yes — the owner login orchestration module was absent and its focused suite failed to resolve the import
+- Slice 8 green: Passed — 5 orchestration cases cover authentication/authorization/persistence ordering, hash-only persistence, generic credential rejection, inactive or missing-role cleanup, and fail-closed persistence cleanup; the Supabase adapter now terminates only its local provider session
+- Slice 8 release gate: Passed — 25 test files and 129 assertions, full lint and TypeScript, production build, secret scan, and dependency audit with 0 vulnerabilities; no route/UI changed, so browser E2E remains deferred to the UI integration checkpoint
 - Approved dependencies: `@supabase/ssr` `0.12.4` and `@supabase/supabase-js` `2.112.4`, exact-pinned; installation audit reported 0 vulnerabilities
 - UI checkpoint prepared: `UI_TEST_CHECKLISTS.md` contains the shared milestone checklist and Part 1.1 login/session cases
-- Implementation status: In progress — session persistence, its provider adapter, and the hardened application-cookie contract are ready; server-only Supabase client/login integration, direct server-entry enforcement, throttling/audit orchestration, and UI remain; manual UI testing is not ready
+- Implementation status: In progress — session persistence, provider adapters, hardened cookie contract, and framework-independent login orchestration are ready; the server-only Supabase client/Server Action, direct server-entry enforcement, throttling/audit orchestration, and UI remain; manual UI testing is not ready
 
 ### Completed foundation
 
