@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies, headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 import { loginPlatformOwner } from "@/auth/owner-login-service";
 import { setOwnerSessionCookie } from "@/auth/owner-session-cookie";
@@ -78,12 +79,12 @@ export async function ownerLoginAction(
         message: formatMessage("error.unexpected.message"),
       };
     }
-
-    return { status: "authenticated" };
   } catch (error) {
     return {
       status: "error",
       message: createPublicErrorEnvelope(error).body.error.message,
     };
   }
+
+  redirect("/control");
 }

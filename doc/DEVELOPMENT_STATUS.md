@@ -51,9 +51,14 @@ See `doc/PART_1_1_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.1 in
 - Slice 10 green: Passed — provider-verified `getUser()` identity and current AAL, malformed/missing-cookie short-circuiting, fresh database role checks, hash-only live-session touch, inactive-role denial, and revoked/expired-session denial are covered; provider details fail closed
 - Slice 10 refresh boundary: Added a Next.js 16 `/control/:path*` proxy used only for provider-cookie refresh, with all cookies updated atomically, hardened response cookies, and provider no-cache headers; 6 matcher assertions prove it excludes public paths, while authorization remains inside the reusable server-only request guard
 - Slice 10 release gate: Passed — 29 test files and 148 assertions, full formatting/lint/TypeScript, production build with Proxy recognized, secret scan, and dependency audit with 0 vulnerabilities
+- Slice 11 red observed: Yes — the owner login form and metadata-only control shell components were absent; their focused component contracts failed to resolve
+- Slice 11 green: Passed — the accessible password form, persistent labels/autocomplete, absence of signup/recovery actions, central authentication copy, and forbidden merchant-business-content shell assertion are covered; successful login redirects server-side only after the hardened cookie is written
+- Slice 11 release gate: Passed — 31 test files and 157 assertions, full formatting/lint/TypeScript, production build with static `/login`, dynamic `/control`, and Proxy recognized, secret scan, and dependency audit with 0 vulnerabilities
+- Slice 11 browser gate: Passed — 8 desktop/mobile Chromium scenarios cover responsive login rendering, no public account paths, central malformed-input wording, signed-out direct `/control` redirection, existing foundation-shell regression, and no unexpected browser console errors in the reviewed rendering flow
+- Manual UI checkpoint: Ready for owner review of login layout, wording, malformed-input feedback, signed-out direct-entry behavior, and the valid synthetic-owner login/control-shell flow; Part 1.1 acceptance remains open until throttling, logout, and session visibility/revocation are implemented
 - Approved dependencies: `@supabase/ssr` `0.12.4` and `@supabase/supabase-js` `2.112.4`, exact-pinned; installation audit reported 0 vulnerabilities
 - UI checkpoint prepared: `UI_TEST_CHECKLISTS.md` contains the shared milestone checklist and Part 1.1 login/session cases
-- Implementation status: In progress — authentication, session persistence, hardened cookies, login orchestration, the unexposed login Server Action, provider refresh, and the reusable authoritative protected-request guard are ready; protected control/login UI integration and throttling/audit orchestration remain; manual UI testing is not ready
+- Implementation status: In progress — the login page and protected metadata-only control shell are integrated and ready for initial manual UI review; throttling/audit orchestration, logout, and session visibility/revocation remain before Part 1.1 acceptance
 
 ### Completed foundation
 

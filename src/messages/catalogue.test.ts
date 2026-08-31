@@ -22,6 +22,22 @@ describe("formatMessage", () => {
     ["auth.owner.login.email.label", "Email"],
     ["auth.owner.login.password.label", "Password"],
     ["auth.owner.login.submit", "Sign in"],
+    ["auth.owner.login.submitting", "Signing in…"],
+    ["auth.owner.login.eyebrow", "Private MVP access"],
+    [
+      "auth.owner.login.description",
+      "Use the manually provisioned platform-owner account.",
+    ],
+    [
+      "auth.owner.login.restriction",
+      "No public registration or account recovery is available.",
+    ],
+    ["auth.owner.control.eyebrow", "Platform control plane"],
+    ["auth.owner.control.title", "Merchant account administration"],
+    [
+      "auth.owner.control.description",
+      "Manage merchant account status and onboarding metadata without viewing merchant business content.",
+    ],
     [
       "error.auth.invalidCredentials",
       "We couldn’t sign you in with those details.",

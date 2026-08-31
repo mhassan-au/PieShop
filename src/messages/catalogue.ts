@@ -197,6 +197,44 @@ const catalogue = {
     template: "Sign in",
     placeholders: [],
   },
+  "auth.owner.login.submitting": {
+    template: "Signing in…",
+    placeholders: [],
+  },
+  "auth.owner.login.eyebrow": {
+    template: "Private MVP access",
+    placeholders: [],
+  },
+  "auth.owner.login.description": {
+    template: "Use the manually provisioned platform-owner account.",
+    placeholders: [],
+  },
+  "auth.owner.login.restriction": {
+    template: "No public registration or account recovery is available.",
+    placeholders: [],
+  },
+  "auth.owner.control.eyebrow": {
+    template: "Platform control plane",
+    placeholders: [],
+  },
+  "auth.owner.control.title": {
+    template: "Merchant account administration",
+    placeholders: [],
+  },
+  "auth.owner.control.description": {
+    template:
+      "Manage merchant account status and onboarding metadata without viewing merchant business content.",
+    placeholders: [],
+  },
+  "auth.owner.control.empty.title": {
+    template: "Control plane ready",
+    placeholders: [],
+  },
+  "auth.owner.control.empty.description": {
+    template:
+      "Merchant account management will be added in the next milestone.",
+    placeholders: [],
+  },
   "error.auth.invalidCredentials": {
     template: "We couldn’t sign you in with those details.",
     placeholders: [],
