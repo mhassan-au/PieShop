@@ -54,6 +54,7 @@ describe("loginPlatformOwner", () => {
       loginPlatformOwner(validInput, "Firefox on Windows", dependencies),
     ).resolves.toEqual({
       status: "authenticated",
+      sessionId: "application-session-1",
       sessionToken: "A".repeat(43),
     });
     expect(dependencies.spies.create).toHaveBeenCalledWith(

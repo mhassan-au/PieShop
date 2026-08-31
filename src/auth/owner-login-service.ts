@@ -23,7 +23,11 @@ type OwnerLoginDependencies = Readonly<{
 }>;
 
 export type OwnerLoginResult =
-  | Readonly<{ status: "authenticated"; sessionToken: string }>
+  | Readonly<{
+      status: "authenticated";
+      sessionId: string;
+      sessionToken: string;
+    }>
   | Readonly<{ status: "rejected" }>
   | Readonly<{ status: "unavailable" }>;
 
@@ -74,11 +78,15 @@ export async function loginPlatformOwner(
     const credential = await (
       dependencies.createCredential ?? createOpaqueSessionCredential
     )();
-    await dependencies.sessionRepository.create(
+    const sessionId = await dependencies.sessionRepository.create(
       credential.tokenHash,
       normalizeDeviceLabel(deviceLabel),
     );
-    return { status: "authenticated", sessionToken: credential.token };
+    return {
+      status: "authenticated",
+      sessionId,
+      sessionToken: credential.token,
+    };
   } catch {
     await terminateSafely(dependencies.authProvider);
     return { status: "unavailable" };
