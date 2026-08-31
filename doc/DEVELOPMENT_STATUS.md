@@ -47,9 +47,13 @@ See `doc/PART_1_1_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.1 in
 - Slice 9 green: Passed — 3 provider-cookie assertions enforce HttpOnly/SameSite/root-path controls, strip unsafe caller scope, preserve safe lifetime fields, and permit insecure transport only for local/test HTTP
 - Slice 9 server boundary: Added a request-scoped server-only Supabase client and an unexposed login Server Action that filters `FormData`, applies the environment AAL policy, sets only the hardened PieShop cookie after success, and attempts both database revocation and provider sign-out if cookie persistence fails
 - Slice 9 release gate: Passed — 26 test files and 132 assertions, full formatting/lint/TypeScript, production build, secret scan, and dependency audit with 0 vulnerabilities; the action remains unreachable until a reviewed page imports it, so browser E2E remains deferred
+- Slice 10 red observed: Yes — current-owner verification and protected-access service modules were absent; their focused contracts could not load
+- Slice 10 green: Passed — provider-verified `getUser()` identity and current AAL, malformed/missing-cookie short-circuiting, fresh database role checks, hash-only live-session touch, inactive-role denial, and revoked/expired-session denial are covered; provider details fail closed
+- Slice 10 refresh boundary: Added a Next.js 16 `/control/:path*` proxy used only for provider-cookie refresh, with all cookies updated atomically, hardened response cookies, and provider no-cache headers; 6 matcher assertions prove it excludes public paths, while authorization remains inside the reusable server-only request guard
+- Slice 10 release gate: Passed — 29 test files and 148 assertions, full formatting/lint/TypeScript, production build with Proxy recognized, secret scan, and dependency audit with 0 vulnerabilities
 - Approved dependencies: `@supabase/ssr` `0.12.4` and `@supabase/supabase-js` `2.112.4`, exact-pinned; installation audit reported 0 vulnerabilities
 - UI checkpoint prepared: `UI_TEST_CHECKLISTS.md` contains the shared milestone checklist and Part 1.1 login/session cases
-- Implementation status: In progress — session persistence, provider adapters, hardened application/provider cookie contracts, login orchestration, request-scoped server client, and the currently unexposed login Server Action are ready; direct protected-entry enforcement, throttling/audit orchestration, and UI remain; manual UI testing is not ready
+- Implementation status: In progress — authentication, session persistence, hardened cookies, login orchestration, the unexposed login Server Action, provider refresh, and the reusable authoritative protected-request guard are ready; protected control/login UI integration and throttling/audit orchestration remain; manual UI testing is not ready
 
 ### Completed foundation
 

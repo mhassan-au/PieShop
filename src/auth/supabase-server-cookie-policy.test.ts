@@ -61,4 +61,24 @@ describe("Supabase server cookie policy", () => {
       );
     }
   });
+
+  it("forwards provider no-cache headers to response-capable boundaries", () => {
+    const store = createStore();
+    const setResponseHeaders = vi.fn();
+    const methods = createSupabaseServerCookieMethods(
+      store,
+      "production",
+      setResponseHeaders,
+    );
+
+    methods.setAll?.([], {
+      "Cache-Control": "private, no-store",
+      Pragma: "no-cache",
+    });
+
+    expect(setResponseHeaders).toHaveBeenCalledWith({
+      "Cache-Control": "private, no-store",
+      Pragma: "no-cache",
+    });
+  });
 });
