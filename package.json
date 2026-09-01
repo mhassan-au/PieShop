@@ -28,6 +28,7 @@
     "test:supabase:security": "node --env-file=.env.local scripts/test-foundation-security.mjs",
     "test:supabase:hardening": "node --env-file=.env.local scripts/check-foundation-hardening.mjs",
     "test:supabase:seed": "node --env-file=.env.local scripts/check-development-seed.mjs",
+    "test:supabase:owner-link": "node --env-file=.env.local scripts/check-owner-linkage.mjs",
     "db:push:dry-run": "node --env-file=.env.local --experimental-strip-types scripts/push-supabase-migrations.ts --dry-run",
     "db:push:apply": "node --env-file=.env.local --experimental-strip-types scripts/push-supabase-migrations.ts --apply",
     "db:seed:apply": "node --env-file=.env.local --experimental-strip-types scripts/push-supabase-migrations.ts --seed",
