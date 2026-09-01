@@ -67,7 +67,7 @@ begin
     raise exception 'Invalid merchant metadata' using errcode = '22023';
   end if;
 
-  perform pg_advisory_xact_lock(hashtextextended(normalized_name || chr(0) || normalized_email, 0));
+  perform pg_advisory_xact_lock(hashtextextended(normalized_name || chr(31) || normalized_email, 0));
 
   select b.id into merchant_id
   from public.businesses b

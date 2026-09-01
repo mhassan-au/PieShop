@@ -8,6 +8,11 @@ const migrationPath = path.resolve(
   "supabase/migrations/20260901030000_platform_merchant_dashboard.sql",
 );
 
+const repairMigrationPath = path.resolve(
+  process.cwd(),
+  "supabase/migrations/20260901040000_fix_platform_merchant_lock_key.sql",
+);
+
 const readMigration = () =>
   fs.readFileSync(migrationPath, "utf8").toLowerCase();
 
@@ -49,9 +54,20 @@ describe("platform merchant dashboard migration", () => {
   it("serializes duplicate creation and audits only safe metadata", () => {
     const sql = readMigration();
     expect(sql).toContain("pg_advisory_xact_lock");
+    expect(sql).toContain("chr(31)");
+    expect(sql).not.toContain("chr(0)");
     expect(sql).toContain("'merchant.created'");
     expect(sql).toContain("actor_user_id");
     expect(sql).not.toMatch(/safe_context[^;]*(?:email|token_hash)/u);
+  });
+
+  it("repairs deployed databases without using a PostgreSQL null byte", () => {
+    const sql = fs.readFileSync(repairMigrationPath, "utf8").toLowerCase();
+    expect(sql).toContain(
+      "create or replace function public.create_platform_merchant",
+    );
+    expect(sql).toContain("chr(31)");
+    expect(sql).not.toContain("chr(0)");
   });
 
   it("returns only allow-listed merchant metadata", () => {
