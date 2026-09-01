@@ -1,12 +1,16 @@
 import "server-only";
 
+import { randomUUID } from "node:crypto";
+
 import { cookies } from "next/headers";
 
 import { loadEnvironment } from "@/config/env";
 import { createRequestSupabaseClient } from "@/supabase/server";
+import { ConsoleLogSink, createLogger } from "@/observability/logger";
 
 import { verifyPlatformOwnerAccess } from "./owner-access-service";
 import { readOwnerSessionCookie } from "./owner-session-cookie";
+import { createOwnerSecurityAudit } from "./owner-security-audit";
 import {
   INTERNAL_OWNER_ASSURANCE_POLICY,
   RELEASE_OWNER_ASSURANCE_POLICY,
@@ -29,5 +33,15 @@ export async function verifyRequestPlatformOwnerAccess() {
       environment.APP_ENV === "local" || environment.APP_ENV === "test"
         ? INTERNAL_OWNER_ASSURANCE_POLICY
         : RELEASE_OWNER_ASSURANCE_POLICY,
+    securityAudit: createOwnerSecurityAudit(
+      createLogger({
+        environment: environment.APP_ENV,
+        service: "web",
+        minimumLevel: environment.LOG_LEVEL,
+        debugMode: environment.DEBUG_MODE,
+        sink: new ConsoleLogSink(),
+      }),
+      randomUUID(),
+    ),
   });
 }

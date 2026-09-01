@@ -6,11 +6,11 @@ This file records the single current roadmap part and its acceptance evidence. I
 
 - **Overall state:** Phase 1 implementation
 - **Current approved part:** Part 1.1 — Internal platform-owner password login
-- **Part status:** Acceptance examples accepted — TDD implementation started
+- **Part status:** Completed and owner-accepted
 - **Next part:** Part 1.2 — Merchant list and create form
 - **Next part authorised:** No
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
-- **Last updated:** 2026-08-30 Australia/Sydney
+- **Last updated:** 2026-09-01 Australia/Sydney
 
 ## Current part objective
 
@@ -55,11 +55,28 @@ See `doc/PART_1_1_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.1 in
 - Slice 11 green: Passed — the accessible password form, persistent labels/autocomplete, absence of signup/recovery actions, central authentication copy, and forbidden merchant-business-content shell assertion are covered; successful login redirects server-side only after the hardened cookie is written
 - Slice 11 release gate: Passed — 31 test files and 157 assertions, full formatting/lint/TypeScript, production build with static `/login`, dynamic `/control`, and Proxy recognized, secret scan, and dependency audit with 0 vulnerabilities
 - Slice 11 browser gate: Passed — 8 desktop/mobile Chromium scenarios cover responsive login rendering, no public account paths, central malformed-input wording, signed-out direct `/control` redirection, existing foundation-shell regression, and no unexpected browser console errors in the reviewed rendering flow
-- Manual UI checkpoint: Ready for owner review of login layout, wording, malformed-input feedback, signed-out direct-entry behavior, and the valid synthetic-owner login/control-shell flow; Part 1.1 acceptance remains open until throttling, logout, and session visibility/revocation are implemented
+- Slice 12 red observed: Yes — the process-local owner login limiter was absent and its focused suite failed to resolve; the orchestration contract then proved throttling was not wired before provider authentication
+- Slice 12 green: Passed — 4 limiter and 6 orchestration assertions cover normalized-account and source limits, rolling-window expiry, successful-account reset, ephemeral keyed identifiers, injected time/storage behavior, and provider bypass when throttled; central generic throttle copy is wired into the login action
+- Slice 13 red observed: Yes — the exact-current-session logout RPC and logout orchestration were absent; focused migration, repository, service, copy, and UI contracts failed before implementation
+- Slice 13 local green: Passed — 30 focused assertions cover exact hash-bound self-only revocation, append-only actor-preserving audit, narrow authenticated RPC grant, independent database/provider logout attempts, cookie-independent provider sign-out, centralized copy, and accessible control-shell logout UI
+- Slice 13 development database: Owner-authorized exact-session logout migration applied successfully; the follow-up guarded dry-run reported the remote database up to date with no pending migrations
+- Slice 13 release gate: Passed — 34 test files and 169 assertions, full formatting/lint/TypeScript, production build with dynamic `/control`, secret scan, and dependency audit with 0 vulnerabilities; browser logout/replay verification is ready for owner review
+- Slice 13 owner UI evidence: Passed on 2026-09-01 Australia/Sydney — Sign out redirected to `/login`, direct protected-route replay remained denied, and a fresh valid login restored `/control`
+- Slice 14 red observed: Yes — the owner security-audit adapter was absent and its focused suite failed to resolve; the session list UI then failed its missing-heading/button contract
+- Slice 14 green: Passed — login success, failure, throttle, provider outage, and post-auth authorization denial emit redacted structured UTC evidence with server-generated correlation; anonymous outcomes claim no actor and audit-sink failure cannot change authentication results. The control page lists only safe self-bound session metadata, renders universal UTC instants, validates strict UUID-only revocation input, re-authorizes direct mutation calls, and uses the existing append-only audited revocation RPC
+- Slice 14 release gate: Passed — 36 test files and 178 assertions, full formatting/lint/TypeScript, production build with dynamic `/control`, secret scan, and dependency audit with 0 vulnerabilities; session-list and revocation browser verification is ready for owner review
+- Slice 14 owner UI evidence: Passed on 2026-09-01 Australia/Sydney — the owner confirmed safe device metadata and UTC lifecycle times, revoked the active session, observed protected access end, signed in again, and confirmed the replacement active session without credential or personal-data exposure
+- Slice 15 protected-access evidence: Passed — 16 focused assertions cover redacted session/authorization denials, expired or revoked session evidence, provider/database unavailability, authenticated-actor attribution only after identity verification, and audit-sink isolation
+- Slice 15 recovery baseline: Documented — `OWNER_ACCOUNT_RECOVERY.md` defines the private synthetic-development dashboard procedure, transactional all-session revocation, actor-unclaimed recovery audit, protected-route replay verification, and the stronger external-release blocker; no public recovery endpoint was added
+- Slice 16 current-session distinction: Passed locally — 29 focused assertions plus TypeScript and lint verify a self-bound `is_current` result without returning credential hashes, a visible current-session label, no revoke-other-device action on the current browser, and strict revocation input
+- Slice 16 development database: Owner-authorized current-session identification migration applied successfully; the follow-up guarded dry-run reported the remote database up to date with no pending migrations
+- Slice 16 owner UI evidence: Passed on 2026-09-01 Australia/Sydney — the active browser was visibly identified as `Current session`, did not expose the other-device revocation action, and displayed no token or credential hash
+- Final Part 1.1 release gate: Passed — 37 test files and 182 assertions, formatting, lint, TypeScript, production build, secret scan, dependency audit with 0 vulnerabilities, and 8 desktop/mobile browser regressions
+- Manual UI checkpoint: Accepted — login/control shell, exact-session logout/protected-route replay, safe session visibility/revocation, and current-session distinction passed owner review
 - Owner UI evidence: Valid synthetic-owner credentials initially failed closed because no active database role was linked. After the owner explicitly assigned the sole development Auth user an active `platform_owner` role in Supabase, login redirected successfully to the protected `/control` shell. The redacted linkage diagnostic confirms exactly one Auth user and an active linked owner without exposing identity data.
 - Approved dependencies: `@supabase/ssr` `0.12.4` and `@supabase/supabase-js` `2.112.4`, exact-pinned; installation audit reported 0 vulnerabilities
 - UI checkpoint prepared: `UI_TEST_CHECKLISTS.md` contains the shared milestone checklist and Part 1.1 login/session cases
-- Implementation status: In progress — the login page and protected metadata-only control shell are integrated and ready for initial manual UI review; throttling/audit orchestration, logout, and session visibility/revocation remain before Part 1.1 acceptance
+- Implementation status: Complete — all 26 Part 1.1 acceptance examples have automated or documented evidence, required development migrations are applied, automated gates pass, and Mehedi Hassan accepted the UI/process checkpoints on 2026-09-01 Australia/Sydney. Part 1.2 remains unauthorised.
 
 ### Completed foundation
 

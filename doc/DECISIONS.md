@@ -174,3 +174,11 @@ Use this file for decisions that materially affect scope, data, security, provid
 - **Decision:** Encrypt customer names, phone numbers, email addresses, complete addresses, coordinates, delivery instructions, customer notes, stored message content, and order-address snapshots using managed envelope encryption with versioned keys separate from ciphertext. Encrypt merchant bank/PayID settings, provider credentials, and webhook secrets as already required. Use separately keyed HMAC blind indexes for exact merchant-scoped phone/email lookup and uniqueness. Keep only explicitly approved minimum routing derivatives, such as postcode, country code, or delivery-zone ID, searchable in plaintext where operationally necessary.
 - **Reason:** RLS and provider encryption at rest reduce ordinary access risk but do not sufficiently limit application-layer or database-disclosure impact for customer contact/location data and merchant restricted configuration.
 - **Consequence:** Phase 3 cannot store customer personal data until encryption, blind-index, key-version, rotation, key-unavailability, collision/uniqueness, masking, cross-tenant, export/backup, and redaction tests pass. Encryption and blind-index keys use separate managed key material and are never stored beside ciphertext. Real personal data remains prohibited until the production privacy/security gate passes.
+
+## ADR-023: Private-development owner login throttling
+
+- **Status:** Accepted under ADR-021's private synthetic-development boundary
+- **Date:** 2026-09-01
+- **Decision:** Bound owner login to five attempts per normalized account and twenty attempts per source in a rolling fifteen-minute window. Store only process-ephemeral keyed HMAC digests of account and source values, reset the account counter after a complete successful login, and do not call Supabase Auth when either limit is exhausted.
+- **Reason:** Limit credential guessing and broad-source abuse without retaining raw email or network identifiers in the private local MVP.
+- **Consequence:** Counters reset on process restart and do not coordinate instances. This implementation must be replaced by reviewed durable distributed limiting with trusted proxy/source derivation before external access, a real-vendor demo, staging, or production.

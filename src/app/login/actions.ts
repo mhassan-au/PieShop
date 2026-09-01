@@ -1,9 +1,13 @@
 "use server";
 
+import { randomUUID } from "node:crypto";
+
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { loginPlatformOwner } from "@/auth/owner-login-service";
+import { processLocalOwnerLoginRateLimiter } from "@/auth/owner-login-rate-limit";
+import { createOwnerSecurityAudit } from "@/auth/owner-security-audit";
 import { setOwnerSessionCookie } from "@/auth/owner-session-cookie";
 import {
   INTERNAL_OWNER_ASSURANCE_POLICY,
@@ -15,6 +19,7 @@ import { createSupabasePlatformRoleRepository } from "@/auth/supabase-platform-r
 import { loadEnvironment } from "@/config/env";
 import { createPublicErrorEnvelope } from "@/errors/app-error";
 import { formatMessage } from "@/messages/catalogue";
+import { ConsoleLogSink, createLogger } from "@/observability/logger";
 import { createRequestSupabaseClient } from "@/supabase/server";
 
 export type OwnerLoginActionState = Readonly<{
@@ -32,12 +37,31 @@ export async function ownerLoginAction(
     const authProvider = createSupabaseOwnerAuthProvider(client);
     const sessionRepository = createSupabaseOwnerSessionRepository(client);
     const requestHeaders = await headers();
+    const securityAudit = createOwnerSecurityAudit(
+      createLogger({
+        environment: environment.APP_ENV,
+        service: "web",
+        minimumLevel: environment.LOG_LEVEL,
+        debugMode: environment.DEBUG_MODE,
+        sink: new ConsoleLogSink(),
+      }),
+      randomUUID(),
+    );
+    const forwardedSource = requestHeaders
+      .get("x-forwarded-for")
+      ?.split(",", 1)[0]
+      ?.trim();
     const result = await loginPlatformOwner(
       {
         email: formData.get("email"),
         password: formData.get("password"),
       },
       requestHeaders.get("user-agent"),
+      (
+        forwardedSource ||
+        requestHeaders.get("x-real-ip") ||
+        "unknown-source"
+      ).slice(0, 256),
       {
         authProvider,
         roleRepository: createSupabasePlatformRoleRepository(client),
@@ -46,8 +70,17 @@ export async function ownerLoginAction(
           environment.APP_ENV === "local" || environment.APP_ENV === "test"
             ? INTERNAL_OWNER_ASSURANCE_POLICY
             : RELEASE_OWNER_ASSURANCE_POLICY,
+        rateLimiter: processLocalOwnerLoginRateLimiter,
+        securityAudit,
       },
     );
+
+    if (result.status === "throttled") {
+      return {
+        status: "error",
+        message: formatMessage("error.auth.throttled"),
+      };
+    }
 
     if (result.status === "rejected") {
       return {

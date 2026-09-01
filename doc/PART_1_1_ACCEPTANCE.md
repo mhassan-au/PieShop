@@ -91,3 +91,9 @@ Each sequence must show the relevant failure before its minimum implementation i
 Mehedi Hassan confirmed that these examples express the intended Part 1.1 behavior and authorised TDD implementation on 2026-08-30 Australia/Sydney. At the UI checkpoint, the owner uses only the synthetic pre-provisioned account through local environment/provider configuration and never shares its credentials in chat.
 
 Use the shared and Part 1.1 owner test cases in `UI_TEST_CHECKLISTS.md` for the final UI/process checkpoint.
+
+The controlled synthetic-development recovery baseline is recorded in `OWNER_ACCOUNT_RECOVERY.md`; it exposes no public recovery route and requires transactional PieShop-session revocation plus actor-unclaimed audit evidence.
+
+## Completion record
+
+Part 1.1 was completed and accepted by Mehedi Hassan on 2026-09-01 Australia/Sydney. The final evidence comprises 37 passing test files with 182 assertions, the production build, formatting/lint/TypeScript checks, secret scanning, a dependency audit with zero vulnerabilities, eight passing desktop/mobile browser regressions, applied guarded development migrations, and owner-verified login, protected access, logout, session revocation, safe session metadata, and current-session distinction. Part 1.2 is not authorised by this acceptance.

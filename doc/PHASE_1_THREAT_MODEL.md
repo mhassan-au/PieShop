@@ -146,6 +146,7 @@ The acceptance contract must cover TM1-04, TM1-08, TM1-14, TM1-17, and TM1-23. S
 - Magic-link security partly depends on the recipient mailbox and delivery path. Short-lived, single-use, recipient-bound invitations reduce but cannot eliminate this dependency.
 - Supabase may enforce configured session time limits during refresh rather than continuously. PieShop therefore checks its own deadline on protected requests.
 - Process-local rate limiting resets on restart and does not coordinate multiple instances; it is not suitable for external deployment.
+- The private-development owner limiter uses five normalized-account attempts and twenty source attempts per rolling fifteen minutes, retaining only process-ephemeral keyed digests. Source headers are not a trusted production client-identity boundary; durable shared limiting and reviewed proxy derivation remain release blockers.
 - Supabase documents its SSR helper as beta. Pinning, adapters, and integration tests reduce but do not eliminate upstream risk.
 
 ## Review triggers

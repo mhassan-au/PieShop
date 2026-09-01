@@ -14,6 +14,7 @@ const sessionRowSchema = z.object({
   idle_expires_at: instantSchema,
   revoked_at: instantSchema.nullable(),
   revoked_reason: z.string().nullable(),
+  is_current: z.boolean(),
 });
 
 type SessionRpcResult = Promise<{ data: unknown; error: unknown }>;
@@ -31,6 +32,7 @@ export type SafeOwnerSession = Readonly<{
   idleExpiresAt: string;
   revokedAt: string | null;
   revokedReason: string | null;
+  isCurrent: boolean;
 }>;
 
 export type OwnerSessionRevocationReason =
@@ -58,9 +60,10 @@ export class SupabaseOwnerSessionRepository {
     return parseResult(result, sessionIdSchema);
   }
 
-  async list(): Promise<SafeOwnerSession[]> {
+  async list(currentTokenHash: string): Promise<SafeOwnerSession[]> {
     const result = await this.client.rpc(
       "list_current_user_application_sessions",
+      { p_current_token_hash: currentTokenHash },
     );
     const rows = parseResult(result, z.array(sessionRowSchema));
 
@@ -73,6 +76,7 @@ export class SupabaseOwnerSessionRepository {
       idleExpiresAt: row.idle_expires_at,
       revokedAt: row.revoked_at,
       revokedReason: row.revoked_reason,
+      isCurrent: row.is_current,
     }));
   }
 
@@ -91,6 +95,14 @@ export class SupabaseOwnerSessionRepository {
       p_reason: reason,
       p_session_id: sessionId,
     });
+    return parseResult(result, z.boolean());
+  }
+
+  async revokeCurrentByTokenHash(tokenHash: string): Promise<boolean> {
+    const result = await this.client.rpc(
+      "revoke_current_owner_session_by_token",
+      { p_token_hash: tokenHash },
+    );
     return parseResult(result, z.boolean());
   }
 }

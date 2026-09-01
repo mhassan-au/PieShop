@@ -226,6 +226,54 @@ const catalogue = {
       "Manage merchant account status and onboarding metadata without viewing merchant business content.",
     placeholders: [],
   },
+  "auth.owner.logout.submit": {
+    template: "Sign out",
+    placeholders: [],
+  },
+  "auth.owner.sessions.title": {
+    template: "Signed-in devices",
+    placeholders: [],
+  },
+  "auth.owner.sessions.description": {
+    template: "Review and revoke platform-owner sessions.",
+    placeholders: [],
+  },
+  "auth.owner.sessions.empty": {
+    template: "No sessions are available.",
+    placeholders: [],
+  },
+  "auth.owner.sessions.unknownDevice": {
+    template: "Unknown device",
+    placeholders: [],
+  },
+  "auth.owner.sessions.created": {
+    template: "Created",
+    placeholders: [],
+  },
+  "auth.owner.sessions.lastActive": {
+    template: "Last active",
+    placeholders: [],
+  },
+  "auth.owner.sessions.expires": {
+    template: "Expires",
+    placeholders: [],
+  },
+  "auth.owner.sessions.active": {
+    template: "Active",
+    placeholders: [],
+  },
+  "auth.owner.sessions.current": {
+    template: "Current session",
+    placeholders: [],
+  },
+  "auth.owner.sessions.revoked": {
+    template: "Revoked",
+    placeholders: [],
+  },
+  "auth.owner.sessions.revoke": {
+    template: "Revoke session",
+    placeholders: [],
+  },
   "auth.owner.control.empty.title": {
     template: "Control plane ready",
     placeholders: [],

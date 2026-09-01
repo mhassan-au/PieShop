@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { verifyRequestPlatformOwnerAccess } from "@/auth/owner-request-access";
+import { readOwnerSessionCookie } from "@/auth/owner-session-cookie";
+import { hashSessionToken } from "@/auth/session-token";
+import { createSupabaseOwnerSessionRepository } from "@/auth/supabase-owner-session-repository";
 import { ControlShell } from "@/components/ControlShell";
+import { loadEnvironment } from "@/config/env";
 import { formatMessage } from "@/messages/catalogue";
+import { createRequestSupabaseClient } from "@/supabase/server";
+
+import { ownerLogoutAction, revokeOwnerSessionAction } from "./actions";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -22,5 +30,21 @@ export default async function ControlPage() {
     throw new Error("Owner access verification failed");
   }
 
-  return <ControlShell />;
+  const environment = loadEnvironment(process.env);
+  const currentTokenHash = await hashSessionToken(
+    readOwnerSessionCookie(await cookies(), environment.APP_ENV),
+  );
+  if (!currentTokenHash) redirect("/login");
+
+  const sessions = await createSupabaseOwnerSessionRepository(
+    await createRequestSupabaseClient(),
+  ).list(currentTokenHash);
+
+  return (
+    <ControlShell
+      logoutAction={ownerLogoutAction}
+      revokeSessionAction={revokeOwnerSessionAction}
+      sessions={sessions}
+    />
+  );
 }

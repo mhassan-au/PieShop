@@ -44,6 +44,7 @@ describe("SupabaseOwnerSessionRepository", () => {
             idle_expires_at: "2026-08-30T02:30:00.000Z",
             revoked_at: null,
             revoked_reason: null,
+            is_current: true,
           },
         ],
         error: null,
@@ -51,7 +52,7 @@ describe("SupabaseOwnerSessionRepository", () => {
     });
     const repository = new SupabaseOwnerSessionRepository(client);
 
-    await expect(repository.list()).resolves.toEqual([
+    await expect(repository.list("d".repeat(64))).resolves.toEqual([
       {
         id: "session-1",
         deviceLabel: null,
@@ -61,14 +62,20 @@ describe("SupabaseOwnerSessionRepository", () => {
         idleExpiresAt: "2026-08-30T02:30:00.000Z",
         revokedAt: null,
         revokedReason: null,
+        isCurrent: true,
       },
     ]);
+    expect(client.rpc).toHaveBeenCalledWith(
+      "list_current_user_application_sessions",
+      { p_current_token_hash: "d".repeat(64) },
+    );
   });
 
   it("touches and revokes only through self-bound RPCs", async () => {
     const { client, rpc } = createClient({
       touch_current_owner_session: { data: true, error: null },
       revoke_current_owner_session: { data: true, error: null },
+      revoke_current_owner_session_by_token: { data: true, error: null },
     });
     const repository = new SupabaseOwnerSessionRepository(client);
 
@@ -76,6 +83,9 @@ describe("SupabaseOwnerSessionRepository", () => {
     await expect(repository.revoke("session-2", "owner_action")).resolves.toBe(
       true,
     );
+    await expect(
+      repository.revokeCurrentByTokenHash("c".repeat(64)),
+    ).resolves.toBe(true);
     expect(rpc).toHaveBeenNthCalledWith(1, "touch_current_owner_session", {
       p_token_hash: "b".repeat(64),
     });
@@ -83,6 +93,11 @@ describe("SupabaseOwnerSessionRepository", () => {
       p_reason: "owner_action",
       p_session_id: "session-2",
     });
+    expect(rpc).toHaveBeenNthCalledWith(
+      3,
+      "revoke_current_owner_session_by_token",
+      { p_token_hash: "c".repeat(64) },
+    );
   });
 
   it("fails closed without exposing provider error details", async () => {

@@ -34,6 +34,10 @@ describe("formatMessage", () => {
     ],
     ["auth.owner.control.eyebrow", "Platform control plane"],
     ["auth.owner.control.title", "Merchant account administration"],
+    ["auth.owner.logout.submit", "Sign out"],
+    ["auth.owner.sessions.title", "Signed-in devices"],
+    ["auth.owner.sessions.revoke", "Revoke session"],
+    ["auth.owner.sessions.current", "Current session"],
     [
       "auth.owner.control.description",
       "Manage merchant account status and onboarding metadata without viewing merchant business content.",

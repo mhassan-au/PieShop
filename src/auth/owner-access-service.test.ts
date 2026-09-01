@@ -18,13 +18,15 @@ function createDependencies() {
     .fn()
     .mockResolvedValue("active" as const);
   const touch = vi.fn().mockResolvedValue(true);
+  const record = vi.fn().mockResolvedValue(undefined);
 
   return {
     identityProvider: { getCurrentIdentity },
     roleRepository: { getCurrentPlatformOwnerRole },
     sessionRepository: { touch },
     assurancePolicy: INTERNAL_OWNER_ASSURANCE_POLICY,
-    spies: { getCurrentIdentity, getCurrentPlatformOwnerRole, touch },
+    securityAudit: { record },
+    spies: { getCurrentIdentity, getCurrentPlatformOwnerRole, touch, record },
   };
 }
 
@@ -60,6 +62,10 @@ describe("verifyPlatformOwnerAccess", () => {
         dependencies.spies.getCurrentPlatformOwnerRole,
       ).not.toHaveBeenCalled();
       expect(dependencies.spies.touch).not.toHaveBeenCalled();
+      expect(dependencies.spies.record).toHaveBeenCalledWith(
+        "auth.session.denied",
+        { outcome: "session_required" },
+      );
     },
   );
 
@@ -76,6 +82,10 @@ describe("verifyPlatformOwnerAccess", () => {
       dependencies.spies.getCurrentPlatformOwnerRole,
     ).not.toHaveBeenCalled();
     expect(dependencies.spies.touch).not.toHaveBeenCalled();
+    expect(dependencies.spies.record).toHaveBeenCalledWith(
+      "auth.session.denied",
+      { outcome: "authentication_required" },
+    );
   });
 
   it("denies a stale active browser session after the database role is removed", async () => {
@@ -88,11 +98,29 @@ describe("verifyPlatformOwnerAccess", () => {
       verifyPlatformOwnerAccess(VALID_TOKEN, dependencies),
     ).resolves.toEqual({ status: "denied", reason: "role_required" });
     expect(dependencies.spies.touch).not.toHaveBeenCalled();
+    expect(dependencies.spies.record).toHaveBeenCalledWith(
+      "auth.authorization.denied",
+      { outcome: "role_required", actorId: "auth-user-1" },
+    );
   });
 
   it("denies a revoked or expired application session", async () => {
     const dependencies = createDependencies();
     dependencies.spies.touch.mockResolvedValue(false);
+
+    await expect(
+      verifyPlatformOwnerAccess(VALID_TOKEN, dependencies),
+    ).resolves.toEqual({ status: "denied", reason: "session_invalid" });
+    expect(dependencies.spies.record).toHaveBeenCalledWith(
+      "auth.session.denied",
+      { outcome: "session_invalid", actorId: "auth-user-1" },
+    );
+  });
+
+  it("does not let audit failure change an authorization denial", async () => {
+    const dependencies = createDependencies();
+    dependencies.spies.touch.mockResolvedValue(false);
+    dependencies.spies.record.mockRejectedValue(new Error("sink unavailable"));
 
     await expect(
       verifyPlatformOwnerAccess(VALID_TOKEN, dependencies),
