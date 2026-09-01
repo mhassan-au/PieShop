@@ -5,24 +5,29 @@ This file records the single current roadmap part and its acceptance evidence. I
 ## Project state
 
 - **Overall state:** Phase 1 implementation
-- **Current approved part:** Part 1.1 — Internal platform-owner password login
-- **Part status:** Completed and owner-accepted
-- **Next part:** Part 1.2 — Merchant list and create form
+- **Current approved part:** Part 1.2 — Merchant list and create form
+- **Part status:** Acceptance contract and TDD implementation authorized
+- **Next part:** Part 1.3 — Secure merchant invitation
 - **Next part authorised:** No
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
 - **Last updated:** 2026-09-01 Australia/Sydney
 
 ## Current part objective
 
-Implement the private, synthetic-data-only platform-owner email/password login with authoritative role checks, revocable bounded sessions, enumeration resistance, and a preserved production AAL2 gate.
+Build a privacy-preserving platform-owner merchant list and transactional create flow using operational metadata only. New synthetic merchants begin onboarding with an unsent draft owner invitation; secure delivery and redemption remain Part 1.3.
 
 ## Acceptance source
 
-See `doc/PART_1_1_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.1 in `doc/DEVELOPMENT_ROADMAP.md`.
+See `doc/PART_1_2_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.2 in `doc/DEVELOPMENT_ROADMAP.md`.
 
 ## TDD evidence
 
-### Current Part 1.1
+### Current Part 1.2
+
+- Authorization: Mehedi Hassan activated quick mode and authorized Part 1.2 implementation on 2026-09-01 Australia/Sydney using onboarding status, AUD, Australia/Sydney, and draft-not-sent owner invitations
+- Implementation status: In progress — acceptance contract and metadata-only boundary first
+
+### Completed Part 1.1
 
 - Acceptance examples confirmed: Yes — Mehedi Hassan accepted all 26 threat-mapped examples on 2026-08-30 Australia/Sydney
 - Slice 1 red observed: Yes — authentication message keys and the login-input/safe-redirect modules were absent; 3 files failed
