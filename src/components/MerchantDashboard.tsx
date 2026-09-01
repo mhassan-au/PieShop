@@ -100,8 +100,10 @@ export function MerchantDashboard({
               >
                 <p className="font-semibold">{merchant.name}</p>
                 <p className="mt-1 text-xs text-orange-200">
-                  {formatMessage("merchant.status.onboarding")} ·{" "}
-                  {formatMessage("merchant.invitation.draft")}
+                  {formatMessage(`merchant.status.${merchant.status}`)} ·{" "}
+                  {formatMessage(
+                    `merchant.invitation.${merchant.invitationStatus}`,
+                  )}
                 </p>
                 <p className="mt-2 text-xs text-stone-500">
                   {merchant.publicId} · {merchant.timezone} ·{" "}

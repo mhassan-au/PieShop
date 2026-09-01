@@ -25,10 +25,10 @@ const merchantRowSchema = z
     id: z.uuid(),
     public_id: z.string().regex(/^biz_[a-zA-Z0-9]{8,32}$/u),
     name: z.string().min(1).max(120),
-    status: z.literal("onboarding"),
+    status: z.enum(["onboarding", "active", "suspended", "archived"]),
     timezone: z.string().min(1).max(64),
     currency_code: z.literal("AUD"),
-    invitation_status: z.literal("draft"),
+    invitation_status: z.enum(["draft", "issued", "used", "revoked"]),
     created_at: z.iso.datetime({ offset: true }),
     updated_at: z.iso.datetime({ offset: true }),
   })

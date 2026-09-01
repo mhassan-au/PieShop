@@ -305,8 +305,23 @@ const catalogue = {
     placeholders: [],
   },
   "merchant.status.onboarding": { template: "Onboarding", placeholders: [] },
+  "merchant.status.active": { template: "Active", placeholders: [] },
+  "merchant.status.suspended": { template: "Suspended", placeholders: [] },
+  "merchant.status.archived": { template: "Archived", placeholders: [] },
   "merchant.invitation.draft": {
     template: "Invitation draft",
+    placeholders: [],
+  },
+  "merchant.invitation.issued": {
+    template: "Invitation issued",
+    placeholders: [],
+  },
+  "merchant.invitation.used": {
+    template: "Invitation accepted",
+    placeholders: [],
+  },
+  "merchant.invitation.revoked": {
+    template: "Invitation revoked",
     placeholders: [],
   },
   "auth.owner.control.empty.title": {

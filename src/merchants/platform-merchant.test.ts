@@ -84,6 +84,22 @@ describe("platform merchant metadata boundary", () => {
     });
   });
 
+  it("accepts approved lifecycle states from existing merchants", () => {
+    expect(
+      parsePlatformMerchant({
+        id: "11111111-1111-4111-8111-111111111111",
+        public_id: "biz_12345678",
+        name: "Existing Merchant",
+        status: "active",
+        timezone: "Australia/Sydney",
+        currency_code: "AUD",
+        invitation_status: "draft",
+        created_at: "2026-09-01T00:00:00.000Z",
+        updated_at: "2026-09-01T00:00:00.000Z",
+      }).status,
+    ).toBe("active");
+  });
+
   it.each([
     "catalogue",
     "transaction",
