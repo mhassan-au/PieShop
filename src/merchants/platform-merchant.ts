@@ -35,6 +35,7 @@ const merchantRowSchema = z
   .strict();
 
 export type CreateMerchantInput = z.infer<typeof createMerchantSchema>;
+export type PlatformMerchant = ReturnType<typeof parsePlatformMerchant>;
 
 export function parseCreateMerchantInput(input: unknown): CreateMerchantInput {
   return createMerchantSchema.parse(input);

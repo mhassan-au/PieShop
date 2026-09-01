@@ -25,7 +25,11 @@ See `doc/PART_1_2_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.2 in
 ### Current Part 1.2
 
 - Authorization: Mehedi Hassan activated quick mode and authorized Part 1.2 implementation on 2026-09-01 Australia/Sydney using onboarding status, AUD, Australia/Sydney, and draft-not-sent owner invitations
-- Implementation status: In progress — acceptance contract and metadata-only boundary first
+- Slice 1 metadata boundary: Passed — 15 focused assertions cover normalization, strict/mass-assignment-safe create input, AUD/IANA validation, allow-listed output mapping, and structural rejection of catalogue, transaction, payment, bank, customer, address, message, and order fields
+- Slice 2 migration contract: Passed locally — 4 migration assertions plus the metadata suite (19 total) cover onboarding/AUD schema, token-free draft invitations, platform-owner-only list/create RPCs, transactional duplicate serialization, safe audit context, narrow grants, and forbidden-field absence; guarded dry-run found exactly one pending Part 1.2 migration
+- Slice 2 development database: Owner-authorized Part 1.2 migration applied successfully; remote dry-run reports no pending migrations, foundation schema found all six required tables, 12 transactional isolation/immutability assertions passed with rollback, and hardening/RLS/invitation checks remain green
+- Slice 3 repository boundary: Passed — 22 grouped metadata/migration/repository assertions cover exact RPC calls, normalized parameter mapping, runtime allow-list validation, forbidden-row rejection, contradictory create-result rejection, and provider-detail redaction; TypeScript and targeted lint pass
+- Implementation status: In progress — transactional database and repository boundaries are complete; protected Server Action and merchant list/create UI are next
 
 ### Completed Part 1.1
 
