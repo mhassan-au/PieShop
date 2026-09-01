@@ -9,6 +9,7 @@ import { createSupabaseOwnerSessionRepository } from "@/auth/supabase-owner-sess
 import { ControlShell } from "@/components/ControlShell";
 import { loadEnvironment } from "@/config/env";
 import { formatMessage } from "@/messages/catalogue";
+import { createSupabasePlatformMerchantRepository } from "@/merchants/supabase-platform-merchant-repository";
 import { createRequestSupabaseClient } from "@/supabase/server";
 
 import { ownerLogoutAction, revokeOwnerSessionAction } from "./actions";
@@ -39,12 +40,16 @@ export default async function ControlPage() {
   const sessions = await createSupabaseOwnerSessionRepository(
     await createRequestSupabaseClient(),
   ).list(currentTokenHash);
+  const merchants = await createSupabasePlatformMerchantRepository(
+    await createRequestSupabaseClient(),
+  ).list();
 
   return (
     <ControlShell
       logoutAction={ownerLogoutAction}
       revokeSessionAction={revokeOwnerSessionAction}
       sessions={sessions}
+      merchants={merchants}
     />
   );
 }

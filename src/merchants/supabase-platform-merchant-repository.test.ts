@@ -59,12 +59,10 @@ describe("SupabasePlatformMerchantRepository", () => {
     await expect(providerFailure.list()).rejects.not.toThrow("email secret");
 
     const forbiddenRow = new SupabasePlatformMerchantRepository({
-      rpc: vi
-        .fn()
-        .mockResolvedValue({
-          data: [{ ...row, catalogue: "hidden" }],
-          error: null,
-        }),
+      rpc: vi.fn().mockResolvedValue({
+        data: [{ ...row, catalogue: "hidden" }],
+        error: null,
+      }),
     });
     await expect(forbiddenRow.list()).rejects.toThrow(
       "Merchant operation failed",

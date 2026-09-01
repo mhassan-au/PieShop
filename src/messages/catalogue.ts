@@ -274,6 +274,41 @@ const catalogue = {
     template: "Revoke session",
     placeholders: [],
   },
+  "merchant.dashboard.title": { template: "Merchants", placeholders: [] },
+  "merchant.dashboard.description": {
+    template:
+      "Manage onboarding account metadata without viewing merchant business content.",
+    placeholders: [],
+  },
+  "merchant.create.title": { template: "Add merchant", placeholders: [] },
+  "merchant.create.name": { template: "Business name", placeholders: [] },
+  "merchant.create.email": {
+    template: "Merchant-owner email",
+    placeholders: [],
+  },
+  "merchant.create.timezone": { template: "Timezone", placeholders: [] },
+  "merchant.create.submit": { template: "Create merchant", placeholders: [] },
+  "merchant.create.submitting": {
+    template: "Creating merchant…",
+    placeholders: [],
+  },
+  "merchant.create.success": {
+    template: "Merchant created as an onboarding account.",
+    placeholders: [],
+  },
+  "merchant.create.invalid": {
+    template: "Check the merchant details and try again.",
+    placeholders: [],
+  },
+  "merchant.list.empty": {
+    template: "No merchants have been added yet.",
+    placeholders: [],
+  },
+  "merchant.status.onboarding": { template: "Onboarding", placeholders: [] },
+  "merchant.invitation.draft": {
+    template: "Invitation draft",
+    placeholders: [],
+  },
   "auth.owner.control.empty.title": {
     template: "Control plane ready",
     placeholders: [],

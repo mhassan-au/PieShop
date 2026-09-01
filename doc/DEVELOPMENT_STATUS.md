@@ -29,7 +29,9 @@ See `doc/PART_1_2_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.2 in
 - Slice 2 migration contract: Passed locally — 4 migration assertions plus the metadata suite (19 total) cover onboarding/AUD schema, token-free draft invitations, platform-owner-only list/create RPCs, transactional duplicate serialization, safe audit context, narrow grants, and forbidden-field absence; guarded dry-run found exactly one pending Part 1.2 migration
 - Slice 2 development database: Owner-authorized Part 1.2 migration applied successfully; remote dry-run reports no pending migrations, foundation schema found all six required tables, 12 transactional isolation/immutability assertions passed with rollback, and hardening/RLS/invitation checks remain green
 - Slice 3 repository boundary: Passed — 22 grouped metadata/migration/repository assertions cover exact RPC calls, normalized parameter mapping, runtime allow-list validation, forbidden-row rejection, contradictory create-result rejection, and provider-detail redaction; TypeScript and targeted lint pass
-- Implementation status: In progress — transactional database and repository boundaries are complete; protected Server Action and merchant list/create UI are next
+- Slice 4 protected UI/action: Passed — the create action re-authorizes before strict input parsing and persistence, extracts only four approved fields, uses central safe copy, and revalidates only `/control`; responsive list/create UI renders operational metadata only with accessible persistent labels, pending feedback, empty state, onboarding status, and draft-invitation state
+- Slice 4 release gate: Passed — 42 test files and 211 assertions, formatting/lint/TypeScript, production build, secret scan, dependency audit with 0 vulnerabilities, and 8 desktop/mobile browser regressions
+- Implementation status: In progress — merchant list/create UI is ready for owner testing with one synthetic merchant; Part 1.2 remains open for that UI/process checkpoint and final cloud evidence
 
 ### Completed Part 1.1
 

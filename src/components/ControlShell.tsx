@@ -1,10 +1,13 @@
 import { formatMessage } from "@/messages/catalogue";
 import type { SafeOwnerSession } from "@/auth/supabase-owner-session-repository";
+import type { PlatformMerchant } from "@/merchants/platform-merchant";
+import { MerchantDashboard } from "./MerchantDashboard";
 
 type Props = Readonly<{
   logoutAction: (formData: FormData) => void | Promise<void>;
   revokeSessionAction: (formData: FormData) => void | Promise<void>;
   sessions: SafeOwnerSession[];
+  merchants?: PlatformMerchant[];
 }>;
 
 function formatUtc(instant: string): string {
@@ -18,6 +21,7 @@ export function ControlShell({
   logoutAction,
   revokeSessionAction,
   sessions,
+  merchants = [],
 }: Props) {
   return (
     <main className="relative isolate min-h-screen overflow-hidden bg-stone-950 text-stone-100">
@@ -159,6 +163,7 @@ export function ControlShell({
               </ul>
             )}
           </section>
+          <MerchantDashboard merchants={merchants} />
         </section>
       </div>
     </main>

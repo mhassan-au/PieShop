@@ -38,6 +38,9 @@ describe("formatMessage", () => {
     ["auth.owner.sessions.title", "Signed-in devices"],
     ["auth.owner.sessions.revoke", "Revoke session"],
     ["auth.owner.sessions.current", "Current session"],
+    ["merchant.dashboard.title", "Merchants"],
+    ["merchant.create.submit", "Create merchant"],
+    ["merchant.create.invalid", "Check the merchant details and try again."],
     [
       "auth.owner.control.description",
       "Manage merchant account status and onboarding metadata without viewing merchant business content.",
