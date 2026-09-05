@@ -5,24 +5,34 @@ This file records the single current roadmap part and its acceptance evidence. I
 ## Project state
 
 - **Overall state:** Phase 1 implementation
-- **Current approved part:** Part 1.2 — Merchant list and create form
+- **Current approved part:** Part 1.3 — Secure merchant invitation
 - **Part status:** Acceptance contract and TDD implementation authorized
-- **Next part:** Part 1.3 — Secure merchant invitation
+- **Next part:** Part 1.4 — Account status and onboarding progress
 - **Next part authorised:** No
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
 - **Last updated:** 2026-09-01 Australia/Sydney
 
 ## Current part objective
 
-Build a privacy-preserving platform-owner merchant list and transactional create flow using operational metadata only. New synthetic merchants begin onboarding with an unsent draft owner invitation; secure delivery and redemption remain Part 1.3.
+Build a scanner-resistant, recipient-bound merchant invitation lifecycle with single-use hashed tokens, atomic membership creation, and a revocable 30-day merchant session.
 
 ## Acceptance source
 
-See `doc/PART_1_2_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.2 in `doc/DEVELOPMENT_ROADMAP.md`.
+See `doc/PART_1_3_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.3 in `doc/DEVELOPMENT_ROADMAP.md`.
 
 ## TDD evidence
 
-### Current Part 1.2
+### Current Part 1.3
+
+- Authorization: Mehedi Hassan accepted the Part 1.2 UI and authorized grouped Part 1.3 implementation on 2026-09-05 Australia/Sydney
+- UI verification approach: Codex performs small in-app browser checks after grouped changes; the owner performs the final manual UI/process checkpoint after the major invitation feature
+- Slice 1 red observed: Yes — the secure invitation-token module was absent and its focused suite failed to resolve
+- Slice 1 token primitive: Passed — 4 focused assertions cover 256-bit URL-safe randomness, deterministic SHA-256 storage hashes, strict malformed-token rejection, and the inclusive 24-hour UTC expiry boundary
+- Slice 2 red observed: Yes — all 4 invitation lifecycle migration assertions failed because the migration was absent
+- Slice 2 lifecycle migration: Passed — owner-authorized migration `20260905010000_secure_merchant_invitation_lifecycle.sql` is applied; issue/rotation and idempotent revoke are self-authorizing, row-locked, cooldown-protected, redacted, and audited. Remote dry-run is clean; foundation schema/hardening pass and 12 isolation/immutability assertions pass with synthetic rollback
+- Implementation status: In progress — secure lifecycle storage is ready; delivery adapter/provider, redemption, merchant session, and UI remain
+
+### Completed Part 1.2
 
 - Authorization: Mehedi Hassan activated quick mode and authorized Part 1.2 implementation on 2026-09-01 Australia/Sydney using onboarding status, AUD, Australia/Sydney, and draft-not-sent owner invitations
 - Slice 1 metadata boundary: Passed — 15 focused assertions cover normalization, strict/mass-assignment-safe create input, AUD/IANA validation, allow-listed output mapping, and structural rejection of catalogue, transaction, payment, bank, customer, address, message, and order fields
@@ -32,7 +42,8 @@ See `doc/PART_1_2_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.2 in
 - Slice 4 protected UI/action: Passed — the create action re-authorizes before strict input parsing and persistence, extracts only four approved fields, uses central safe copy, and revalidates only `/control`; responsive list/create UI renders operational metadata only with accessible persistent labels, pending feedback, empty state, onboarding status, and draft-invitation state
 - Slice 4 release gate: Passed — 42 test files and 211 assertions, formatting/lint/TypeScript, production build, secret scan, dependency audit with 0 vulnerabilities, and 8 desktop/mobile browser regressions
 - Slice 4 database repair: Passed — the first owner UI create attempt failed before persistence with PostgreSQL `54000` because the advisory-lock text key contained `chr(0)`. Migration `20260901040000_fix_platform_merchant_lock_key.sql` replaces it with `chr(31)`; the owner authorized its development deployment, remote dry-run is clean, and a rollback-safe live RPC check passed creation and duplicate idempotency without retaining synthetic data
-- Implementation status: In progress — merchant list/create UI is ready for owner testing with one synthetic merchant; Part 1.2 remains open for that UI/process checkpoint and final cloud evidence
+- Manual UI checkpoint: Accepted by Mehedi Hassan on 2026-09-05 Australia/Sydney after the live lock-key repair
+- Implementation status: Complete — automated gates and rollback-safe cloud RPC evidence pass, and the owner accepted the merchant list/create process
 
 ### Completed Part 1.1
 

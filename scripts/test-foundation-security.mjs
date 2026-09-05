@@ -84,12 +84,13 @@ if (!databaseUrl) {
       `;
       await tx`
         insert into public.invitations (
-          business_id, email, invited_role, token_hash, expires_at, created_by
+          business_id, email, invited_role, token_hash, issued_at, expires_at, created_by
         ) values (
           ${businessA},
           'invited@example.invalid',
           'merchant_staff',
           decode(repeat('ab', 32), 'hex'),
+          now(),
           now() + interval '1 hour',
           ${platformOwner}
         )
@@ -112,30 +113,30 @@ if (!databaseUrl) {
         begin
           begin
             insert into public.invitations (
-              business_id, email, invited_role, token_hash, expires_at, created_by
+              business_id, email, invited_role, token_hash, issued_at, expires_at, created_by
             ) values (
               '${businessA}', 'invalid-hash@example.invalid', 'merchant_staff',
-              decode(repeat('cd', 31), 'hex'), now() + interval '1 hour', '${platformOwner}'
+              decode(repeat('cd', 31), 'hex'), now(), now() + interval '1 hour', '${platformOwner}'
             );
             raise exception 'short invitation hash unexpectedly succeeded';
           exception when check_violation then null;
           end;
           begin
             insert into public.invitations (
-              business_id, email, invited_role, token_hash, expires_at, created_by
+              business_id, email, invited_role, token_hash, issued_at, expires_at, created_by
             ) values (
               '${businessA}', 'expired@example.invalid', 'merchant_staff',
-              decode(repeat('ef', 32), 'hex'), now() - interval '1 hour', '${platformOwner}'
+              decode(repeat('ef', 32), 'hex'), now(), now() - interval '1 hour', '${platformOwner}'
             );
             raise exception 'expired invitation unexpectedly succeeded';
           exception when check_violation then null;
           end;
           begin
             insert into public.invitations (
-              business_id, email, invited_role, token_hash, expires_at, created_by
+              business_id, email, invited_role, token_hash, issued_at, expires_at, created_by
             ) values (
               '${businessA}', 'duplicate@example.invalid', 'merchant_staff',
-              decode(repeat('ab', 32), 'hex'), now() + interval '1 hour', '${platformOwner}'
+              decode(repeat('ab', 32), 'hex'), now(), now() + interval '1 hour', '${platformOwner}'
             );
             raise exception 'duplicate invitation hash unexpectedly succeeded';
           exception when unique_violation then null;
