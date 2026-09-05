@@ -182,3 +182,11 @@ Use this file for decisions that materially affect scope, data, security, provid
 - **Decision:** Bound owner login to five attempts per normalized account and twenty attempts per source in a rolling fifteen-minute window. Store only process-ephemeral keyed HMAC digests of account and source values, reset the account counter after a complete successful login, and do not call Supabase Auth when either limit is exhausted.
 - **Reason:** Limit credential guessing and broad-source abuse without retaining raw email or network identifiers in the private local MVP.
 - **Consequence:** Counters reset on process restart and do not coordinate instances. This implementation must be replaced by reviewed durable distributed limiting with trusted proxy/source derivation before external access, a real-vendor demo, staging, or production.
+
+## ADR-024: Manual-only CI during private development
+
+- **Status:** Accepted for private synthetic development
+- **Date:** 2026-09-05
+- **Decision:** GitHub Actions runs only through manual `workflow_dispatch` while PieShop is developed privately. Pushes and pull requests do not automatically start CI. Local targeted checks and the complete `npm run check` gate remain mandatory under the active workflow policy.
+- **Reason:** Frequent quick-mode pushes were repeatedly starting two GitHub-hosted jobs and sending failure notifications before the repository's isolated CI environment and secrets/configuration strategy were ready.
+- **Consequence:** Before staging, a real-vendor demo, production, or branch-protection enforcement, restore `pull_request` and protected-branch `push` triggers, fix the isolated runner failures, pin/review actions, run the full workflow successfully, and require its checks for merge. Manual CI remains available from GitHub Actions for diagnostics.

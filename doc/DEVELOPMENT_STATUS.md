@@ -10,7 +10,8 @@ This file records the single current roadmap part and its acceptance evidence. I
 - **Next part:** Part 1.4 — Account status and onboarding progress
 - **Next part authorised:** No
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
-- **Last updated:** 2026-09-01 Australia/Sydney
+- **Last updated:** 2026-09-05 Australia/Sydney
+- **CI mode:** Manual GitHub Actions dispatch during private synthetic development; automatic push/PR triggers must be restored and green before staging, real-vendor demo, or production
 
 ## Current part objective
 

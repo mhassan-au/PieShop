@@ -1,9 +1,7 @@
-name: CI
+name: CI (manual development run)
 
 on:
-  pull_request:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
