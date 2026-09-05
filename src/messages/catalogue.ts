@@ -324,6 +324,68 @@ const catalogue = {
     template: "Invitation revoked",
     placeholders: [],
   },
+  "merchant.invitation.preview": {
+    template: "Create preview link",
+    placeholders: [],
+  },
+  "merchant.invitation.previewing": {
+    template: "Creating preview…",
+    placeholders: [],
+  },
+  "merchant.invitation.previewReady": {
+    template: "Development invitation preview ready. This link is shown once.",
+    placeholders: [],
+  },
+  "merchant.invitation.openPreview": {
+    template: "Open invitation preview",
+    placeholders: [],
+  },
+  "merchant.invitation.revoke": {
+    template: "Revoke invitation",
+    placeholders: [],
+  },
+  "merchant.invitation.revoking": {
+    template: "Revoking…",
+    placeholders: [],
+  },
+  "merchant.invitation.revokeSuccess": {
+    template: "Invitation revoked.",
+    placeholders: [],
+  },
+  "merchant.invitation.failure": {
+    template:
+      "We couldn’t update this invitation. Wait a moment and try again.",
+    placeholders: [],
+  },
+  "merchant.invitation.developmentOnly": {
+    template: "Development preview only — no email will be sent.",
+    placeholders: [],
+  },
+  "merchant.invitation.page.eyebrow": {
+    template: "Merchant invitation",
+    placeholders: [],
+  },
+  "merchant.invitation.page.title": {
+    template: "Confirm your invitation",
+    placeholders: [],
+  },
+  "merchant.invitation.page.valid": {
+    template: "You have been invited to manage {businessName}.",
+    placeholders: ["businessName"],
+  },
+  "merchant.invitation.page.expires": {
+    template: "This invitation expires at {expiresAt}.",
+    placeholders: ["expiresAt"],
+  },
+  "merchant.invitation.page.unavailable": {
+    template: "This invitation is unavailable or has expired.",
+    placeholders: [],
+  },
+  "merchant.invitation.page.pendingDelivery": {
+    template:
+      "Email verification is not configured yet. No account has been created.",
+    placeholders: [],
+  },
   "auth.owner.control.empty.title": {
     template: "Control plane ready",
     placeholders: [],

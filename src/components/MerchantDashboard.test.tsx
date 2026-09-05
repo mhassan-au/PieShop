@@ -3,6 +3,8 @@ import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/app/control/actions", () => ({
   createMerchantAction: vi.fn(),
+  issueMerchantInvitationAction: vi.fn(),
+  revokeMerchantInvitationAction: vi.fn(),
 }));
 
 import { MerchantDashboard } from "./MerchantDashboard";
@@ -56,5 +58,11 @@ describe("MerchantDashboard", () => {
     expect(container).not.toHaveTextContent(
       /catalogue|customer|order|message|address|payment|bank|transaction/iu,
     );
+    expect(
+      screen.getByRole("button", { name: "Create preview link" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Development preview only — no email will be sent."),
+    ).toBeInTheDocument();
   });
 });

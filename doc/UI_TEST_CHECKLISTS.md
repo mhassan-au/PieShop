@@ -96,6 +96,44 @@ Screenshots stored privately (optional; no credentials/personal data):
 Owner decision: Accept / Corrections required
 ```
 
+## Part 1.3 — Development invitation preview
+
+### Setup
+
+- Use synthetic merchant names and reserved `.test` email addresses only.
+- Keep `APP_ENV=local`; no email provider is configured or contacted.
+
+### Primary flow
+
+- [ ] A draft or revoked onboarding merchant shows **Create preview link** and the development-only disclosure.
+- [ ] Creating a preview changes status to **Invitation issued**, shows a one-time link, and offers **Revoke invitation**.
+- [ ] Opening the preview shows only the expected business name, UTC expiry, and the notice that no account was created.
+- [ ] Returning to the control page and revoking changes status to **Invitation revoked** with clear confirmation.
+
+### Alternate and privacy states
+
+- [ ] A malformed, expired, superseded, or revoked preview URL shows the same generic unavailable message.
+- [ ] Repeated issue inside the cooldown fails safely without exposing provider/database details.
+- [ ] No recipient email, token hash, Auth identifier, catalogue, transaction, payment, bank, customer, or order data appears.
+- [ ] Keyboard focus, phone-width layout, pending states, and browser console are acceptable.
+
+### Deferred provider flow
+
+- [ ] Real email delivery, recipient authentication, atomic redemption, and 30-day merchant-session review remain blocked until a provider and Supabase redirect configuration are approved.
+
+### Part 1.3 preview acceptance record
+
+```text
+Date/time (Australia/Sydney):
+Desktop browser and viewport:
+Phone browser/viewport:
+Shared checklist: Pass / Fail
+Part 1.3 preview checklist: Pass / Fail
+Console errors: None / Details
+Usability or wording observations:
+Owner decision: Accept / Corrections required
+```
+
 ## Template for each future milestone
 
 Add a section when its acceptance contract is prepared:

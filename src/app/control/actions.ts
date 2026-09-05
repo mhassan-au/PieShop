@@ -15,6 +15,14 @@ import { createSupabaseOwnerAuthProvider } from "@/auth/supabase-owner-auth-prov
 import { createSupabaseOwnerSessionRepository } from "@/auth/supabase-owner-session-repository";
 import { loadEnvironment } from "@/config/env";
 import { formatMessage } from "@/messages/catalogue";
+import { createDevelopmentInvitationPreview } from "@/invitations/development-invitation-delivery";
+import { parseInvitationTarget } from "@/invitations/platform-invitation";
+import {
+  createInvitationToken,
+  hashInvitationToken,
+  invitationExpiry,
+} from "@/invitations/invitation-token";
+import { createSupabasePlatformInvitationRepository } from "@/invitations/supabase-platform-invitation-repository";
 import { parseCreateMerchantInput } from "@/merchants/platform-merchant";
 import { createSupabasePlatformMerchantRepository } from "@/merchants/supabase-platform-merchant-repository";
 import { createRequestSupabaseClient } from "@/supabase/server";
@@ -61,6 +69,88 @@ export type CreateMerchantActionState = Readonly<{
   status: "idle" | "success" | "error";
   message?: string;
 }>;
+
+export type InvitationActionState = Readonly<{
+  status: "idle" | "success" | "error";
+  message?: string;
+  previewUrl?: string;
+}>;
+
+async function requireOwnerForInvitation(): Promise<
+  "authorized" | "unavailable"
+> {
+  const access = await verifyRequestPlatformOwnerAccess();
+  if (access.status === "denied") redirect("/login");
+  return access.status === "authorized" ? "authorized" : "unavailable";
+}
+
+export async function issueMerchantInvitationAction(
+  _previousState: InvitationActionState,
+  formData: FormData,
+): Promise<InvitationActionState> {
+  if ((await requireOwnerForInvitation()) === "unavailable") {
+    return {
+      status: "error",
+      message: formatMessage("error.unexpected.message"),
+    };
+  }
+  try {
+    const target = parseInvitationTarget({
+      businessId: formData.get("businessId"),
+    });
+    const environment = loadEnvironment(process.env);
+    const token = createInvitationToken();
+    const previewUrl = createDevelopmentInvitationPreview(environment, token);
+    await createSupabasePlatformInvitationRepository(
+      await createRequestSupabaseClient(),
+    ).issue({
+      ...target,
+      tokenHash: hashInvitationToken(token),
+      expiresAt: invitationExpiry(new Date()).toISOString(),
+    });
+    revalidatePath("/control");
+    return {
+      status: "success",
+      message: formatMessage("merchant.invitation.previewReady"),
+      previewUrl,
+    };
+  } catch {
+    return {
+      status: "error",
+      message: formatMessage("merchant.invitation.failure"),
+    };
+  }
+}
+
+export async function revokeMerchantInvitationAction(
+  _previousState: InvitationActionState,
+  formData: FormData,
+): Promise<InvitationActionState> {
+  if ((await requireOwnerForInvitation()) === "unavailable") {
+    return {
+      status: "error",
+      message: formatMessage("error.unexpected.message"),
+    };
+  }
+  try {
+    const target = parseInvitationTarget({
+      businessId: formData.get("businessId"),
+    });
+    await createSupabasePlatformInvitationRepository(
+      await createRequestSupabaseClient(),
+    ).revoke(target);
+    revalidatePath("/control");
+    return {
+      status: "success",
+      message: formatMessage("merchant.invitation.revokeSuccess"),
+    };
+  } catch {
+    return {
+      status: "error",
+      message: formatMessage("merchant.invitation.failure"),
+    };
+  }
+}
 
 export async function createMerchantAction(
   _previousState: CreateMerchantActionState,

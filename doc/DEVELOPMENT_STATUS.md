@@ -30,7 +30,10 @@ See `doc/PART_1_3_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.3 in
 - Slice 1 token primitive: Passed — 4 focused assertions cover 256-bit URL-safe randomness, deterministic SHA-256 storage hashes, strict malformed-token rejection, and the inclusive 24-hour UTC expiry boundary
 - Slice 2 red observed: Yes — all 4 invitation lifecycle migration assertions failed because the migration was absent
 - Slice 2 lifecycle migration: Passed — owner-authorized migration `20260905010000_secure_merchant_invitation_lifecycle.sql` is applied; issue/rotation and idempotent revoke are self-authorizing, row-locked, cooldown-protected, redacted, and audited. Remote dry-run is clean; foundation schema/hardening pass and 12 isolation/immutability assertions pass with synthetic rollback
-- Implementation status: In progress — secure lifecycle storage is ready; delivery adapter/provider, redemption, merchant session, and UI remain
+- Slice 3 local delivery and owner controls: Passed — local/test-only preview links fail closed elsewhere; owner actions reauthorize, accept only a business UUID, generate/hash tokens server-side, and expose one preview link without logging or persisting raw material. Focused repository/component contracts pass
+- Slice 3 browser check: Passed — Codex issued one synthetic invitation, observed issued status and one-time preview feedback, opened the public preview showing only business name/UTC expiry/no-account notice, then revoked it and observed revoked status. The trace-observed synthetic link was invalidated immediately
+- Slice 4 redemption migration: Passed — owner-authorized migration `20260905020000_secure_merchant_invitation_redemption.sql` is applied; public inspection is read-only, while authenticated redemption locks the row, matches normalized Auth email, creates one membership, consumes once, and audits atomically. Remote schema, hardening, and 12 rollback-safe isolation checks pass
+- Implementation status: In progress — the provider-free issue/preview/revoke group is ready for final owner UI review; real delivery, authenticated confirmation, and merchant session require later provider configuration
 
 ### Completed Part 1.2
 

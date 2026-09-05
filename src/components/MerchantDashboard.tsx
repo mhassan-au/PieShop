@@ -3,12 +3,77 @@
 import { useActionState } from "react";
 import {
   createMerchantAction,
+  issueMerchantInvitationAction,
+  revokeMerchantInvitationAction,
   type CreateMerchantActionState,
+  type InvitationActionState,
 } from "@/app/control/actions";
 import { formatMessage } from "@/messages/catalogue";
 import type { PlatformMerchant } from "@/merchants/platform-merchant";
 
 const initialState: CreateMerchantActionState = { status: "idle" };
+const initialInvitationState: InvitationActionState = { status: "idle" };
+
+function InvitationControls({
+  merchant,
+}: Readonly<{ merchant: PlatformMerchant }>) {
+  const [issueState, issueAction, issuePending] = useActionState(
+    issueMerchantInvitationAction,
+    initialInvitationState,
+  );
+  const [revokeState, revokeAction, revokePending] = useActionState(
+    revokeMerchantInvitationAction,
+    initialInvitationState,
+  );
+  const canIssue = merchant.invitationStatus !== "used";
+  const canRevoke = merchant.invitationStatus === "issued";
+  return (
+    <div className="mt-4 border-t border-white/10 pt-4">
+      <p className="text-xs text-stone-400">
+        {formatMessage("merchant.invitation.developmentOnly")}
+      </p>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {canIssue ? (
+          <form action={issueAction}>
+            <input name="businessId" type="hidden" value={merchant.id} />
+            <button
+              className="min-h-11 rounded-xl bg-orange-400 px-4 text-sm font-bold text-stone-950 disabled:opacity-60"
+              disabled={issuePending}
+            >
+              {issuePending
+                ? formatMessage("merchant.invitation.previewing")
+                : formatMessage("merchant.invitation.preview")}
+            </button>
+          </form>
+        ) : null}
+        {canRevoke ? (
+          <form action={revokeAction}>
+            <input name="businessId" type="hidden" value={merchant.id} />
+            <button
+              className="min-h-11 rounded-xl border border-white/20 px-4 text-sm font-semibold disabled:opacity-60"
+              disabled={revokePending}
+            >
+              {revokePending
+                ? formatMessage("merchant.invitation.revoking")
+                : formatMessage("merchant.invitation.revoke")}
+            </button>
+          </form>
+        ) : null}
+      </div>
+      <div aria-live="polite" className="mt-3 text-sm">
+        {issueState.message ?? revokeState.message}
+        {issueState.previewUrl ? (
+          <a
+            className="ml-2 text-orange-300 underline"
+            href={issueState.previewUrl}
+          >
+            {formatMessage("merchant.invitation.openPreview")}
+          </a>
+        ) : null}
+      </div>
+    </div>
+  );
+}
 
 export function MerchantDashboard({
   merchants,
@@ -109,6 +174,7 @@ export function MerchantDashboard({
                   {merchant.publicId} · {merchant.timezone} ·{" "}
                   {merchant.currencyCode}
                 </p>
+                <InvitationControls merchant={merchant} />
               </li>
             ))}
           </ul>
