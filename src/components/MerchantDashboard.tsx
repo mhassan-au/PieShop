@@ -30,7 +30,7 @@ function InvitationControls({
   return (
     <div className="mt-4 border-t border-white/10 pt-4">
       <p className="text-xs text-stone-400">
-        {formatMessage("merchant.invitation.developmentOnly")}
+        {formatMessage("merchant.invitation.sandboxOnly")}
       </p>
       <div className="mt-3 flex flex-wrap gap-2">
         {canIssue ? (
@@ -41,8 +41,8 @@ function InvitationControls({
               disabled={issuePending}
             >
               {issuePending
-                ? formatMessage("merchant.invitation.previewing")
-                : formatMessage("merchant.invitation.preview")}
+                ? formatMessage("merchant.invitation.sending")
+                : formatMessage("merchant.invitation.send")}
             </button>
           </form>
         ) : null}
@@ -62,14 +62,6 @@ function InvitationControls({
       </div>
       <div aria-live="polite" className="mt-3 text-sm">
         {issueState.message ?? revokeState.message}
-        {issueState.previewUrl ? (
-          <a
-            className="ml-2 text-orange-300 underline"
-            href={issueState.previewUrl}
-          >
-            {formatMessage("merchant.invitation.openPreview")}
-          </a>
-        ) : null}
       </div>
     </div>
   );

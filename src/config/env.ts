@@ -32,12 +32,37 @@ const environmentSchema = z
       z.string().startsWith("sb_publishable_").optional(),
     ),
     SUPABASE_DB_URL: z.preprocess(blankToUndefined, z.url().optional()),
+    SUPABASE_SECRET_KEY: z.preprocess(
+      blankToUndefined,
+      z.string().startsWith("sb_secret_").optional(),
+    ),
     SUPABASE_DESTRUCTIVE_CONFIRMATION: z.preprocess(
       blankToUndefined,
       z
         .string()
         .regex(/^[a-z0-9]{20}$/u)
         .optional(),
+    ),
+    MAILTRAP_SMTP_HOST: z.preprocess(
+      blankToUndefined,
+      z.literal("sandbox.smtp.mailtrap.io").optional(),
+    ),
+    MAILTRAP_SMTP_PORT: z.preprocess(
+      blankToUndefined,
+      z.coerce.number().int().positive().max(65535).optional(),
+    ),
+    MAILTRAP_SMTP_USERNAME: z.preprocess(
+      blankToUndefined,
+      z.string().min(1).optional(),
+    ),
+    MAILTRAP_SMTP_PASSWORD: z.preprocess(
+      blankToUndefined,
+      z.string().min(1).optional(),
+    ),
+    MAIL_FROM_EMAIL: z.preprocess(blankToUndefined, z.email().optional()),
+    MAIL_FROM_NAME: z.preprocess(
+      blankToUndefined,
+      z.string().min(1).max(80).optional(),
     ),
   })
   .superRefine((value, context) => {
@@ -64,6 +89,37 @@ const environmentSchema = z
         code: "custom",
         path: ["SUPABASE_PUBLIC_CONFIGURATION"],
         message: "Supabase public configuration must be complete",
+      });
+    }
+    const mailValues = [
+      value.MAILTRAP_SMTP_HOST,
+      value.MAILTRAP_SMTP_PORT,
+      value.MAILTRAP_SMTP_USERNAME,
+      value.MAILTRAP_SMTP_PASSWORD,
+      value.MAIL_FROM_EMAIL,
+      value.MAIL_FROM_NAME,
+    ];
+    const configuredMailValues = mailValues.filter(Boolean).length;
+    if (
+      configuredMailValues !== 0 &&
+      configuredMailValues !== mailValues.length
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["MAILTRAP_SMTP_CONFIGURATION"],
+        message: "Mailtrap SMTP configuration must be complete",
+      });
+    }
+    if (
+      configuredMailValues > 0 &&
+      value.APP_ENV !== "local" &&
+      value.APP_ENV !== "test"
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["MAILTRAP_SMTP_CONFIGURATION"],
+        message:
+          "Mailtrap sandbox is restricted to local and test environments",
       });
     }
   });
@@ -112,6 +168,13 @@ export function loadEnvironment(
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:
       input.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     SUPABASE_DB_URL: input.SUPABASE_DB_URL,
+    SUPABASE_SECRET_KEY: input.SUPABASE_SECRET_KEY,
     SUPABASE_DESTRUCTIVE_CONFIRMATION: input.SUPABASE_DESTRUCTIVE_CONFIRMATION,
+    MAILTRAP_SMTP_HOST: input.MAILTRAP_SMTP_HOST,
+    MAILTRAP_SMTP_PORT: input.MAILTRAP_SMTP_PORT,
+    MAILTRAP_SMTP_USERNAME: input.MAILTRAP_SMTP_USERNAME,
+    MAILTRAP_SMTP_PASSWORD: input.MAILTRAP_SMTP_PASSWORD,
+    MAIL_FROM_EMAIL: input.MAIL_FROM_EMAIL,
+    MAIL_FROM_NAME: input.MAIL_FROM_NAME,
   });
 }

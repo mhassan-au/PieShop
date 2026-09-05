@@ -336,6 +336,23 @@ const catalogue = {
     template: "Development invitation preview ready. This link is shown once.",
     placeholders: [],
   },
+  "merchant.invitation.sandboxOnly": {
+    template:
+      "Development only: invitations are captured by the Mailtrap sandbox.",
+    placeholders: [],
+  },
+  "merchant.invitation.send": {
+    template: "Send sandbox invitation",
+    placeholders: [],
+  },
+  "merchant.invitation.sending": {
+    template: "Sending…",
+    placeholders: [],
+  },
+  "merchant.invitation.deliverySuccess": {
+    template: "Invitation sent to the development email sandbox.",
+    placeholders: [],
+  },
   "merchant.invitation.openPreview": {
     template: "Open invitation preview",
     placeholders: [],

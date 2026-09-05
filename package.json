@@ -29,6 +29,7 @@
     "test:supabase:hardening": "node --env-file=.env.local scripts/check-foundation-hardening.mjs",
     "test:supabase:seed": "node --env-file=.env.local scripts/check-development-seed.mjs",
     "test:supabase:owner-link": "node --env-file=.env.local scripts/check-owner-linkage.mjs",
+    "test:mailtrap:sandbox": "node --env-file=.env.local scripts/test-mailtrap-sandbox.mjs",
     "db:push:dry-run": "node --env-file=.env.local --experimental-strip-types scripts/push-supabase-migrations.ts --dry-run",
     "db:push:apply": "node --env-file=.env.local --experimental-strip-types scripts/push-supabase-migrations.ts --apply",
     "db:seed:apply": "node --env-file=.env.local --experimental-strip-types scripts/push-supabase-migrations.ts --seed",
@@ -40,6 +41,7 @@
     "@supabase/ssr": "0.12.4",
     "@supabase/supabase-js": "2.112.4",
     "next": "16.3.3",
+    "nodemailer": "10.0.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "zod": "4.4.3"
@@ -51,6 +53,7 @@
     "@testing-library/react": "16.3.2",
     "@testing-library/user-event": "14.6.6",
     "@types/node": "26.3.0",
+    "@types/nodemailer": "8.0.1",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.5",
     "@vitejs/plugin-react": "6.1.0",

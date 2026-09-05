@@ -190,3 +190,11 @@ Use this file for decisions that materially affect scope, data, security, provid
 - **Decision:** GitHub Actions runs only through manual `workflow_dispatch` while PieShop is developed privately. Pushes and pull requests do not automatically start CI. Local targeted checks and the complete `npm run check` gate remain mandatory under the active workflow policy.
 - **Reason:** Frequent quick-mode pushes were repeatedly starting two GitHub-hosted jobs and sending failure notifications before the repository's isolated CI environment and secrets/configuration strategy were ready.
 - **Consequence:** Before staging, a real-vendor demo, production, or branch-protection enforcement, restore `pull_request` and protected-branch `push` triggers, fix the isolated runner failures, pin/review actions, run the full workflow successfully, and require its checks for merge. Manual CI remains available from GitHub Actions for diagnostics.
+
+## ADR-025: Mailtrap sandbox invitation delivery
+
+- **Status:** Accepted for private synthetic development
+- **Date:** 2026-09-05
+- **Decision:** Use Mailtrap Email Sandbox over SMTP for Part 1.3 development delivery. SMTP credentials and the Supabase secret key remain server-only. A narrowly scoped security-definer RPC, executable only by `service_role`, returns one onboarding merchant-owner recipient email and business name; owner/browser responses never receive either the recipient or raw invitation token.
+- **Reason:** This permits end-to-end invitation testing without contacting real recipients or weakening existing table privileges and RLS.
+- **Consequence:** Mailtrap is restricted to `local`/`test`, delivery failures revoke the newly issued token, and logs expose no provider response, email, or token. Before a real-vendor demo, select and approve a production provider, complete privacy/region/subprocessor review, configure authenticated sending domains with tracking disabled, add durable delivery/idempotency handling, and re-run the Phase 1 threat-model gate.

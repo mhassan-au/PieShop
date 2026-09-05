@@ -103,4 +103,38 @@ describe("parseEnvironment", () => {
       "http://localhost:3000",
     );
   });
+
+  it("accepts only complete local Mailtrap sandbox configuration", () => {
+    expect(
+      parseEnvironment({
+        APP_ENV: "local",
+        APP_BASE_URL: "http://localhost:3000",
+        MAILTRAP_SMTP_HOST: "sandbox.smtp.mailtrap.io",
+        MAILTRAP_SMTP_PORT: "2525",
+        MAILTRAP_SMTP_USERNAME: "synthetic-user",
+        MAILTRAP_SMTP_PASSWORD: "synthetic-password",
+        MAIL_FROM_EMAIL: "no-reply@pieshop.test",
+        MAIL_FROM_NAME: "PieShop",
+      }).MAILTRAP_SMTP_PORT,
+    ).toBe(2525);
+    expect(() =>
+      parseEnvironment({
+        APP_ENV: "local",
+        APP_BASE_URL: "http://localhost:3000",
+        MAILTRAP_SMTP_USERNAME: "partial",
+      }),
+    ).toThrow("MAILTRAP_SMTP_CONFIGURATION");
+    expect(() =>
+      parseEnvironment({
+        APP_ENV: "production",
+        APP_BASE_URL: "https://example.test",
+        MAILTRAP_SMTP_HOST: "sandbox.smtp.mailtrap.io",
+        MAILTRAP_SMTP_PORT: "2525",
+        MAILTRAP_SMTP_USERNAME: "synthetic-user",
+        MAILTRAP_SMTP_PASSWORD: "synthetic-password",
+        MAIL_FROM_EMAIL: "no-reply@pieshop.test",
+        MAIL_FROM_NAME: "PieShop",
+      }),
+    ).toThrow("MAILTRAP_SMTP_CONFIGURATION");
+  });
 });

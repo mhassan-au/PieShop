@@ -16,6 +16,7 @@ import { createSupabaseOwnerSessionRepository } from "@/auth/supabase-owner-sess
 import { loadEnvironment } from "@/config/env";
 import { formatMessage } from "@/messages/catalogue";
 import { createDevelopmentInvitationPreview } from "@/invitations/development-invitation-delivery";
+import { createMailtrapInvitationDelivery } from "@/invitations/mailtrap-invitation-delivery";
 import { parseInvitationTarget } from "@/invitations/platform-invitation";
 import {
   createInvitationToken,
@@ -23,9 +24,11 @@ import {
   invitationExpiry,
 } from "@/invitations/invitation-token";
 import { createSupabasePlatformInvitationRepository } from "@/invitations/supabase-platform-invitation-repository";
+import { readInvitationDeliveryTarget } from "@/invitations/supabase-invitation-delivery-target";
 import { parseCreateMerchantInput } from "@/merchants/platform-merchant";
 import { createSupabasePlatformMerchantRepository } from "@/merchants/supabase-platform-merchant-repository";
 import { createRequestSupabaseClient } from "@/supabase/server";
+import { createSupabaseAdminClient } from "@/supabase/admin";
 
 export async function ownerLogoutAction(): Promise<void> {
   const environment = loadEnvironment(process.env);
@@ -100,19 +103,35 @@ export async function issueMerchantInvitationAction(
     });
     const environment = loadEnvironment(process.env);
     const token = createInvitationToken();
-    const previewUrl = createDevelopmentInvitationPreview(environment, token);
-    await createSupabasePlatformInvitationRepository(
-      await createRequestSupabaseClient(),
-    ).issue({
+    const invitationUrl = createDevelopmentInvitationPreview(
+      environment,
+      token,
+    );
+    const requestClient = await createRequestSupabaseClient();
+    const repository =
+      createSupabasePlatformInvitationRepository(requestClient);
+    const deliveryTarget = await readInvitationDeliveryTarget(
+      createSupabaseAdminClient(environment),
+      target.businessId,
+    );
+    await repository.issue({
       ...target,
       tokenHash: hashInvitationToken(token),
       expiresAt: invitationExpiry(new Date()).toISOString(),
     });
+    try {
+      await createMailtrapInvitationDelivery(environment).send({
+        ...deliveryTarget,
+        invitationUrl,
+      });
+    } catch {
+      await repository.revoke(target);
+      throw new Error("Invitation delivery failed");
+    }
     revalidatePath("/control");
     return {
       status: "success",
-      message: formatMessage("merchant.invitation.previewReady"),
-      previewUrl,
+      message: formatMessage("merchant.invitation.deliverySuccess"),
     };
   } catch {
     return {

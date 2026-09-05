@@ -59,10 +59,12 @@ describe("MerchantDashboard", () => {
       /catalogue|customer|order|message|address|payment|bank|transaction/iu,
     );
     expect(
-      screen.getByRole("button", { name: "Create preview link" }),
+      screen.getByRole("button", { name: "Send sandbox invitation" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Development preview only — no email will be sent."),
+      screen.getByText(
+        "Development only: invitations are captured by the Mailtrap sandbox.",
+      ),
     ).toBeInTheDocument();
   });
 });
