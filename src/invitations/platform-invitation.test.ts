@@ -77,6 +77,24 @@ describe("platform invitation boundary", () => {
     await expect(repository.inspect("b".repeat(64))).resolves.toBeNull();
   });
 
+  it("redeems with hashes only and maps safe membership authority", async () => {
+    const rpc = vi.fn().mockResolvedValue({
+      data: [{ business_id: businessId, membership_role: "merchant_owner" }],
+      error: null,
+    });
+    const repository = new SupabasePlatformInvitationRepository({ rpc });
+    await expect(
+      repository.redeem("a".repeat(64), "b".repeat(64)),
+    ).resolves.toEqual({
+      businessId,
+      role: "merchant_owner",
+    });
+    expect(rpc).toHaveBeenCalledWith("redeem_merchant_invitation", {
+      p_session_token_hash: "b".repeat(64),
+      p_token_hash_hex: "a".repeat(64),
+    });
+  });
+
   it("allows previews only in synthetic local or test environments", () => {
     const local = parseEnvironment({
       APP_ENV: "local",

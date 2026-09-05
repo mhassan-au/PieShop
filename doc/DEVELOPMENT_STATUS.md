@@ -34,7 +34,10 @@ See `doc/PART_1_3_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.3 in
 - Slice 3 browser check: Passed — Codex issued one synthetic invitation, observed issued status and one-time preview feedback, opened the public preview showing only business name/UTC expiry/no-account notice, then revoked it and observed revoked status. The trace-observed synthetic link was invalidated immediately
 - Slice 4 redemption migration: Passed — owner-authorized migration `20260905020000_secure_merchant_invitation_redemption.sql` is applied; public inspection is read-only, while authenticated redemption locks the row, matches normalized Auth email, creates one membership, consumes once, and audits atomically. Remote schema, hardening, and 12 rollback-safe isolation checks pass
 - Provider-free UI checkpoint: Accepted by Mehedi Hassan on 2026-09-05 Australia/Sydney after reviewing issue, one-time preview, safe invitation detail, revoke, and unavailable-link behavior
-- Implementation status: In progress — the provider-free issue/preview/revoke group is complete and owner-accepted; real delivery, authenticated confirmation, and the 30-day merchant session remain blocked until an email provider and Supabase redirect configuration are approved
+- Slice 5 red observed: Yes — the accepted 30-day merchant-session policy module was absent and its focused suite failed to resolve
+- Slice 5 session persistence: Passed — owner-authorized migration `20260905030000_merchant_application_sessions.sql` is applied. Redemption now atomically creates membership, hash-only application session, invitation consumption, and audit evidence; the obsolete signature is removed. Verification freshly checks Supabase identity, revocation/30-day expiry, active membership, and onboarding/active merchant state. Remote schema, hardening, and 12 rollback-safe isolation checks pass
+- Slice 5 server adapter: Passed — focused tests cover canonical UTC boundaries, hardened 30-day HttpOnly/SameSite cookie policy, safe repository mapping, provider-error redaction, and hash-only redemption/session verification calls
+- Implementation status: In progress — all provider-independent Part 1.3 foundations and preview UI are complete; real delivery and authenticated confirmation remain blocked until an email provider and Supabase redirect configuration are approved
 
 ### Completed Part 1.2
 

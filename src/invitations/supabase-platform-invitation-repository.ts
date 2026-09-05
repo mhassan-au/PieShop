@@ -25,6 +25,13 @@ export type InvitationInspection = Readonly<{
   expiresAt: string;
 }>;
 
+const redemptionRowSchema = z
+  .object({
+    business_id: z.uuid(),
+    membership_role: z.literal("merchant_owner"),
+  })
+  .strict();
+
 function requireOneRow(result: { data: unknown; error: unknown }): void {
   if (result.error || !Array.isArray(result.data) || result.data.length !== 1) {
     throw new Error(OPERATION_ERROR);
@@ -65,6 +72,24 @@ export class SupabasePlatformInvitationRepository {
     try {
       const row = inspectionRowSchema.parse(result.data[0]);
       return { businessName: row.business_name, expiresAt: row.expires_at };
+    } catch {
+      throw new Error(OPERATION_ERROR);
+    }
+  }
+
+  async redeem(tokenHash: string, sessionTokenHash: string) {
+    const result = await this.client.rpc("redeem_merchant_invitation", {
+      p_session_token_hash: sessionTokenHash,
+      p_token_hash_hex: tokenHash,
+    });
+    if (result.error || !Array.isArray(result.data) || result.data.length !== 1)
+      throw new Error(OPERATION_ERROR);
+    try {
+      const row = redemptionRowSchema.parse(result.data[0]);
+      return {
+        businessId: row.business_id,
+        role: row.membership_role,
+      } as const;
     } catch {
       throw new Error(OPERATION_ERROR);
     }
