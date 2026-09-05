@@ -198,3 +198,11 @@ Use this file for decisions that materially affect scope, data, security, provid
 - **Decision:** Use Mailtrap Email Sandbox over SMTP for Part 1.3 development delivery. SMTP credentials and the Supabase secret key remain server-only. A narrowly scoped security-definer RPC, executable only by `service_role`, returns one onboarding merchant-owner recipient email and business name; owner/browser responses never receive either the recipient or raw invitation token.
 - **Reason:** This permits end-to-end invitation testing without contacting real recipients or weakening existing table privileges and RLS.
 - **Consequence:** Mailtrap is restricted to `local`/`test`, delivery failures revoke the newly issued token, and logs expose no provider response, email, or token. Before a real-vendor demo, select and approve a production provider, complete privacy/region/subprocessor review, configure authenticated sending domains with tracking disabled, add durable delivery/idempotency handling, and re-run the Phase 1 threat-model gate.
+
+## ADR-026: Manual merchant Auth provisioning during MVP
+
+- **Status:** Accepted for private synthetic development
+- **Date:** 2026-09-05
+- **Decision:** For the 1–5 merchant MVP, the platform owner manually creates and confirms each invited merchant-owner identity in the Supabase dashboard using the exact invitation email. PieShop magic-link requests use `shouldCreateUser: false`; public signup and application-driven Auth-user creation remain disabled. Any unused password is randomly generated, retained only in the owner's password manager, and never shared or used by the merchant.
+- **Reason:** This keeps merchant identity creation explicitly owner-controlled while avoiding premature privileged Auth-administration automation.
+- **Consequence:** The runbook must verify the invitation email matches the Auth identity before testing. Before leaving MVP, replace the manual step with reviewed owner-controlled provisioning that is idempotent, audited, rate-limited, rollback-safe, and reconciles partial failure; add suspension, recovery, duplicate-identity, provider-outage, and least-privilege tests. This temporary process is not acceptable for a real-vendor demo, staging, or production.
