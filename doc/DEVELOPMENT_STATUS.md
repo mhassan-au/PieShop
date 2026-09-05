@@ -33,7 +33,8 @@ See `doc/PART_1_3_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.3 in
 - Slice 3 local delivery and owner controls: Passed — local/test-only preview links fail closed elsewhere; owner actions reauthorize, accept only a business UUID, generate/hash tokens server-side, and expose one preview link without logging or persisting raw material. Focused repository/component contracts pass
 - Slice 3 browser check: Passed — Codex issued one synthetic invitation, observed issued status and one-time preview feedback, opened the public preview showing only business name/UTC expiry/no-account notice, then revoked it and observed revoked status. The trace-observed synthetic link was invalidated immediately
 - Slice 4 redemption migration: Passed — owner-authorized migration `20260905020000_secure_merchant_invitation_redemption.sql` is applied; public inspection is read-only, while authenticated redemption locks the row, matches normalized Auth email, creates one membership, consumes once, and audits atomically. Remote schema, hardening, and 12 rollback-safe isolation checks pass
-- Implementation status: In progress — the provider-free issue/preview/revoke group is ready for final owner UI review; real delivery, authenticated confirmation, and merchant session require later provider configuration
+- Provider-free UI checkpoint: Accepted by Mehedi Hassan on 2026-09-05 Australia/Sydney after reviewing issue, one-time preview, safe invitation detail, revoke, and unavailable-link behavior
+- Implementation status: In progress — the provider-free issue/preview/revoke group is complete and owner-accepted; real delivery, authenticated confirmation, and the 30-day merchant session remain blocked until an email provider and Supabase redirect configuration are approved
 
 ### Completed Part 1.2
 
