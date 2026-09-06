@@ -1,4 +1,8 @@
 const catalogue = {
+  "dialog.confirm.title": { template: "Please confirm", placeholders: [] },
+  "dialog.success.title": { template: "Completed", placeholders: [] },
+  "dialog.error.title": { template: "Something went wrong", placeholders: [] },
+  "dialog.cancel": { template: "Cancel", placeholders: [] },
   "brand.name": {
     template: "PieShop",
     placeholders: [],
@@ -315,6 +319,11 @@ const catalogue = {
     template: "Revoke session",
     placeholders: [],
   },
+  "auth.owner.sessions.revoke.confirm": {
+    template:
+      "Revoke this signed-in device? It will need to authenticate again.",
+    placeholders: [],
+  },
   "merchant.dashboard.title": { template: "Merchants", placeholders: [] },
   "merchant.dashboard.description": {
     template:
@@ -446,6 +455,11 @@ const catalogue = {
   },
   "merchant.invitation.revoke": {
     template: "Revoke invitation",
+    placeholders: [],
+  },
+  "merchant.invitation.revoke.confirm": {
+    template:
+      "Revoke this invitation? Its current link will stop working immediately.",
     placeholders: [],
   },
   "merchant.invitation.revoking": {

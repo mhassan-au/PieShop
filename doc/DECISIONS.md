@@ -214,3 +214,11 @@ Use this file for decisions that materially affect scope, data, security, provid
 - **Decision:** Keep accepted invitations single-use. Returning synthetic merchants use `/merchant/login`, which accepts only an email and always returns equivalent public copy. A server-only eligibility lookup prevents delivery to identities without an active merchant-owner membership. PKCE confirmation is bound for 15 minutes to a normalized-email hash in an HttpOnly cookie, then a self-authorizing database function creates a new revocable session with a 30-day absolute limit.
 - **Reason:** Resetting an accepted invitation would weaken replay protection, while directing merchants through the platform-owner password form mixes identities and authentication methods.
 - **Consequence:** A new or cleared browser requires another email link. Process-local request throttling is acceptable only for private single-instance synthetic development; replace it with a shared durable limiter before horizontally scaled deployment or any real-vendor demo.
+
+## ADR-028: App-owned dialog feedback system
+
+- **Status:** Accepted
+- **Date:** 2026-09-06
+- **Decision:** PieShop uses a centralized, app-styled accessible dialog system for confirmations, warnings, action success, and action failure. Native `window.confirm`, `window.alert`, and `window.prompt` are prohibited. Destructive or access-changing actions submit only after explicit confirmation in the app dialog.
+- **Reason:** Browser-native prompts are visually inconsistent, difficult to test, and cannot use PieShop's centralized wording and accessibility presentation.
+- **Consequence:** New action feedback must use `AppDialog`, `ActionFeedbackDialog`, or `ConfirmedActionForm`; automated tests and source checks guard the boundary. Logout remains a direct user action because it is reversible and does not require a warning.

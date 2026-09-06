@@ -6,6 +6,7 @@ import {
   type MagicLinkActionState,
 } from "@/app/invite/actions";
 import { formatMessage } from "@/messages/catalogue";
+import { ActionFeedbackDialog } from "./ActionFeedbackDialog";
 
 const initialState: MagicLinkActionState = { status: "idle" };
 
@@ -25,9 +26,7 @@ export function InvitationConfirmation({ token }: Readonly<{ token: string }>) {
           ? formatMessage("merchant.invitation.magicLinkSending")
           : formatMessage("merchant.invitation.magicLinkSend")}
       </button>
-      <p aria-live="polite" className="mt-3 text-sm text-stone-300">
-        {state.message}
-      </p>
+      <ActionFeedbackDialog state={state} />
     </form>
   );
 }

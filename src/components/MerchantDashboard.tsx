@@ -12,6 +12,8 @@ import {
 } from "@/app/control/actions";
 import { formatMessage } from "@/messages/catalogue";
 import { onboardingProgressFor } from "@/merchants/merchant-status";
+import { ActionFeedbackDialog } from "./ActionFeedbackDialog";
+import { ConfirmedActionForm } from "./ConfirmedActionForm";
 import type { PlatformMerchant } from "@/merchants/platform-merchant";
 
 const initialState: CreateMerchantActionState = { status: "idle" };
@@ -42,34 +44,20 @@ function MerchantStatusControls({
       </p>
       <div className="mt-3 flex flex-wrap gap-2">
         {targets.map((target) => (
-          <form
-            action={action}
+          <ConfirmedActionForm
+            formAction={action}
+            button={formatMessage(`merchant.status.action.${target}`)}
+            cancelLabel={formatMessage("dialog.cancel")}
+            confirmLabel={formatMessage(`merchant.status.action.${target}`)}
+            description={formatMessage(`merchant.status.confirm.${target}`)}
+            disabled={pending}
+            fields={{ businessId: merchant.id, targetStatus: target }}
             key={target}
-            onSubmit={(event) => {
-              if (
-                !window.confirm(
-                  formatMessage(`merchant.status.confirm.${target}`),
-                )
-              ) {
-                event.preventDefault();
-              }
-            }}
-          >
-            <input name="businessId" type="hidden" value={merchant.id} />
-            <input name="targetStatus" type="hidden" value={target} />
-            <button
-              className="min-h-11 rounded-xl border border-white/20 px-4 text-sm font-semibold disabled:opacity-60"
-              disabled={pending}
-              type="submit"
-            >
-              {formatMessage(`merchant.status.action.${target}`)}
-            </button>
-          </form>
+            title={formatMessage("dialog.confirm.title")}
+          />
         ))}
       </div>
-      <div aria-live="polite" className="mt-3 text-sm">
-        {state.message}
-      </div>
+      <ActionFeedbackDialog state={state} />
     </div>
   );
 }
@@ -107,22 +95,26 @@ function InvitationControls({
           </form>
         ) : null}
         {canRevoke ? (
-          <form action={revokeAction}>
-            <input name="businessId" type="hidden" value={merchant.id} />
-            <button
-              className="min-h-11 rounded-xl border border-white/20 px-4 text-sm font-semibold disabled:opacity-60"
-              disabled={revokePending}
-            >
-              {revokePending
+          <ConfirmedActionForm
+            formAction={revokeAction}
+            button={
+              revokePending
                 ? formatMessage("merchant.invitation.revoking")
-                : formatMessage("merchant.invitation.revoke")}
-            </button>
-          </form>
+                : formatMessage("merchant.invitation.revoke")
+            }
+            cancelLabel={formatMessage("dialog.cancel")}
+            confirmLabel={formatMessage("merchant.invitation.revoke")}
+            description={formatMessage("merchant.invitation.revoke.confirm")}
+            disabled={revokePending}
+            fields={{ businessId: merchant.id }}
+            title={formatMessage("dialog.confirm.title")}
+            tone="warning"
+          />
         ) : null}
       </div>
-      <div aria-live="polite" className="mt-3 text-sm">
-        {issueState.message ?? revokeState.message}
-      </div>
+      <ActionFeedbackDialog
+        state={issueState.message ? issueState : revokeState}
+      />
     </div>
   );
 }
@@ -184,9 +176,7 @@ export function MerchantDashboard({
             <option>Australia/Sydney</option>
           </select>
           <input name="currencyCode" type="hidden" value="AUD" />
-          <div aria-live="polite" className="min-h-6 text-sm">
-            {state.message}
-          </div>
+          <ActionFeedbackDialog state={state} />
           <button
             className="min-h-12 w-full rounded-xl bg-orange-400 px-4 font-bold text-stone-950 disabled:opacity-60"
             disabled={pending}

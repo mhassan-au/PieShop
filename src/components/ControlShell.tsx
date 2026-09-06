@@ -2,6 +2,7 @@ import { formatMessage } from "@/messages/catalogue";
 import type { SafeOwnerSession } from "@/auth/supabase-owner-session-repository";
 import type { PlatformMerchant } from "@/merchants/platform-merchant";
 import { MerchantDashboard } from "./MerchantDashboard";
+import { ConfirmedActionForm } from "./ConfirmedActionForm";
 
 type Props = Readonly<{
   logoutAction: (formData: FormData) => void | Promise<void>;
@@ -120,19 +121,20 @@ export function ControlShell({
                           </p>
                         </div>
                         {active && !session.isCurrent ? (
-                          <form action={revokeSessionAction}>
-                            <input
-                              type="hidden"
-                              name="sessionId"
-                              value={session.id}
-                            />
-                            <button
-                              type="submit"
-                              className="rounded-xl border border-red-300/25 px-3 py-2 text-sm font-semibold text-red-100 transition hover:border-red-300/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-300"
-                            >
-                              {formatMessage("auth.owner.sessions.revoke")}
-                            </button>
-                          </form>
+                          <ConfirmedActionForm
+                            formAction={revokeSessionAction}
+                            button={formatMessage("auth.owner.sessions.revoke")}
+                            cancelLabel={formatMessage("dialog.cancel")}
+                            confirmLabel={formatMessage(
+                              "auth.owner.sessions.revoke",
+                            )}
+                            description={formatMessage(
+                              "auth.owner.sessions.revoke.confirm",
+                            )}
+                            fields={{ sessionId: session.id }}
+                            title={formatMessage("dialog.confirm.title")}
+                            tone="warning"
+                          />
                         ) : null}
                       </div>
                       <dl className="mt-4 grid gap-3 text-xs text-stone-400 sm:grid-cols-3">
