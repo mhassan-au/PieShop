@@ -213,6 +213,43 @@ const catalogue = {
     template: "No public registration or account recovery is available.",
     placeholders: [],
   },
+  "auth.owner.login.merchantLink": {
+    template: "Merchant sign in",
+    placeholders: [],
+  },
+  "auth.merchant.login.eyebrow": {
+    template: "Merchant access",
+    placeholders: [],
+  },
+  "auth.merchant.login.title": {
+    template: "Sign in to your workspace",
+    placeholders: [],
+  },
+  "auth.merchant.login.description": {
+    template: "Enter the email approved by your PieShop invitation.",
+    placeholders: [],
+  },
+  "auth.merchant.login.email.label": {
+    template: "Merchant email",
+    placeholders: [],
+  },
+  "auth.merchant.login.submit": {
+    template: "Email me a sign-in link",
+    placeholders: [],
+  },
+  "auth.merchant.login.submitting": {
+    template: "Requesting link…",
+    placeholders: [],
+  },
+  "auth.merchant.login.result": {
+    template:
+      "If this email has merchant access, a secure sign-in link is on its way.",
+    placeholders: [],
+  },
+  "auth.merchant.login.ownerLink": {
+    template: "Platform owner sign in",
+    placeholders: [],
+  },
   "auth.owner.control.eyebrow": {
     template: "Platform control plane",
     placeholders: [],
@@ -227,6 +264,10 @@ const catalogue = {
     placeholders: [],
   },
   "auth.owner.logout.submit": {
+    template: "Sign out",
+    placeholders: [],
+  },
+  "auth.merchant.logout.submit": {
     template: "Sign out",
     placeholders: [],
   },

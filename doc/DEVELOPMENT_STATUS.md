@@ -5,10 +5,10 @@ This file records the single current roadmap part and its acceptance evidence. I
 ## Project state
 
 - **Overall state:** Phase 1 implementation
-- **Current approved part:** Part 1.3 — Secure merchant invitation
-- **Part status:** Acceptance contract and TDD implementation authorized
+- **Current approved part:** Part 1.4 — Account status and onboarding progress
+- **Part status:** Authorized for threat review and TDD implementation
 - **Next part:** Part 1.4 — Account status and onboarding progress
-- **Next part authorised:** No
+- **Next part authorised:** Yes
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
 - **Last updated:** 2026-09-06 Australia/Sydney
 - **CI mode:** Manual GitHub Actions dispatch during private synthetic development; automatic push/PR triggers must be restored and green before staging, real-vendor demo, or production
@@ -47,7 +47,11 @@ See `doc/PART_1_3_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.3 in
 - Slice 7 live repair: The first matched-recipient redemption failed atomically with PostgreSQL `42702` because the PL/pgSQL output name `business_id` conflicted with the membership upsert conflict target. Owner-authorized migration `20260906020000_fix_merchant_redemption_conflict_target.sql` targets the named unique constraint; remote schema/hardening and 12 rollback-safe security assertions pass.
 - Slice 7 owner checkpoint: Passed — Mehedi Hassan completed the same-browser Mailtrap/Supabase magic-link flow on 2026-09-06 Australia/Sydney and reached the protected `/merchant` page with authentication and invitation material removed from the URL.
 - Slice 7 final gate: Passed — 60 test files and 265 assertions, formatting, lint, TypeScript, production build, secret scan, and dependency audit with 0 vulnerabilities.
-- Implementation status: In progress — magic-link redemption is accepted; browser restoration and explicit merchant-session revocation/logout acceptance remain before Part 1.3 can close
+- Slice 8 exact-session logout: Passed — owner-authorized migration `20260906030000_revoke_current_merchant_session.sql` revokes only the authenticated merchant's exact hash-bound application session, records the real actor in an append-only safe audit event, clears both application and provider sessions, and redirects to merchant login. Remote schema/hardening and 12 rollback-safe isolation assertions pass.
+- Slice 9 returning merchant login: Passed — owner-authorized migration `20260906040000_returning_merchant_magic_link.sql` restricts eligibility lookup to `service_role`, requires exactly one active merchant-owner membership before self-authorized session creation, preserves the 30-day absolute limit, and audits session creation without email or token material. The separate email-only `/merchant/login` uses equivalent public responses, hashed process-local account/source throttling, a 15-minute HttpOnly identity binding, PKCE, and disabled signup.
+- Slice 9 complete gate: Passed — 67 test files and 279 assertions, formatting, lint, TypeScript, production build, secret scan, dependency audit with 0 vulnerabilities, remote schema/hardening, and 12 rollback-safe isolation assertions. Codex browser smoke checks confirm separate accessible owner and merchant entry screens and reciprocal navigation without exposing signup or recovery.
+- Slice 9 owner UI checkpoint: Accepted by Mehedi Hassan on 2026-09-06 Australia/Sydney — returning magic-link login reached the protected merchant workspace; owner logout and protected-route redirect, generic unknown-email response, merchant-route redirect, and separated login navigation were verified through Codex UI. The initial cross-tab PKCE failure was safely diagnosed as `BINDING_MISSING`; same-tab confirmation succeeded.
+- Implementation status: Complete and owner accepted — Part 1.3 closed on 2026-09-06 Australia/Sydney
 
 ### Completed Part 1.2
 

@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { OwnerLoginForm } from "@/components/OwnerLoginForm";
+import { MerchantLoginForm } from "@/components/MerchantLoginForm";
 import { formatMessage } from "@/messages/catalogue";
 
 export const metadata: Metadata = {
-  title: `${formatMessage("auth.owner.login.title")} | ${formatMessage("brand.name")}`,
+  title: `${formatMessage("auth.merchant.login.title")} | ${formatMessage("brand.name")}`,
 };
 
-export default function OwnerLoginPage() {
+export default function MerchantLoginPage() {
   return (
     <main className="relative isolate grid min-h-screen place-items-center overflow-hidden bg-stone-950 px-5 py-10 text-stone-100">
       <div
@@ -27,28 +27,24 @@ export default function OwnerLoginPage() {
             {formatMessage("brand.name")}
           </span>
         </div>
-
         <p className="mt-9 text-xs font-semibold tracking-[0.2em] text-orange-300 uppercase">
-          {formatMessage("auth.owner.login.eyebrow")}
+          {formatMessage("auth.merchant.login.eyebrow")}
         </p>
         <h1 className="mt-3 font-serif text-4xl leading-tight font-semibold tracking-[-0.035em]">
-          {formatMessage("auth.owner.login.title")}
+          {formatMessage("auth.merchant.login.title")}
         </h1>
         <p className="mt-3 text-sm leading-6 text-stone-400">
-          {formatMessage("auth.owner.login.description")}
+          {formatMessage("auth.merchant.login.description")}
         </p>
-
-        <OwnerLoginForm />
-
+        <MerchantLoginForm />
         <p className="mt-6 border-t border-white/10 pt-5 text-xs leading-5 text-stone-500">
-          {formatMessage("auth.owner.login.restriction")}
+          <Link
+            className="text-orange-300 underline-offset-4 hover:underline"
+            href="/login"
+          >
+            {formatMessage("auth.merchant.login.ownerLink")}
+          </Link>
         </p>
-        <Link
-          className="mt-3 inline-block text-sm text-orange-300 underline-offset-4 hover:underline"
-          href="/merchant/login"
-        >
-          {formatMessage("auth.owner.login.merchantLink")}
-        </Link>
       </section>
     </main>
   );

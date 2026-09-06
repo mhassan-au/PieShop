@@ -11,6 +11,7 @@
 - Opening an invitation link shows a confirmation page and never consumes it. Redemption occurs only after an explicit POST, authenticated email verification, and recipient match.
 - Redemption atomically creates exactly one active `merchant_owner` membership, marks the invitation used, records the real actor, and starts a revocable merchant session with a 30-day absolute maximum.
 - Public signup, implicit membership, passwords, owner access to merchant content, real recipients, and production readiness remain excluded.
+- Returning merchants request a fresh magic link from a separate email-only merchant login page. Responses do not reveal whether an account exists, and session creation requires a freshly verified identity with exactly one active merchant-owner membership.
 
 ## Acceptance examples
 
@@ -32,6 +33,9 @@
 16. Owner responses expose operational status/timestamps only and never expose invited email, token, Auth identifiers, merchant content, or provider errors.
 17. Delivery is behind a server-only adapter; automated tests use a capture adapter and send no real email.
 18. Owner controls and public confirmation remain keyboard-accessible, mobile usable, and use centralized pending/success/failure copy.
+19. Owner and merchant login entry points are visibly separate; merchant login never asks for a password or exposes public registration.
+20. Known, unknown, malformed, inactive, and throttled merchant-email requests return equivalent public copy; only an eligible identity reaches the email provider.
+21. Returning-login confirmation is PKCE-based, bound to the normalized email for 15 minutes in an HttpOnly cookie, and creates a new 30-day revocable application session only after the authenticated identity matches.
 
 ## Required evidence
 

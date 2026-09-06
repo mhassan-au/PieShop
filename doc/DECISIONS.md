@@ -206,3 +206,11 @@ Use this file for decisions that materially affect scope, data, security, provid
 - **Decision:** For the 1–5 merchant MVP, the platform owner manually creates and confirms each invited merchant-owner identity in the Supabase dashboard using the exact invitation email. PieShop magic-link requests use `shouldCreateUser: false`; public signup and application-driven Auth-user creation remain disabled. Any unused password is randomly generated, retained only in the owner's password manager, and never shared or used by the merchant.
 - **Reason:** This keeps merchant identity creation explicitly owner-controlled while avoiding premature privileged Auth-administration automation.
 - **Consequence:** The runbook must verify the invitation email matches the Auth identity before testing. Before leaving MVP, replace the manual step with reviewed owner-controlled provisioning that is idempotent, audited, rate-limited, rollback-safe, and reconciles partial failure; add suspension, recovery, duplicate-identity, provider-outage, and least-privilege tests. This temporary process is not acceptable for a real-vendor demo, staging, or production.
+
+## ADR-027: Separate returning-merchant magic-link entry
+
+- **Status:** Accepted for private synthetic development
+- **Date:** 2026-09-06
+- **Decision:** Keep accepted invitations single-use. Returning synthetic merchants use `/merchant/login`, which accepts only an email and always returns equivalent public copy. A server-only eligibility lookup prevents delivery to identities without an active merchant-owner membership. PKCE confirmation is bound for 15 minutes to a normalized-email hash in an HttpOnly cookie, then a self-authorizing database function creates a new revocable session with a 30-day absolute limit.
+- **Reason:** Resetting an accepted invitation would weaken replay protection, while directing merchants through the platform-owner password form mixes identities and authentication methods.
+- **Consequence:** A new or cleared browser requires another email link. Process-local request throttling is acceptable only for private single-instance synthetic development; replace it with a shared durable limiter before horizontally scaled deployment or any real-vendor demo.

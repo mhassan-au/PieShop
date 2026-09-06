@@ -37,4 +37,37 @@ describe("SupabaseMerchantSessionRepository", () => {
       "secret",
     );
   });
+
+  it("revokes only through the current-session hash RPC", async () => {
+    const rpc = vi.fn().mockResolvedValue({ data: true, error: null });
+    const repository = new SupabaseMerchantSessionRepository({ rpc });
+    await expect(
+      repository.revokeCurrentByTokenHash("a".repeat(64)),
+    ).resolves.toBe(true);
+    expect(rpc).toHaveBeenCalledWith("revoke_current_merchant_session", {
+      p_token_hash: "a".repeat(64),
+    });
+  });
+
+  it("starts a returning session through the self-bound RPC", async () => {
+    const rpc = vi.fn().mockResolvedValue({
+      data: [
+        {
+          business_id: "11111111-1111-4111-8111-111111111111",
+          membership_role: "merchant_owner",
+          absolute_expires_at: "2026-10-06T00:00:00.000Z",
+        },
+      ],
+      error: null,
+    });
+    const repository = new SupabaseMerchantSessionRepository({ rpc });
+    await expect(repository.startCurrent("b".repeat(64))).resolves.toEqual({
+      businessId: "11111111-1111-4111-8111-111111111111",
+      role: "merchant_owner",
+      absoluteExpiresAt: "2026-10-06T00:00:00.000Z",
+    });
+    expect(rpc).toHaveBeenCalledWith("start_current_merchant_session", {
+      p_session_token_hash: "b".repeat(64),
+    });
+  });
 });

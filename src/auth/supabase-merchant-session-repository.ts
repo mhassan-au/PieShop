@@ -37,6 +37,33 @@ export class SupabaseMerchantSessionRepository {
       throw new Error(OPERATION_ERROR);
     }
   }
+
+  async revokeCurrentByTokenHash(tokenHash: string): Promise<boolean> {
+    const result = await this.client.rpc("revoke_current_merchant_session", {
+      p_token_hash: tokenHash,
+    });
+    if (result.error || typeof result.data !== "boolean")
+      throw new Error(OPERATION_ERROR);
+    return result.data;
+  }
+
+  async startCurrent(tokenHash: string) {
+    const result = await this.client.rpc("start_current_merchant_session", {
+      p_session_token_hash: tokenHash,
+    });
+    if (result.error || !Array.isArray(result.data) || result.data.length !== 1)
+      throw new Error(OPERATION_ERROR);
+    try {
+      const row = rowSchema.parse(result.data[0]);
+      return {
+        businessId: row.business_id,
+        role: row.membership_role,
+        absoluteExpiresAt: row.absolute_expires_at,
+      } as const;
+    } catch {
+      throw new Error(OPERATION_ERROR);
+    }
+  }
 }
 
 export function createSupabaseMerchantSessionRepository(

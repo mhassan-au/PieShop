@@ -129,6 +129,15 @@ Desktop browser and viewport:
 Phone browser/viewport:
 Shared checklist: Pass / Fail
 Part 1.3 preview checklist: Pass / Fail
+
+### Part 1.3 authentication completion record
+
+- [x] Owner logout returns to owner login and `/control` rejects the revoked session.
+- [x] Merchant login asks only for the approved email and returns account-neutral public copy.
+- [x] A same-browser PKCE link reaches `/merchant` without authentication material in the final URL.
+- [x] Unauthenticated `/merchant` requests return to `/merchant/login`.
+
+Owner acceptance: Passed — Mehedi Hassan, 2026-09-06 Australia/Sydney.
 Console errors: None / Details
 Usability or wording observations:
 Owner decision: Accept / Corrections required
