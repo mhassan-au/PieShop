@@ -10,7 +10,7 @@ This file records the single current roadmap part and its acceptance evidence. I
 - **Next part:** Part 1.4 — Account status and onboarding progress
 - **Next part authorised:** No
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
-- **Last updated:** 2026-09-05 Australia/Sydney
+- **Last updated:** 2026-09-06 Australia/Sydney
 - **CI mode:** Manual GitHub Actions dispatch during private synthetic development; automatic push/PR triggers must be restored and green before staging, real-vendor demo, or production
 
 ## Current part objective
@@ -42,7 +42,9 @@ See `doc/PART_1_3_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.3 in
 - Slice 6 browser check: Passed by Codex — an active merchant was rejected with centralized safe copy, while the synthetic onboarding merchant produced the success state and a Mailtrap-captured invitation without exposing its address or link on the owner page. Final owner review of the captured invitation and redemption flow remains pending.
 - Slice 6 owner checkpoint: Accepted by Mehedi Hassan on 2026-09-05 Australia/Sydney after verifying the captured Mailtrap invitation, merchant name, review link, and safe invitation page.
 - Merchant Auth provisioning decision: Accepted for MVP — the owner manually pre-provisions the exact invited synthetic identity in Supabase; automatic creation and public signup remain disabled. Automated owner-controlled provisioning is mandatory before leaving MVP (ADR-026).
-- Implementation status: In progress — secure sandbox delivery is complete; authenticated magic-link confirmation, redemption, and final owner UI/process acceptance remain before Part 1.3 can close
+- Slice 7 PKCE confirmation: Passed — the invitation page requests Supabase email authentication with `shouldCreateUser: false`, stores only a 15-minute HttpOnly/SameSite invitation hash binding, and redirects to `/auth/confirm`. The callback exchanges the PKCE code before the existing atomic email-bound redemption, creates the opaque 30-day application session, clears the binding, and removes authentication/invitation material from the URL. The protected `/merchant` route freshly verifies both Supabase identity and the application session.
+- Slice 7 database/security gate: Passed — owner-authorized migration `20260906010000_server_invitation_auth_target.sql` exposes only the live invitation recipient email to `service_role`; browser roles have no grant. Remote migration dry-run is clean, schema/hardening pass, and 12 rollback-safe isolation assertions pass. The complete gate passes 59 test files and 263 assertions, production build, secret scan, and dependency audit with 0 vulnerabilities.
+- Implementation status: In progress — automated Part 1.3 implementation is complete; final owner magic-link, clean-URL, browser-restoration, and revocation UI/process acceptance remains before Part 1.3 can close
 
 ### Completed Part 1.2
 

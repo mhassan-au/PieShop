@@ -403,6 +403,35 @@ const catalogue = {
       "Email verification is not configured yet. No account has been created.",
     placeholders: [],
   },
+  "merchant.invitation.magicLinkSend": {
+    template: "Continue with email",
+    placeholders: [],
+  },
+  "merchant.invitation.magicLinkSending": {
+    template: "Sending secure link…",
+    placeholders: [],
+  },
+  "merchant.invitation.magicLinkSent": {
+    template: "Check your email for a secure sign-in link.",
+    placeholders: [],
+  },
+  "merchant.invitation.magicLinkFailure": {
+    template:
+      "We couldn’t send a secure sign-in link. Wait a moment and try again.",
+    placeholders: [],
+  },
+  "merchant.home.eyebrow": {
+    template: "MERCHANT WORKSPACE",
+    placeholders: [],
+  },
+  "merchant.home.title": {
+    template: "Your PieShop workspace is ready",
+    placeholders: [],
+  },
+  "merchant.home.description": {
+    template: "Catalogue setup will be added in the next phase.",
+    placeholders: [],
+  },
   "auth.owner.control.empty.title": {
     template: "Control plane ready",
     placeholders: [],

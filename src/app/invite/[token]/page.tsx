@@ -18,14 +18,16 @@ export default async function InvitationPage({
   params,
 }: Readonly<{ params: Promise<{ token: string }> }>) {
   let invitation = null;
+  let invitationToken: string | undefined;
   try {
     const { token } = await params;
     const repository = createSupabasePlatformInvitationRepository(
       await createRequestSupabaseClient(),
     );
     invitation = await repository.inspect(hashInvitationToken(token));
+    if (invitation) invitationToken = token;
   } catch {
     invitation = null;
   }
-  return <InvitationPreview invitation={invitation} />;
+  return <InvitationPreview invitation={invitation} token={invitationToken} />;
 }

@@ -1,9 +1,11 @@
 import { formatMessage } from "@/messages/catalogue";
 import type { InvitationInspection } from "@/invitations/supabase-platform-invitation-repository";
+import { InvitationConfirmation } from "./InvitationConfirmation";
 
 export function InvitationPreview({
   invitation,
-}: Readonly<{ invitation: InvitationInspection | null }>) {
+  token,
+}: Readonly<{ invitation: InvitationInspection | null; token?: string }>) {
   return (
     <main className="mx-auto flex min-h-screen max-w-xl items-center px-5 py-12">
       <section className="w-full rounded-3xl border border-white/10 bg-white/[0.04] p-7 sm:p-10">
@@ -28,6 +30,7 @@ export function InvitationPreview({
             <p className="mt-6 rounded-2xl border border-orange-300/20 bg-orange-300/5 p-4 text-sm text-orange-100">
               {formatMessage("merchant.invitation.page.pendingDelivery")}
             </p>
+            {token ? <InvitationConfirmation token={token} /> : null}
           </>
         ) : (
           <p className="mt-5 text-stone-300">
