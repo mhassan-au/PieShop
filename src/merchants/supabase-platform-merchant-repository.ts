@@ -5,6 +5,7 @@ import {
   type CreateMerchantInput,
   type PlatformMerchant,
 } from "./platform-merchant";
+import type { MerchantStatusChange as StatusChange } from "./merchant-status";
 
 const OPERATION_ERROR = "Merchant operation failed";
 
@@ -46,6 +47,14 @@ export class SupabasePlatformMerchantRepository {
     );
     if (rows.length !== 1) throw new Error(OPERATION_ERROR);
     return rows[0]!;
+  }
+
+  async changeStatus(input: StatusChange): Promise<void> {
+    const result = await this.client.rpc("change_platform_merchant_status", {
+      p_business_id: input.businessId,
+      p_target_status: input.targetStatus,
+    });
+    if (result.error || result.data !== true) throw new Error(OPERATION_ERROR);
   }
 }
 

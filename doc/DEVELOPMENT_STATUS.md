@@ -4,11 +4,11 @@ This file records the single current roadmap part and its acceptance evidence. I
 
 ## Project state
 
-- **Overall state:** Phase 1 implementation
+- **Overall state:** Phase 1 complete; Phase 2 threat review next
 - **Current approved part:** Part 1.4 — Account status and onboarding progress
-- **Part status:** Authorized for threat review and TDD implementation
-- **Next part:** Part 1.4 — Account status and onboarding progress
-- **Next part authorised:** Yes
+- **Part status:** Complete and UI verified
+- **Next part:** Phase 2 / Part 2.1 — Business profile and delivery zones
+- **Next part authorised:** Yes — threat review and TDD preparation
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
 - **Last updated:** 2026-09-06 Australia/Sydney
 - **CI mode:** Manual GitHub Actions dispatch during private synthetic development; automatic push/PR triggers must be restored and green before staging, real-vendor demo, or production
@@ -52,6 +52,16 @@ See `doc/PART_1_3_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.3 in
 - Slice 9 complete gate: Passed — 67 test files and 279 assertions, formatting, lint, TypeScript, production build, secret scan, dependency audit with 0 vulnerabilities, remote schema/hardening, and 12 rollback-safe isolation assertions. Codex browser smoke checks confirm separate accessible owner and merchant entry screens and reciprocal navigation without exposing signup or recovery.
 - Slice 9 owner UI checkpoint: Accepted by Mehedi Hassan on 2026-09-06 Australia/Sydney — returning magic-link login reached the protected merchant workspace; owner logout and protected-route redirect, generic unknown-email response, merchant-route redirect, and separated login navigation were verified through Codex UI. The initial cross-tab PKCE failure was safely diagnosed as `BINDING_MISSING`; same-tab confirmation succeeded.
 - Implementation status: Complete and owner accepted — Part 1.3 closed on 2026-09-06 Australia/Sydney
+
+### Current Part 1.4
+
+- Authorization: Mehedi Hassan authorized continued implementation on 2026-09-06 Australia/Sydney.
+- Threat and acceptance contract: Passed — `PART_1_4_ACCEPTANCE.md` locks the transition graph, terminal non-deleting archive, activation prerequisites, atomic suspension revocation, real-actor audit, idempotency, and metadata-only progress.
+- TDD red observed: Yes — status policy and migration suites failed because the module and migration did not exist.
+- Local implementation: Passed — strict input, privacy-safe progress derivation, self-authorizing repository/action boundary, centralized confirmations, and valid-next-action UI pass 5 focused files and 35 assertions plus TypeScript and lint.
+- Development database: Passed — owner-authorized migration `20260906050000_merchant_status_transitions.sql` applied successfully; remote dry-run is clean, schema/hardening pass, and 12 isolation/immutability assertions pass with synthetic rollback.
+- Codex UI checkpoint: Passed on 2026-09-06 Australia/Sydney — Syntext IT moved onboarding → active → suspended → active; suspension displayed session revocation, `/merchant` redirected to `/merchant/login`, reactivation did not restore a session, and archive was not invoked.
+- Implementation status: Complete — Part 1.4 and Phase 1 acceptance gates are satisfied for private synthetic development. Real-vendor demo, staging, and production remain blocked by the documented MFA/AAL2 and durable-control release gates.
 
 ### Completed Part 1.2
 

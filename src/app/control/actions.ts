@@ -26,6 +26,7 @@ import {
 import { createSupabasePlatformInvitationRepository } from "@/invitations/supabase-platform-invitation-repository";
 import { readInvitationDeliveryTarget } from "@/invitations/supabase-invitation-delivery-target";
 import { parseCreateMerchantInput } from "@/merchants/platform-merchant";
+import { parseMerchantStatusChange } from "@/merchants/merchant-status";
 import { createSupabasePlatformMerchantRepository } from "@/merchants/supabase-platform-merchant-repository";
 import { createRequestSupabaseClient } from "@/supabase/server";
 import { createSupabaseAdminClient } from "@/supabase/admin";
@@ -78,6 +79,44 @@ export type InvitationActionState = Readonly<{
   message?: string;
   previewUrl?: string;
 }>;
+
+export type MerchantStatusActionState = Readonly<{
+  status: "idle" | "success" | "error";
+  message?: string;
+}>;
+
+export async function changeMerchantStatusAction(
+  _previousState: MerchantStatusActionState,
+  formData: FormData,
+): Promise<MerchantStatusActionState> {
+  const access = await verifyRequestPlatformOwnerAccess();
+  if (access.status === "denied") redirect("/login");
+  if (access.status === "unavailable") {
+    return {
+      status: "error",
+      message: formatMessage("error.unexpected.message"),
+    };
+  }
+  try {
+    const input = parseMerchantStatusChange({
+      businessId: formData.get("businessId"),
+      targetStatus: formData.get("targetStatus"),
+    });
+    await createSupabasePlatformMerchantRepository(
+      await createRequestSupabaseClient(),
+    ).changeStatus(input);
+    revalidatePath("/control");
+    return {
+      status: "success",
+      message: formatMessage("merchant.status.change.success"),
+    };
+  } catch {
+    return {
+      status: "error",
+      message: formatMessage("merchant.status.change.failure"),
+    };
+  }
+}
 
 async function requireOwnerForInvitation(): Promise<
   "authorized" | "unavailable"

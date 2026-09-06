@@ -47,6 +47,19 @@ describe("SupabasePlatformMerchantRepository", () => {
     });
   });
 
+  it("changes status only through the self-authorizing RPC", async () => {
+    const rpc = vi.fn().mockResolvedValue({ data: true, error: null });
+    const repository = new SupabasePlatformMerchantRepository({ rpc });
+    await repository.changeStatus({
+      businessId: "11111111-1111-4111-8111-111111111111",
+      targetStatus: "suspended",
+    });
+    expect(rpc).toHaveBeenCalledWith("change_platform_merchant_status", {
+      p_business_id: "11111111-1111-4111-8111-111111111111",
+      p_target_status: "suspended",
+    });
+  });
+
   it("fails closed for provider errors, malformed rows, or contradictory create results", async () => {
     const providerFailure = new SupabasePlatformMerchantRepository({
       rpc: vi

@@ -3,16 +3,76 @@
 import { useActionState } from "react";
 import {
   createMerchantAction,
+  changeMerchantStatusAction,
   issueMerchantInvitationAction,
   revokeMerchantInvitationAction,
   type CreateMerchantActionState,
   type InvitationActionState,
+  type MerchantStatusActionState,
 } from "@/app/control/actions";
 import { formatMessage } from "@/messages/catalogue";
+import { onboardingProgressFor } from "@/merchants/merchant-status";
 import type { PlatformMerchant } from "@/merchants/platform-merchant";
 
 const initialState: CreateMerchantActionState = { status: "idle" };
 const initialInvitationState: InvitationActionState = { status: "idle" };
+const initialStatusState: MerchantStatusActionState = { status: "idle" };
+
+function MerchantStatusControls({
+  merchant,
+}: Readonly<{ merchant: PlatformMerchant }>) {
+  const [state, action, pending] = useActionState(
+    changeMerchantStatusAction,
+    initialStatusState,
+  );
+  const targets =
+    merchant.status === "onboarding"
+      ? (["active", "suspended"] as const)
+      : merchant.status === "active"
+        ? (["suspended"] as const)
+        : merchant.status === "suspended"
+          ? (["active", "archived"] as const)
+          : ([] as const);
+  return (
+    <div className="mt-4 border-t border-white/10 pt-4">
+      <p className="text-xs font-semibold text-stone-300">
+        {formatMessage(
+          `merchant.progress.${onboardingProgressFor(merchant.status, merchant.invitationStatus)}`,
+        )}
+      </p>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {targets.map((target) => (
+          <form
+            action={action}
+            key={target}
+            onSubmit={(event) => {
+              if (
+                !window.confirm(
+                  formatMessage(`merchant.status.confirm.${target}`),
+                )
+              ) {
+                event.preventDefault();
+              }
+            }}
+          >
+            <input name="businessId" type="hidden" value={merchant.id} />
+            <input name="targetStatus" type="hidden" value={target} />
+            <button
+              className="min-h-11 rounded-xl border border-white/20 px-4 text-sm font-semibold disabled:opacity-60"
+              disabled={pending}
+              type="submit"
+            >
+              {formatMessage(`merchant.status.action.${target}`)}
+            </button>
+          </form>
+        ))}
+      </div>
+      <div aria-live="polite" className="mt-3 text-sm">
+        {state.message}
+      </div>
+    </div>
+  );
+}
 
 function InvitationControls({
   merchant,
@@ -167,6 +227,7 @@ export function MerchantDashboard({
                   {merchant.currencyCode}
                 </p>
                 <InvitationControls merchant={merchant} />
+                <MerchantStatusControls merchant={merchant} />
               </li>
             ))}
           </ul>

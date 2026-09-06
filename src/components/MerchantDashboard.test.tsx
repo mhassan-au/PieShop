@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/app/control/actions", () => ({
+  changeMerchantStatusAction: vi.fn(),
   createMerchantAction: vi.fn(),
   issueMerchantInvitationAction: vi.fn(),
   revokeMerchantInvitationAction: vi.fn(),
@@ -61,6 +62,16 @@ describe("MerchantDashboard", () => {
     expect(
       screen.getByRole("button", { name: "Send sandbox invitation" }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByText("Onboarding: invitation acceptance pending"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Activate" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Suspend" })).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Archive" }),
+    ).not.toBeInTheDocument();
     expect(
       screen.getByText(
         "Development only: invitations are captured by the Mailtrap sandbox.",

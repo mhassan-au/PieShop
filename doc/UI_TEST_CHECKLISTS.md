@@ -138,6 +138,18 @@ Part 1.3 preview checklist: Pass / Fail
 - [x] Unauthenticated `/merchant` requests return to `/merchant/login`.
 
 Owner acceptance: Passed — Mehedi Hassan, 2026-09-06 Australia/Sydney.
+
+## Part 1.4 — Merchant status and onboarding progress
+
+- [x] Accepted invitation shows ready-for-activation progress.
+- [x] Activate confirmation moves onboarding to active.
+- [x] Suspend confirmation moves active to suspended and reports revoked access.
+- [x] A protected merchant request redirects to merchant login while suspended.
+- [x] Reactivation returns the account to active without restoring the old session.
+- [x] Archive is available only while suspended and was not invoked during the reversible UI test.
+- [x] The owner view contains only operational metadata and onboarding progress.
+
+Codex UI checkpoint: Passed — 2026-09-06 Australia/Sydney.
 Console errors: None / Details
 Usability or wording observations:
 Owner decision: Accept / Corrections required

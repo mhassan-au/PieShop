@@ -349,6 +349,52 @@ const catalogue = {
   "merchant.status.active": { template: "Active", placeholders: [] },
   "merchant.status.suspended": { template: "Suspended", placeholders: [] },
   "merchant.status.archived": { template: "Archived", placeholders: [] },
+  "merchant.status.action.active": { template: "Activate", placeholders: [] },
+  "merchant.status.action.suspended": { template: "Suspend", placeholders: [] },
+  "merchant.status.action.archived": { template: "Archive", placeholders: [] },
+  "merchant.status.confirm.active": {
+    template:
+      "Activate this merchant account? Previously revoked sessions will stay revoked.",
+    placeholders: [],
+  },
+  "merchant.status.confirm.suspended": {
+    template: "Suspend this merchant account and revoke all merchant sessions?",
+    placeholders: [],
+  },
+  "merchant.status.confirm.archived": {
+    template:
+      "Archive this suspended merchant account? This cannot be reversed in the MVP.",
+    placeholders: [],
+  },
+  "merchant.status.change.success": {
+    template: "Merchant account status updated.",
+    placeholders: [],
+  },
+  "merchant.status.change.failure": {
+    template:
+      "We couldn’t update this merchant status. Check its onboarding state and try again.",
+    placeholders: [],
+  },
+  "merchant.progress.invitation_pending": {
+    template: "Onboarding: invitation acceptance pending",
+    placeholders: [],
+  },
+  "merchant.progress.ready_to_activate": {
+    template: "Onboarding: ready for activation",
+    placeholders: [],
+  },
+  "merchant.progress.active": {
+    template: "Onboarding complete: account active",
+    placeholders: [],
+  },
+  "merchant.progress.suspended": {
+    template: "Access suspended: sessions revoked",
+    placeholders: [],
+  },
+  "merchant.progress.archived": {
+    template: "Account archived: history retained",
+    placeholders: [],
+  },
   "merchant.invitation.draft": {
     template: "Invitation draft",
     placeholders: [],
