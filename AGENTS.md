@@ -54,6 +54,7 @@ Stop before destructive/irreversible operations, staging or production changes, 
 - Keep progress updates concise but report changed files, architecture/security implications, failures, and evidence.
 - Manual owner review is for visual quality, wording, usability, and browser/device judgement—not repeatable rule testing.
 - Git staging, commits, and pushes are owner-operated by default. Codex may do them only when the owner explicitly requests it or explicitly activates quick mode. A break returns to the owner-operated default.
+- When the local Telegram notifier is configured, send one short redacted notification after a substantial unattended task completes, fails, or needs owner intervention. Use `npm run notify:codex -- -Status <status> -Title "<safe title>" -Message "<safe message>"`; never send secrets, personal data, logs, stack traces, database content, or customer/merchant identifiers. Notifications are informational only and never constitute approval.
 - At a completed milestone, state `Milestone achieved` and provide only the remaining owner commands in one PowerShell block.
 
 <!-- BEGIN:nextjs-agent-rules -->

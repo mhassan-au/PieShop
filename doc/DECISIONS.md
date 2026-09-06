@@ -222,3 +222,11 @@ Use this file for decisions that materially affect scope, data, security, provid
 - **Decision:** PieShop uses a centralized, app-styled accessible dialog system for confirmations, warnings, action success, and action failure. Native `window.confirm`, `window.alert`, and `window.prompt` are prohibited. Destructive or access-changing actions submit only after explicit confirmation in the app dialog.
 - **Reason:** Browser-native prompts are visually inconsistent, difficult to test, and cannot use PieShop's centralized wording and accessibility presentation.
 - **Consequence:** New action feedback must use `AppDialog`, `ActionFeedbackDialog`, or `ConfirmedActionForm`; automated tests and source checks guard the boundary. Logout remains a direct user action because it is reversible and does not require a warning.
+
+## ADR-029: Local one-way Codex Telegram notifier
+
+- **Status:** Accepted for local development
+- **Date:** 2026-09-06
+- **Decision:** Use a repository-local, copyable PowerShell script to send short operational notifications when unattended Codex work completes, fails, or requires owner intervention. Configuration remains in ignored `.env.local`; the script is disabled by default and accepts no inbound commands or approvals.
+- **Reason:** The owner needs timely awareness away from the development PC without coupling projects to a shared service or treating chat replies as security authorization.
+- **Consequence:** Messages contain only project name, controlled status, short redacted copy, and UTC time. The script rejects common credential and personal-identifier patterns, never includes logs/provider errors, and cannot resume Codex. Two-way Telegram control requires a separate threat model and explicit approval.

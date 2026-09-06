@@ -41,12 +41,15 @@ Variables are introduced only when their roadmap part is implemented. Validate r
 
 ## Observability
 
-| Variable                   | Classification | Purpose                                                          | Introduced |
-| -------------------------- | -------------- | ---------------------------------------------------------------- | ---------- |
-| `SENTRY_DSN`               | Server secret  | Server exception/event destination                               | Part 0.3   |
-| `NEXT_PUBLIC_SENTRY_DSN`   | Public         | Browser error destination configured to avoid sensitive payloads | Part 0.3   |
-| `TELEGRAM_ALERT_BOT_TOKEN` | Restricted     | Critical-alert bot authentication                                | Part 0.3   |
-| `TELEGRAM_ALERT_CHAT_ID`   | Server secret  | Environment-specific alert destination                           | Part 0.3   |
+| Variable                       | Classification | Purpose                                                          | Introduced    |
+| ------------------------------ | -------------- | ---------------------------------------------------------------- | ------------- |
+| `SENTRY_DSN`                   | Server secret  | Server exception/event destination                               | Part 0.3      |
+| `NEXT_PUBLIC_SENTRY_DSN`       | Public         | Browser error destination configured to avoid sensitive payloads | Part 0.3      |
+| `TELEGRAM_ALERT_BOT_TOKEN`     | Restricted     | Critical-alert bot authentication                                | Part 0.3      |
+| `TELEGRAM_ALERT_CHAT_ID`       | Server secret  | Environment-specific alert destination                           | Part 0.3      |
+| `CODEX_TELEGRAM_NOTIFICATIONS` | Operational    | Enables local one-way Codex workflow notifications               | Local tooling |
+| `CODEX_TELEGRAM_BOT_TOKEN`     | Restricted     | Local Codex notifier bot authentication                          | Local tooling |
+| `CODEX_TELEGRAM_CHAT_ID`       | Server secret  | Owner-only Codex workflow notification destination               | Local tooling |
 
 ## Email and web push
 
