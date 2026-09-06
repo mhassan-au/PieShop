@@ -18,6 +18,14 @@ CODEX_TELEGRAM_CHAT_ID=
 
 Never use a `NEXT_PUBLIC_` prefix. Keep the token out of Git, chat, screenshots, terminal history, logs, and browser code.
 
+After putting the bot token in `.env.local`, open the new bot in Telegram and send `/start`. Then retrieve the latest private-chat ID without displaying the token or message contents:
+
+```powershell
+npm run telegram:chat-id
+```
+
+Copy the returned numeric value into `CODEX_TELEGRAM_CHAT_ID`. The helper intentionally ignores group/channel updates and prints only the latest private-chat ID.
+
 When copying the script to another repository, change only `$ProjectName` in the configuration section near the top. The destination repository must ignore its local environment file.
 
 ## Usage
@@ -40,6 +48,7 @@ Run its offline tests with:
 
 ```powershell
 npm run test:codex-notify
+npm run test:codex-chat-id
 ```
 
 ## Security boundary

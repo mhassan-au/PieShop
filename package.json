@@ -31,12 +31,14 @@
     "test:supabase:owner-link": "node --env-file=.env.local scripts/check-owner-linkage.mjs",
     "test:mailtrap:sandbox": "node --env-file=.env.local scripts/test-mailtrap-sandbox.mjs",
     "test:codex-notify": "node scripts/codex-notify.test.mjs",
+    "test:codex-chat-id": "node scripts/codex-telegram-chat-id.test.mjs",
     "notify:codex": "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File scripts/codex-notify.ps1",
+    "telegram:chat-id": "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File scripts/codex-telegram-chat-id.ps1",
     "db:push:dry-run": "node --env-file=.env.local --experimental-strip-types scripts/push-supabase-migrations.ts --dry-run",
     "db:push:apply": "node --env-file=.env.local --experimental-strip-types scripts/push-supabase-migrations.ts --apply",
     "db:seed:apply": "node --env-file=.env.local --experimental-strip-types scripts/push-supabase-migrations.ts --seed",
     "db:reset:development": "node --env-file=.env.local --experimental-strip-types scripts/push-supabase-migrations.ts --reset",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run test:codex-notify && npm run build && npm run security:secrets && npm run security:audit"
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run test:codex-notify && npm run test:codex-chat-id && npm run build && npm run security:secrets && npm run security:audit"
   },
   "dependencies": {
     "@sentry/nextjs": "10.71.0",
