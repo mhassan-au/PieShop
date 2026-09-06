@@ -4,6 +4,27 @@ import type { InvitationTarget } from "./platform-invitation";
 import { z } from "zod";
 
 const OPERATION_ERROR = "Invitation operation failed";
+const PROVIDER_CODE_PATTERN = /^[A-Z0-9_]{1,16}$/u;
+
+export class InvitationOperationError extends Error {
+  readonly providerCode?: string;
+
+  constructor(providerCode?: unknown) {
+    super(OPERATION_ERROR);
+    this.name = "InvitationOperationError";
+    this.providerCode =
+      typeof providerCode === "string" &&
+      PROVIDER_CODE_PATTERN.test(providerCode.toUpperCase())
+        ? providerCode.toUpperCase()
+        : undefined;
+  }
+}
+
+function providerCode(error: unknown): unknown {
+  return error && typeof error === "object" && "code" in error
+    ? error.code
+    : undefined;
+}
 
 type RpcClient = {
   rpc(
@@ -34,7 +55,7 @@ const redemptionRowSchema = z
 
 function requireOneRow(result: { data: unknown; error: unknown }): void {
   if (result.error || !Array.isArray(result.data) || result.data.length !== 1) {
-    throw new Error(OPERATION_ERROR);
+    throw new InvitationOperationError(providerCode(result.error));
   }
 }
 
@@ -66,7 +87,7 @@ export class SupabasePlatformInvitationRepository {
       p_token_hash_hex: tokenHash,
     });
     if (result.error || !Array.isArray(result.data))
-      throw new Error(OPERATION_ERROR);
+      throw new InvitationOperationError(providerCode(result.error));
     if (result.data.length === 0) return null;
     if (result.data.length !== 1) throw new Error(OPERATION_ERROR);
     try {
@@ -83,7 +104,7 @@ export class SupabasePlatformInvitationRepository {
       p_token_hash_hex: tokenHash,
     });
     if (result.error || !Array.isArray(result.data) || result.data.length !== 1)
-      throw new Error(OPERATION_ERROR);
+      throw new InvitationOperationError(providerCode(result.error));
     try {
       const row = redemptionRowSchema.parse(result.data[0]);
       return {
@@ -91,7 +112,7 @@ export class SupabasePlatformInvitationRepository {
         role: row.membership_role,
       } as const;
     } catch {
-      throw new Error(OPERATION_ERROR);
+      throw new InvitationOperationError();
     }
   }
 }

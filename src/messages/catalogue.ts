@@ -400,7 +400,7 @@ const catalogue = {
   },
   "merchant.invitation.page.pendingDelivery": {
     template:
-      "Email verification is not configured yet. No account has been created.",
+      "Continue to receive a secure sign-in link at the invited email address.",
     placeholders: [],
   },
   "merchant.invitation.magicLinkSend": {

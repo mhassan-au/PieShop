@@ -19,7 +19,7 @@ describe("InvitationPreview", () => {
       screen.getByText("You have been invited to manage Example Pies."),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/No account has been created/u),
+      screen.getByText(/secure sign-in link at the invited email address/u),
     ).toBeInTheDocument();
   });
 
