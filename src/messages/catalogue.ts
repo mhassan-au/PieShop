@@ -214,7 +214,70 @@ const catalogue = {
     placeholders: [],
   },
   "auth.owner.login.restriction": {
-    template: "No public registration or account recovery is available.",
+    template:
+      "No public registration is available. Recovery is restricted to the private development owner.",
+    placeholders: [],
+  },
+  "auth.owner.recovery.link": {
+    template: "Forgot your password?",
+    placeholders: [],
+  },
+  "auth.owner.recovery.request.title": {
+    template: "Reset owner password",
+    placeholders: [],
+  },
+  "auth.owner.recovery.request.description": {
+    template:
+      "Enter the manually provisioned owner email. Recovery remains restricted to private development.",
+    placeholders: [],
+  },
+  "auth.owner.recovery.request.submit": {
+    template: "Email recovery link",
+    placeholders: [],
+  },
+  "auth.owner.recovery.request.submitting": {
+    template: "Requesting link…",
+    placeholders: [],
+  },
+  "auth.owner.recovery.request.result": {
+    template: "If this email has owner access, a recovery link is on its way.",
+    placeholders: [],
+  },
+  "auth.owner.recovery.back": {
+    template: "Back to owner sign in",
+    placeholders: [],
+  },
+  "auth.owner.recovery.password.title": {
+    template: "Choose a new password",
+    placeholders: [],
+  },
+  "auth.owner.recovery.password.description": {
+    template: "Completing recovery signs out every existing owner session.",
+    placeholders: [],
+  },
+  "auth.owner.recovery.password.label": {
+    template: "New password",
+    placeholders: [],
+  },
+  "auth.owner.recovery.confirmation.label": {
+    template: "Confirm new password",
+    placeholders: [],
+  },
+  "auth.owner.recovery.password.help": {
+    template:
+      "Use at least 8 characters with upper and lower case, a number and a symbol.",
+    placeholders: [],
+  },
+  "auth.owner.recovery.password.submit": {
+    template: "Reset password",
+    placeholders: [],
+  },
+  "auth.owner.recovery.password.submitting": {
+    template: "Resetting password…",
+    placeholders: [],
+  },
+  "auth.owner.recovery.password.invalid": {
+    template: "Enter matching passwords that meet every requirement.",
     placeholders: [],
   },
   "auth.owner.login.merchantLink": {

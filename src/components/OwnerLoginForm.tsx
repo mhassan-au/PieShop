@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 
 import {
@@ -67,6 +68,12 @@ export function OwnerLoginForm() {
           ? formatMessage("auth.owner.login.submitting")
           : formatMessage("auth.owner.login.submit")}
       </button>
+      <Link
+        className="block text-center text-sm text-orange-300 underline-offset-4 hover:underline"
+        href="/recover"
+      >
+        {formatMessage("auth.owner.recovery.link")}
+      </Link>
     </form>
   );
 }

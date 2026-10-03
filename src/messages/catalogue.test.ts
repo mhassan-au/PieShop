@@ -30,7 +30,7 @@ describe("formatMessage", () => {
     ],
     [
       "auth.owner.login.restriction",
-      "No public registration or account recovery is available.",
+      "No public registration is available. Recovery is restricted to the private development owner.",
     ],
     ["auth.owner.control.eyebrow", "Platform control plane"],
     ["auth.owner.control.title", "Merchant account administration"],

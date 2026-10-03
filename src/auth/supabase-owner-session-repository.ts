@@ -63,7 +63,7 @@ export class SupabaseOwnerSessionRepository {
   async list(currentTokenHash: string): Promise<SafeOwnerSession[]> {
     const result = await this.client.rpc(
       "list_current_user_application_sessions",
-      { p_current_token_hash: currentTokenHash },
+      { p_owner_session_token_hash: currentTokenHash },
     );
     const rows = parseResult(result, z.array(sessionRowSchema));
 

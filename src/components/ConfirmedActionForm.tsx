@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { startTransition, useState, type ReactNode } from "react";
 import { AppDialog, type DialogTone } from "./AppDialog";
 
 export function ConfirmedActionForm({
@@ -46,7 +46,9 @@ export function ConfirmedActionForm({
             formData.set(name, value),
           );
           setOpen(false);
-          void formAction(formData);
+          startTransition(() => {
+            void formAction(formData);
+          });
         }}
         open={open}
         title={title}

@@ -17,7 +17,10 @@ test("renders an accessible owner login without public account paths", async ({
   await expect(page.getByLabel("Password")).toHaveAttribute("type", "password");
   await expect(page.getByRole("button", { name: "Sign in" })).toBeEnabled();
   await expect(
-    page.getByRole("link", { name: /sign up|register|forgot|recover/iu }),
+    page.getByRole("link", { name: "Forgot your password?" }),
+  ).toHaveAttribute("href", "/recover");
+  await expect(
+    page.getByRole("link", { name: /sign up|register/iu }),
   ).toHaveCount(0);
 
   const hasHorizontalOverflow = await page.evaluate(

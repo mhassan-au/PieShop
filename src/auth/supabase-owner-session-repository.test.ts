@@ -67,7 +67,7 @@ describe("SupabaseOwnerSessionRepository", () => {
     ]);
     expect(client.rpc).toHaveBeenCalledWith(
       "list_current_user_application_sessions",
-      { p_current_token_hash: "d".repeat(64) },
+      { p_owner_session_token_hash: "d".repeat(64) },
     );
   });
 

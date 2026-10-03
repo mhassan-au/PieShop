@@ -5,23 +5,36 @@ This file records the single current roadmap part and its acceptance evidence. I
 ## Project state
 
 - **Overall state:** Phase 1 complete; Phase 2 security gate accepted for private synthetic development
-- **Current approved part:** SH-2 — Owner session enforcement (S02)
-- **Part status:** Development migration and application gates passed — awaiting owner UI/process checkpoint
-- **Next part:** SH-3 — Session creation and legacy access (S03, S04)
-- **Next part authorised:** No — SH-2 database and owner UI/process gates must pass first
+- **Current approved part:** Emergency owner password recovery — private synthetic development
+- **Part status:** Acceptance contract approved — TDD implementation in progress
+- **Completed security part:** SH-2 — exact-session migration, application gates, grouped UI/process checkpoint, and owner acceptance passed
+- **Next part:** Complete the emergency recovery owner-acceptance gate, then prepare SH-3 session creation and legacy access (S03, S04)
+- **Next part authorised:** No — recovery acceptance must close before any SH-3 work
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
-- **Last updated:** 2026-10-03 Australia/Sydney
+- **Last updated:** 2026-10-04 Australia/Sydney
 - **CI mode:** Manual GitHub Actions dispatch during private synthetic development; automatic push/PR triggers must be restored and green before staging, real-vendor demo, or production
 
 ## Current part objective
 
-Reconcile security evidence and complete safely targeted executable settings/RPC database tests before changing authorization behavior or beginning Part 2.2.
+Implement a private-development-only platform-owner password recovery flow that fails toward session revocation, preserves account-enumeration resistance and audit integrity, and does not weaken the external-release MFA/AAL2 gate.
 
 ## Acceptance source
 
-Completed Part 2.1 evidence remains in `doc/PART_2_1_ACCEPTANCE.md` and `doc/PHASE_2_THREAT_MODEL.md`. The pre-Part 2.2 gate and SH-1 scope are defined in `doc/SECURITY_IMPROVEMENT_HANDOFF_SOL.md` and `doc/DEVELOPMENT_ROADMAP.md`. Mehedi Hassan accepted the SH-1 examples in `doc/SECURITY_HARDENING_SH_1_ACCEPTANCE.md` on 2026-09-06 Australia/Sydney.
+The owner accepted the 14 recovery examples in `doc/OWNER_PASSWORD_RECOVERY_ACCEPTANCE.md` on 2026-10-03 Australia/Sydney and explicitly authorized pausing SH-2 for this Release-mode recovery part. Completed Part 2.1 evidence remains in `doc/PART_2_1_ACCEPTANCE.md` and `doc/PHASE_2_THREAT_MODEL.md`; SH-2 evidence remains preserved below.
 
 ## TDD evidence
+
+### Current owner password recovery
+
+- Authorization: Mehedi Hassan explicitly authorized pausing SH-2, accepted the 14 private-development recovery examples, and instructed implementation on 2026-10-03 Australia/Sydney.
+- Red observed: Yes — the focused suites failed because the recovery policy module and `20261003010000_owner_password_recovery.sql` migration were absent.
+- Local green: Passed — 30 focused recovery/login/message assertions plus strict TypeScript pass; the complete suite passes 82 files and 317 assertions.
+- Security boundary: The request action returns equivalent public responses, uses process-local hashed throttling and Supabase PKCE, binds callback identity to the same browser, issues a ten-minute single-use opaque grant only after fresh active-owner verification, and rejects normal authenticated sessions without that grant.
+- Revocation boundary: The forward migration derives `auth.uid()`, requires an active platform-owner role, revokes every live PieShop owner session before password mutation, and writes an actor-unclaimed value-free audit event. Global Supabase sign-out follows a successful password update.
+- Local Release gate: Formatting, lint, TypeScript, 82 Vitest files/317 assertions, tooling tests, Next.js `16.3.8` production build, and secret scan pass. The full dependency audit remains non-green only for the owner-accepted ADR-030 development-lint advisory; the production dependency audit remains clean.
+- Live checkpoint repair: A successful recovery and fresh login exposed an obsolete owner-session list parameter (`p_current_token_hash`) left in the application adapter after the SH-2 RPC hardening migration. A regression test reproduced the contract mismatch; the adapter now passes the required exact-session parameter (`p_owner_session_token_hash`) so `/control` can list only the freshly authenticated owner session.
+- Migration dry-run: Passed — exactly `20261003010000_owner_password_recovery.sql` is pending; no database change was made.
+- Next gate: Explicit owner authorization is required before applying the exact recovery migration to development Supabase. Then run database security checks and the owner recovery browser checkpoint.
 
 ### Current SH-2
 
@@ -38,7 +51,12 @@ Completed Part 2.1 evidence remains in `doc/PART_2_1_ACCEPTANCE.md` and `doc/PHA
 - Dependency remediation: Owner-authorized exact upgrades to Next.js `16.3.8`, Nodemailer `10.0.13`, and ESLint Config Next `16.3.8`, plus non-force transitive lockfile fixes, remove the critical application advisory and all other fixable findings. No forced downgrade or audit bypass was used.
 - Post-remediation local gate: Formatting, lint, TypeScript, 80 Vitest files/313 assertions, notifier/chat-ID/target-guard tooling tests, the Next.js `16.3.8` production build, and secret scan pass. The full dependency audit remains non-green only because `eslint-config-next` reaches unpatched development-only `braces@3.0.3`; npm reports five high findings along that single chain, the registry has no newer `braces` release, and npm's offered force fix would incorrectly downgrade ESLint Config Next to `14.2.35`.
 - Residual-risk decision: Accepted by Mehedi Hassan on 2026-10-03 for private synthetic development only and recorded in ADR-030. The production dependency audit reports zero vulnerabilities; the unpatched development-lint advisory remains visible and blocks real-vendor demos, real data, staging, production, and external release.
-- Next gate: Complete the grouped owner UI/process checkpoint before owner acceptance, SH-2 closure, or any SH-3 work.
+- Live contract repair: The first resumed control-page load exposed the obsolete application parameter `p_current_token_hash` after the database RPC had moved to `p_owner_session_token_hash`; the repository regression test reproduced the mismatch and the corrected exact-session parameter restored the protected control page.
+- Grouped owner UI/process checkpoint: Passed in the synthetic development environment on 2026-10-04 Australia/Sydney — exact-session-bound metadata loaded without merchant business content or session hashes; a dedicated `.test` onboarding fixture was created; its Mailtrap sandbox invitation was issued and revoked; the existing synthetic merchant was suspended and restored to active; another owner session was revoked; logout returned to login; and direct `/control` replay remained denied.
+- Checkpoint UI repairs: The checkpoint found that active merchants with a non-used invitation state incorrectly displayed the sandbox invitation action even though the server correctly denied delivery outside onboarding. A red regression test now limits invitation management to onboarding merchants. It also found confirmed `useActionState` mutations running outside a React transition; the shared confirmation component now starts those actions inside `startTransition`. A post-fix suspend/reactivate cycle completed, restored the merchant to active, and produced no browser warnings or errors.
+- Post-checkpoint Release gate: Passed — formatting, lint, strict TypeScript, 82 Vitest files/318 assertions, Next.js `16.3.8` production build, secret scan, production dependency audit with zero vulnerabilities, diff whitespace validation, and 10 rollback-safe owner exact-session authorization/privacy/revocation assertions pass.
+- Owner acceptance: Passed — Mehedi Hassan accepted the grouped SH-2 UI/process result on 2026-10-04 Australia/Sydney.
+- Completion: SH-2 is complete. Do not begin SH-3 until the current emergency recovery part is formally accepted and SH-3 is separately authorized.
 
 ### Current SH-1
 

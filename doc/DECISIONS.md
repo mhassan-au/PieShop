@@ -238,3 +238,11 @@ Use this file for decisions that materially affect scope, data, security, provid
 - **Decision:** Continue private synthetic development with the full dependency audit visibly reporting the unpatched `braces@3.0.3` advisory reached only through the development-time Next.js ESLint toolchain. Keep Next.js, Nodemailer, and ESLint Config Next on the exact patched versions recorded in `package.json`; do not use npm's force fix because it would downgrade ESLint Config Next across a major framework boundary.
 - **Reason:** All available non-force fixes are applied, the production dependency audit reports zero vulnerabilities, the registry has no patched `braces` release, and formatting, lint, types, tests, build, and secret scanning pass.
 - **Consequence:** The exception does not permit ignoring new findings or weakening `npm run security:audit`; the complete gate remains visibly non-green. Recheck for an upstream patch during dependency maintenance and resolve the advisory before any real-vendor demo, real data, staging, production, or external release.
+
+## ADR-031: Private-development owner password recovery
+
+- **Status:** Accepted for private synthetic development
+- **Date:** 2026-10-03
+- **Decision:** Add a PKCE password-recovery flow for the single manually provisioned platform owner. It uses equivalent public responses, same-browser binding, a short-lived single-use process-local recovery grant, fresh active-role verification, fail-safe revocation of every PieShop owner session before password mutation, and global Supabase sign-out afterward. The private-development password policy requires at least eight characters with upper and lower case, a number, and a symbol.
+- **Reason:** The owner lost the development account password and authorized a working application recovery path rather than repeating the dashboard-only ceremony.
+- **Consequence:** Recovery remains unavailable for merchants and external environments. Process-local binding and reduced assurance are acceptable only for private synthetic development. MFA/AAL2 recovery, independent verification, durable distributed throttling, user notification, provider audit export, and incident procedures remain mandatory before real-vendor demos, real data, staging, production, or external access.

@@ -78,4 +78,18 @@ describe("MerchantDashboard", () => {
       ),
     ).toBeInTheDocument();
   });
+
+  it("does not offer invitation delivery after onboarding has ended", () => {
+    render(
+      <MerchantDashboard
+        merchants={[
+          { ...merchant, status: "active", invitationStatus: "draft" },
+        ]}
+      />,
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Send sandbox invitation" }),
+    ).not.toBeInTheDocument();
+  });
 });

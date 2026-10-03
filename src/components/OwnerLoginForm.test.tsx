@@ -8,7 +8,7 @@ vi.mock("@/app/login/actions", () => ({
 import { OwnerLoginForm } from "./OwnerLoginForm";
 
 describe("OwnerLoginForm", () => {
-  it("renders an accessible password login without signup or recovery paths", () => {
+  it("renders an accessible password login with private recovery and no signup", () => {
     render(<OwnerLoginForm />);
 
     const email = screen.getByLabelText("Email");
@@ -19,7 +19,10 @@ describe("OwnerLoginForm", () => {
     expect(password).toHaveAttribute("autocomplete", "current-password");
     expect(screen.getByRole("button", { name: "Sign in" })).toBeEnabled();
     expect(
-      screen.queryByRole("link", { name: /sign up|register|forgot|recover/iu }),
+      screen.getByRole("link", { name: "Forgot your password?" }),
+    ).toHaveAttribute("href", "/recover");
+    expect(
+      screen.queryByRole("link", { name: /sign up|register/iu }),
     ).not.toBeInTheDocument();
   });
 });

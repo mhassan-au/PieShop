@@ -73,8 +73,10 @@ function InvitationControls({
     revokeMerchantInvitationAction,
     initialInvitationState,
   );
-  const canIssue = merchant.invitationStatus !== "used";
-  const canRevoke = merchant.invitationStatus === "issued";
+  const canManageInvitation = merchant.status === "onboarding";
+  const canIssue = canManageInvitation && merchant.invitationStatus !== "used";
+  const canRevoke =
+    canManageInvitation && merchant.invitationStatus === "issued";
   return (
     <div className="mt-4 border-t border-white/10 pt-4">
       <p className="text-xs text-stone-400">
