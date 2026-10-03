@@ -32,16 +32,24 @@ function parseRows(result: {
 export class SupabasePlatformMerchantRepository {
   constructor(private readonly client: RpcClient) {}
 
-  async list(): Promise<PlatformMerchant[]> {
-    return parseRows(await this.client.rpc("list_platform_merchants"));
+  async list(ownerSessionTokenHash: string): Promise<PlatformMerchant[]> {
+    return parseRows(
+      await this.client.rpc("list_platform_merchants", {
+        p_owner_session_token_hash: ownerSessionTokenHash,
+      }),
+    );
   }
 
-  async create(input: CreateMerchantInput): Promise<PlatformMerchant> {
+  async create(
+    input: CreateMerchantInput,
+    ownerSessionTokenHash: string,
+  ): Promise<PlatformMerchant> {
     const rows = parseRows(
       await this.client.rpc("create_platform_merchant", {
         p_currency_code: input.currencyCode,
         p_name: input.name,
         p_owner_email: input.ownerEmail,
+        p_owner_session_token_hash: ownerSessionTokenHash,
         p_timezone: input.timezone,
       }),
     );
@@ -49,9 +57,13 @@ export class SupabasePlatformMerchantRepository {
     return rows[0]!;
   }
 
-  async changeStatus(input: StatusChange): Promise<void> {
+  async changeStatus(
+    input: StatusChange,
+    ownerSessionTokenHash: string,
+  ): Promise<void> {
     const result = await this.client.rpc("change_platform_merchant_status", {
       p_business_id: input.businessId,
+      p_owner_session_token_hash: ownerSessionTokenHash,
       p_target_status: input.targetStatus,
     });
     if (result.error || result.data !== true) throw new Error(OPERATION_ERROR);

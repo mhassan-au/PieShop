@@ -533,6 +533,15 @@ const catalogue = {
     template: "Catalogue setup will be added in the next phase.",
     placeholders: [],
   },
+  "merchant.settings.update.success": {
+    template: "Business settings saved.",
+    placeholders: [],
+  },
+  "merchant.settings.update.failure": {
+    template:
+      "We couldn’t save these settings. Check the details or refresh and try again.",
+    placeholders: [],
+  },
   "auth.owner.control.empty.title": {
     template: "Control plane ready",
     placeholders: [],

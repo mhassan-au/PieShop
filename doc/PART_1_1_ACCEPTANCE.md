@@ -64,7 +64,7 @@ Allow the single, manually provisioned synthetic platform owner to sign in with 
 23. **Audited security events** — Successful login, failed/throttled login, logout, session revocation, authorization denial, and expired-session denial create structured, redacted evidence with UTC time and correlation data; only authenticated actions claim an actor identity. (TM1-17, TM1-18)
 24. **Provider failure** — Provider timeout or unavailable Auth fails closed with typed central copy, no raw provider message, no partial PieShop session, and a sanitized diagnostic event. (TM1-13, TM1-19)
 25. **AAL policy seam** — Protected authorization accepts an injected assurance policy. Private synthetic development permits the documented reduced-assurance policy; a production-like configuration refuses owner access below AAL2. (TM1-22)
-26. **Dependency isolation** — Tests can replace the Auth provider without importing Supabase into domain/session policy code; auth package versions are exact-pinned and secret/client import scans remain green. (TM1-16, TM1-24)
+26. **Dependency isolation** — Tests can replace the Auth provider without importing Supabase into domain/session policy code; auth package versions are exact-pinned and secret/client import scans remain green. (TM1-16, TM1-26; formerly duplicate TM1-24)
 
 ## TDD sequence
 

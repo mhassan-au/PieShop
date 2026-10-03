@@ -106,13 +106,15 @@ Phase 1 depends on the target guard, secret scan, typed errors, central messages
 | TM1-23 | Retries create duplicate businesses, memberships, invitations, or audit outcomes     | High     | Idempotency, unique constraints and transaction/locking; concurrent-submit tests                                                                                 |
 | TM1-24 | Returning-login requests enumerate merchant emails or flood recipient mailboxes      | High     | Equivalent public responses, strict email parsing, server-only eligibility lookup, per-account/source throttling, provider cooldown                              |
 | TM1-25 | A returning-login callback creates authority for the wrong identity or tenant        | Critical | PKCE exchange, 15-minute HttpOnly normalized-email binding, fresh Auth identity check, exactly-one active merchant-owner membership, database self-authorization |
-| TM1-24 | Beta SSR-auth dependency changes cookie/session behaviour                            | High     | Exact version pin, PieShop adapter, reviewed upgrades, lifecycle integration tests and lockfile audit                                                            |
+| TM1-26 | Beta SSR-auth dependency changes cookie/session behaviour                            | High     | Exact version pin, PieShop adapter, reviewed upgrades, lifecycle integration tests and lockfile audit                                                            |
 
 ## Required verification by roadmap part
 
 ### Part 1.1 — Internal platform-owner login
 
-The acceptance contract must cover TM1-01–TM1-10, TM1-17, and TM1-20–TM1-22 plus TM1-24. Tests must call protected actions and handlers directly; browser redirects alone are insufficient evidence.
+The acceptance contract must cover TM1-01–TM1-10, TM1-17, and TM1-20–TM1-22 plus TM1-24–TM1-26. Tests must call protected actions and handlers directly; browser redirects alone are insufficient evidence.
+
+Numbering note: the dependency threat was originally recorded with the duplicate identifier TM1-24. It is TM1-26 from 2026-09-06 onward; dated references to TM1-24 may refer to either the returning-login abuse threat or this historical dependency entry and must be interpreted from their description.
 
 ### Part 1.2 — Privacy-preserving merchant dashboard
 

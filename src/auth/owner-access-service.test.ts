@@ -38,6 +38,8 @@ describe("verifyPlatformOwnerAccess", () => {
       verifyPlatformOwnerAccess(VALID_TOKEN, dependencies),
     ).resolves.toEqual({
       status: "authorized",
+      sessionTokenHash:
+        "0f007385b6f9d4b7eeb2748605afe1a984a0a3bfa3f014d09e2a784ce9e5cd1a",
       principal: {
         id: "auth-user-1",
         email: "owner@example.test",

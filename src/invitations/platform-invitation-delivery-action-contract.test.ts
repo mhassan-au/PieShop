@@ -26,7 +26,9 @@ describe("merchant invitation delivery action contract", () => {
   });
 
   it("revokes an issued token when delivery fails and returns no secret link", () => {
-    expect(action).toContain("await repository.revoke(target)");
+    expect(action).toContain(
+      "await repository.revoke(target, access.sessionTokenHash)",
+    );
     expect(action).not.toMatch(/previewUrl\s*[,}]/u);
     expect(action).not.toContain("recipientEmail:");
   });

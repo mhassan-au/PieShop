@@ -6,6 +6,7 @@ import { parseInvitationTarget } from "./platform-invitation";
 import { SupabasePlatformInvitationRepository } from "./supabase-platform-invitation-repository";
 
 const businessId = "11111111-1111-4111-8111-111111111111";
+const ownerSessionHash = "f".repeat(64);
 
 describe("platform invitation boundary", () => {
   it("accepts only an exact business identifier", () => {
@@ -18,25 +19,32 @@ describe("platform invitation boundary", () => {
   it("maps only safe issue and revoke RPC parameters", async () => {
     const rpc = vi.fn().mockResolvedValue({ data: [{}], error: null });
     const repository = new SupabasePlatformInvitationRepository({ rpc });
-    await repository.issue({
-      businessId,
-      tokenHash: "a".repeat(64),
-      expiresAt: "2026-09-06T00:00:00.000Z",
-    });
-    await repository.revoke({ businessId });
+    await repository.issue(
+      {
+        businessId,
+        tokenHash: "a".repeat(64),
+        expiresAt: "2026-09-06T00:00:00.000Z",
+      },
+      ownerSessionHash,
+    );
+    await repository.revoke({ businessId }, ownerSessionHash);
     expect(rpc).toHaveBeenNthCalledWith(
       1,
       "issue_platform_merchant_invitation",
       {
         p_business_id: businessId,
         p_expires_at: "2026-09-06T00:00:00.000Z",
+        p_owner_session_token_hash: ownerSessionHash,
         p_token_hash_hex: "a".repeat(64),
       },
     );
     expect(rpc).toHaveBeenNthCalledWith(
       2,
       "revoke_platform_merchant_invitation",
-      { p_business_id: businessId },
+      {
+        p_business_id: businessId,
+        p_owner_session_token_hash: ownerSessionHash,
+      },
     );
   });
 
@@ -47,12 +55,12 @@ describe("platform invitation boundary", () => {
         error: { message: "secret recipient" },
       }),
     });
-    await expect(repository.revoke({ businessId })).rejects.toThrow(
-      "Invitation operation failed",
-    );
-    await expect(repository.revoke({ businessId })).rejects.not.toThrow(
-      "secret recipient",
-    );
+    await expect(
+      repository.revoke({ businessId }, ownerSessionHash),
+    ).rejects.toThrow("Invitation operation failed");
+    await expect(
+      repository.revoke({ businessId }, ownerSessionHash),
+    ).rejects.not.toThrow("secret recipient");
   });
 
   it("validates public inspection rows and returns null for unavailable links", async () => {

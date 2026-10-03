@@ -104,7 +104,7 @@ Prerequisite gate:
 - [ ] Current supported Node.js LTS is installed through a version manager.
 - [ ] Package manager and version are pinned in the repository.
 - [ ] Supabase CLI is installed and pinned/recorded.
-- [ ] Docker-compatible local runtime is installed for local Supabase.
+- [x] Dedicated Supabase Cloud development project is used; local Docker is not required by the owner-approved workflow.
 - [ ] A supported code editor is installed.
 - [ ] Browser developer tools are available for Chrome/Edge, Firefox, and Safari/iOS testing access.
 - [ ] Password manager and MFA authenticator are available.

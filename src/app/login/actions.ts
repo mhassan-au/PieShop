@@ -9,6 +9,7 @@ import { loginPlatformOwner } from "@/auth/owner-login-service";
 import { processLocalOwnerLoginRateLimiter } from "@/auth/owner-login-rate-limit";
 import { createOwnerSecurityAudit } from "@/auth/owner-security-audit";
 import { setOwnerSessionCookie } from "@/auth/owner-session-cookie";
+import { hashSessionToken } from "@/auth/session-token";
 import {
   INTERNAL_OWNER_ASSURANCE_POLICY,
   RELEASE_OWNER_ASSURANCE_POLICY,
@@ -103,8 +104,11 @@ export async function ownerLoginAction(
         environment.APP_ENV,
       );
     } catch {
+      const sessionTokenHash = await hashSessionToken(result.sessionToken);
       await Promise.allSettled([
-        sessionRepository.revoke(result.sessionId, "security_event"),
+        sessionTokenHash
+          ? sessionRepository.revokeCurrentByTokenHash(sessionTokenHash)
+          : Promise.resolve(false),
         authProvider.terminateSession(),
       ]);
       return {

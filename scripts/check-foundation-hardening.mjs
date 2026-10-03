@@ -1,4 +1,8 @@
 import postgres from "postgres";
+import {
+  assertSafeSupabaseTestTarget,
+  safeDatabaseFailure,
+} from "./supabase-test-target.mjs";
 
 const databaseUrl = process.env.SUPABASE_DB_URL;
 const appEnvironment = process.env.APP_ENV;
@@ -12,6 +16,9 @@ const rlsTables = [
   "audit_events",
   "catalogue_entries",
   "transaction_records",
+  "application_sessions",
+  "merchant_application_sessions",
+  "merchant_settings",
 ];
 
 function fail(message) {
@@ -19,11 +26,18 @@ function fail(message) {
   process.exitCode = 1;
 }
 
-if (!databaseUrl) {
-  fail("SUPABASE_DB_URL is missing");
-} else if (!new Set(["local", "test"]).has(appEnvironment)) {
-  fail("APP_ENV must be local or test");
-} else {
+try {
+  assertSafeSupabaseTestTarget({
+    appEnvironment: appEnvironment ?? "",
+    projectUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+    databaseUrl: databaseUrl ?? "",
+    projectConfirmation: process.env.SUPABASE_DESTRUCTIVE_CONFIRMATION ?? "",
+  });
+} catch (error) {
+  fail(error instanceof Error ? error.message : "unsafe_target");
+}
+
+if (!process.exitCode && databaseUrl) {
   const sql = postgres(databaseUrl, {
     connect_timeout: 10,
     idle_timeout: 2,
@@ -102,8 +116,8 @@ if (!databaseUrl) {
         "Foundation hardening check passed: RLS coverage, self-bound authorization helpers, immutable-record triggers, and invitation constraints verified.\n",
       );
     }
-  } catch {
-    fail("database hardening query failed");
+  } catch (error) {
+    fail(safeDatabaseFailure(error));
   } finally {
     await sql.end({ timeout: 1 });
   }

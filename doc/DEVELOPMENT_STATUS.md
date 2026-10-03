@@ -4,24 +4,72 @@ This file records the single current roadmap part and its acceptance evidence. I
 
 ## Project state
 
-- **Overall state:** Phase 1 complete; Phase 2 threat review next
-- **Current approved part:** Part 1.4 — Account status and onboarding progress
-- **Part status:** Complete and UI verified
-- **Next part:** Phase 2 / Part 2.1 — Business profile and delivery zones
-- **Next part authorised:** Yes — threat review and TDD preparation
+- **Overall state:** Phase 1 complete; Phase 2 security gate accepted for private synthetic development
+- **Current approved part:** SH-2 — Owner session enforcement (S02)
+- **Part status:** Development migration and application gates passed — awaiting owner UI/process checkpoint
+- **Next part:** SH-3 — Session creation and legacy access (S03, S04)
+- **Next part authorised:** No — SH-2 database and owner UI/process gates must pass first
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
-- **Last updated:** 2026-09-06 Australia/Sydney
+- **Last updated:** 2026-10-03 Australia/Sydney
 - **CI mode:** Manual GitHub Actions dispatch during private synthetic development; automatic push/PR triggers must be restored and green before staging, real-vendor demo, or production
 
 ## Current part objective
 
-Build a scanner-resistant, recipient-bound merchant invitation lifecycle with single-use hashed tokens, atomic membership creation, and a revocable 30-day merchant session.
+Reconcile security evidence and complete safely targeted executable settings/RPC database tests before changing authorization behavior or beginning Part 2.2.
 
 ## Acceptance source
 
-See `doc/PART_1_3_ACCEPTANCE.md`, `doc/PHASE_1_THREAT_MODEL.md`, and Part 1.3 in `doc/DEVELOPMENT_ROADMAP.md`.
+Completed Part 2.1 evidence remains in `doc/PART_2_1_ACCEPTANCE.md` and `doc/PHASE_2_THREAT_MODEL.md`. The pre-Part 2.2 gate and SH-1 scope are defined in `doc/SECURITY_IMPROVEMENT_HANDOFF_SOL.md` and `doc/DEVELOPMENT_ROADMAP.md`. Mehedi Hassan accepted the SH-1 examples in `doc/SECURITY_HARDENING_SH_1_ACCEPTANCE.md` on 2026-09-06 Australia/Sydney.
 
 ## TDD evidence
+
+### Current SH-2
+
+- Authorization: Mehedi Hassan accepted the exact-session design and all 14 acceptance examples on 2026-09-06 Australia/Sydney.
+- Red observed: Yes — the migration contract first failed because `20260906080000_owner_exact_session_rpc_boundaries.sql` was absent; six focused access/repository expectations then failed because owner proof was not passed.
+- Database boundary: Prepared — the forward migration locks and verifies the exact live owner session, moves obsolete owner functions into the inaccessible private schema, exposes only hash-bound replacements, removes the platform-owner branch from direct business reads, and preserves merchant membership reads.
+- Server boundary: Passed locally — the server-only access result returns its already verified hash; the control page and merchant/invitation/status/session repositories pass it only as an RPC parameter. Login cookie-write cleanup uses exact token-hash logout rather than the interactive revoke-other-session RPC.
+- Focused verification: Passed — 27 boundary/repository assertions plus 10 owner login/logout assertions and TypeScript pass.
+- Migration dry-run: Passed — exactly `20260906080000_owner_exact_session_rpc_boundaries.sql` is pending; no database change was made.
+- Release-mode local gate: Passed — formatting, lint, TypeScript, 80 Vitest files/313 assertions, tooling tests, production build, secret scan, and dependency audit with 0 vulnerabilities.
+- Development database: Owner-authorized migration `20260906080000_owner_exact_session_rpc_boundaries.sql` is applied; the guarded follow-up dry-run reports the remote database is up to date.
+- Post-application database gate: Passed — schema, hardening, 12 rollback-safe foundation isolation/immutability assertions, 16 merchant-settings authorization/persistence assertions, and 10 owner exact-session authorization/privacy/revocation assertions pass.
+- Harness correction: The first owner revocation verification was correctly denied direct `application_sessions` access with SQLSTATE `42501`; the test now verifies the same outcome through the exact-session-bound safe-list RPC and passes without weakening table privacy.
+- Dependency remediation: Owner-authorized exact upgrades to Next.js `16.3.8`, Nodemailer `10.0.13`, and ESLint Config Next `16.3.8`, plus non-force transitive lockfile fixes, remove the critical application advisory and all other fixable findings. No forced downgrade or audit bypass was used.
+- Post-remediation local gate: Formatting, lint, TypeScript, 80 Vitest files/313 assertions, notifier/chat-ID/target-guard tooling tests, the Next.js `16.3.8` production build, and secret scan pass. The full dependency audit remains non-green only because `eslint-config-next` reaches unpatched development-only `braces@3.0.3`; npm reports five high findings along that single chain, the registry has no newer `braces` release, and npm's offered force fix would incorrectly downgrade ESLint Config Next to `14.2.35`.
+- Residual-risk decision: Accepted by Mehedi Hassan on 2026-10-03 for private synthetic development only and recorded in ADR-030. The production dependency audit reports zero vulnerabilities; the unpatched development-lint advisory remains visible and blocks real-vendor demos, real data, staging, production, and external release.
+- Next gate: Complete the grouped owner UI/process checkpoint before owner acceptance, SH-2 closure, or any SH-3 work.
+
+### Current SH-1
+
+- Authorization: Mehedi Hassan accepted the 12 SH-1 examples and instructed implementation to continue on 2026-09-06 Australia/Sydney.
+- Red observed: Yes — the focused tooling test failed because the shared Supabase test-target guard was absent.
+- Local safety tooling: Passed — seven assertions cover matching target acceptance, environment/confirmation/project/host/port denial, and arbitrary database-error redaction.
+- Database harness: Passed — 16 effective merchant-settings RPC, tenant isolation, denied mutation, session/business/role denial, direct privilege, persistence, version, NULL/stale conflict, retry, failure rollback, and audit assertions ran against guarded development Supabase and rolled all synthetic data back. Two simultaneous runs also passed without fixture collision.
+- Existing regression evidence: Passed — expanded foundation hardening covers 11 RLS tables; the original 12 foundation isolation/immutability assertions still pass with synthetic rollback.
+- Evidence repair: Passed — duplicate Phase 1 threat numbering, malformed UI checklist boundaries, cloud-only workstation requirements, stale implementation boundary, and owner route examples are corrected with historical context retained.
+- Release-mode quality gate: Passed — formatting, lint, TypeScript, 79 Vitest files/309 assertions, Git/notifier/chat-ID/target-guard tooling tests, production build, secret scan, and dependency audit with 0 vulnerabilities.
+- Owner result acceptance: Passed — Mehedi Hassan accepted SH-1 and instructed continuation on 2026-09-06 Australia/Sydney.
+- Completion: SH-1 is complete. SH-2 design is prepared but implementation remains gated by owner acceptance of its security boundary and examples.
+- UI checkpoint: Not required so far because SH-1 has not changed visible behavior.
+
+### Current Part 2.1
+
+- Authorization: Mehedi Hassan accepted the Phase 2 security decisions and authorized Part 2.1 on 2026-09-06 Australia/Sydney.
+- Threat gate: Accepted for private synthetic development; real vendors/data, public preview, support access, and Part 2.3 image dependencies remain blocked.
+- Acceptance contract: Mehedi Hassan accepted all 16 threat-mapped examples on 2026-09-06 Australia/Sydney.
+- Slice 1 red observed: Yes — the merchant-settings policy module and Part 2.1 migration were absent; both focused suites failed.
+- Slice 1 local green: Passed — 12 assertions cover strict synthetic settings normalization, invalid/mass-assigned input, deterministic setup progress, database-output allow-listing, tenant-owned storage, direct-table denial, fresh merchant-owner/application-session self-binding, optimistic concurrency, idempotency, and value-free auditing. TypeScript and targeted lint pass.
+- Slice 1 migration gate: Guarded remote dry-run identifies exactly `20260906060000_merchant_setup_settings.sql`; applying it requires explicit owner authorization.
+- Slice 1 development database: Owner-authorized migration applied successfully; follow-up dry-run is clean, schema/hardening pass, and 12 rollback-safe isolation/immutability assertions pass.
+- Slice 2 repository: Passed — session-hash-bound read/update RPC mapping, explicit parameter allow-listing with no tenant input, strict response parsing, and provider-error redaction are covered; 15 grouped domain/migration/repository assertions pass with TypeScript and targeted lint.
+- Slice 3 red observed: Yes — the merchant workspace component and settings action contract were absent; both focused suites failed.
+- Slice 3 protected shell: Passed — 44 grouped assertions cover the mobile navigation, server-derived resumable progress, approved-field-only settings form, centralized feedback, fresh access/session hashing, tenant-free action input, repository/domain/migration behavior, and message regression. Formatting, lint, TypeScript, production compilation, secret scan, dependency audit with 0 vulnerabilities, remote schema/hardening, and 12 rollback-safe database assertions pass.
+- Slice 3 browser checkpoint: Passed on 2026-09-06 Australia/Sydney — anonymous/new browser access redirects to `/merchant/login`; after owner magic-link login, the repaired workspace rendered the tenant-bound business name, saved timezone, editable settings, and deterministic 3-of-4 progress. Today, Orders, Catalogue, and Settings navigation worked without mutation or runtime error. Owner visual/process acceptance remains pending.
+- Slice 3 live failure: The authenticated settings read failed closed with SQLSTATE `42703`; a redacted synthetic diagnostic found the helper used non-existent session columns `session_token_hash`/`expires_at` instead of canonical `token_hash`/`absolute_expires_at`. No mutation occurred.
+- Slice 3 repair: Passed — Mehedi Hassan authorized and the additive migration `20260906070000_fix_merchant_settings_session_columns.sql` was applied to development on 2026-09-06 Australia/Sydney. The helper now uses canonical `token_hash` and `absolute_expires_at` columns while preserving self-bound owner, membership, business-status, revocation, and exact-session checks. Remote dry-run is clean; schema, hardening, and all 12 rollback-safe security assertions pass; authenticated rendering confirms the original runtime failure is resolved.
+- Part 2.1 owner UI/process acceptance: Passed — Mehedi Hassan accepted the authenticated merchant shell, navigation, saved settings display, and resumable 3-of-4 setup progress on 2026-09-06 Australia/Sydney.
+- Part 2.1 completion: Complete — do not begin Part 2.2 until its product/threat acceptance examples are prepared and accepted.
 
 ### Current Part 1.3
 

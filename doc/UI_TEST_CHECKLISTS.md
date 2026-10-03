@@ -129,6 +129,7 @@ Desktop browser and viewport:
 Phone browser/viewport:
 Shared checklist: Pass / Fail
 Part 1.3 preview checklist: Pass / Fail
+```
 
 ### Part 1.3 authentication completion record
 
@@ -153,7 +154,20 @@ Codex UI checkpoint: Passed — 2026-09-06 Australia/Sydney.
 Console errors: None / Details
 Usability or wording observations:
 Owner decision: Accept / Corrections required
-```
+
+## Part 2.1 — Merchant shell and setup checklist
+
+- [x] A valid merchant magic link reaches the protected merchant workspace.
+- [x] The workspace displays the authorized merchant identity without exposing another tenant.
+- [x] Today, Orders, Catalogue, and Settings navigation is keyboard-identifiable and switches content correctly.
+- [x] Settings resume with the saved business name and IANA timezone.
+- [x] Setup progress is readable and deterministically reports 3 of 4 completed steps for the tested synthetic record.
+- [x] Empty contact settings remain editable without displaying credentials or protected operational data.
+- [x] Anonymous access redirects to merchant login without flashing protected settings.
+- [x] The repaired authenticated settings read completes without a runtime error or unintended mutation.
+
+Codex UI checkpoint: Passed — 2026-09-06 Australia/Sydney.
+Owner acceptance: Passed — Mehedi Hassan, 2026-09-06 Australia/Sydney.
 
 ## Template for each future milestone
 

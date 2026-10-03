@@ -27,6 +27,7 @@ export type OwnerAccessResult =
   | Readonly<{
       status: "authorized";
       principal: AuthenticatedOwnerIdentity;
+      sessionTokenHash: string;
     }>
   | Readonly<{
       status: "denied";
@@ -115,5 +116,9 @@ export async function verifyPlatformOwnerAccess(
     return { status: "unavailable" };
   }
 
-  return { status: "authorized", principal: authorization.principal };
+  return {
+    status: "authorized",
+    principal: authorization.principal,
+    sessionTokenHash: tokenHash,
+  };
 }

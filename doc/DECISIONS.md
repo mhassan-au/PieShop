@@ -230,3 +230,11 @@ Use this file for decisions that materially affect scope, data, security, provid
 - **Decision:** Use a repository-local, copyable PowerShell script to send short operational notifications when unattended Codex work completes, fails, or requires owner intervention. Configuration remains in ignored `.env.local`; the script is disabled by default and accepts no inbound commands or approvals.
 - **Reason:** The owner needs timely awareness away from the development PC without coupling projects to a shared service or treating chat replies as security authorization.
 - **Consequence:** Messages contain only project name, controlled status, short redacted copy, and UTC time. The script rejects common credential and personal-identifier patterns, never includes logs/provider errors, and cannot resume Codex. Two-way Telegram control requires a separate threat model and explicit approval.
+
+## ADR-030: Temporary unpatched development-lint dependency
+
+- **Status:** Accepted for private synthetic development
+- **Date:** 2026-10-03
+- **Decision:** Continue private synthetic development with the full dependency audit visibly reporting the unpatched `braces@3.0.3` advisory reached only through the development-time Next.js ESLint toolchain. Keep Next.js, Nodemailer, and ESLint Config Next on the exact patched versions recorded in `package.json`; do not use npm's force fix because it would downgrade ESLint Config Next across a major framework boundary.
+- **Reason:** All available non-force fixes are applied, the production dependency audit reports zero vulnerabilities, the registry has no patched `braces` release, and formatting, lint, types, tests, build, and secret scanning pass.
+- **Consequence:** The exception does not permit ignoring new findings or weakening `npm run security:audit`; the complete gate remains visibly non-green. Recheck for an upstream patch during dependency maintenance and resolve the advisory before any real-vendor demo, real data, staging, production, or external release.

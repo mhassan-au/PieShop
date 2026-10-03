@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { verifyRequestPlatformOwnerAccess } from "@/auth/owner-request-access";
-import { readOwnerSessionCookie } from "@/auth/owner-session-cookie";
-import { hashSessionToken } from "@/auth/session-token";
 import { createSupabaseOwnerSessionRepository } from "@/auth/supabase-owner-session-repository";
 import { ControlShell } from "@/components/ControlShell";
-import { loadEnvironment } from "@/config/env";
 import { formatMessage } from "@/messages/catalogue";
 import { createSupabasePlatformMerchantRepository } from "@/merchants/supabase-platform-merchant-repository";
 import { createRequestSupabaseClient } from "@/supabase/server";
@@ -31,18 +27,12 @@ export default async function ControlPage() {
     throw new Error("Owner access verification failed");
   }
 
-  const environment = loadEnvironment(process.env);
-  const currentTokenHash = await hashSessionToken(
-    readOwnerSessionCookie(await cookies(), environment.APP_ENV),
-  );
-  if (!currentTokenHash) redirect("/login");
-
   const sessions = await createSupabaseOwnerSessionRepository(
     await createRequestSupabaseClient(),
-  ).list(currentTokenHash);
+  ).list(access.sessionTokenHash);
   const merchants = await createSupabasePlatformMerchantRepository(
     await createRequestSupabaseClient(),
-  ).list();
+  ).list(access.sessionTokenHash);
 
   return (
     <ControlShell

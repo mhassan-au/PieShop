@@ -1,4 +1,8 @@
 import postgres from "postgres";
+import {
+  assertSafeSupabaseTestTarget,
+  safeDatabaseFailure,
+} from "./supabase-test-target.mjs";
 
 const databaseUrl = process.env.SUPABASE_DB_URL;
 const appEnvironment = process.env.APP_ENV;
@@ -17,17 +21,21 @@ function jwtFor(userId) {
   });
 }
 
-if (!databaseUrl) {
+try {
+  assertSafeSupabaseTestTarget({
+    appEnvironment: appEnvironment ?? "",
+    projectUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+    databaseUrl: databaseUrl ?? "",
+    projectConfirmation: process.env.SUPABASE_DESTRUCTIVE_CONFIRMATION ?? "",
+  });
+} catch (error) {
   process.stderr.write(
-    "Foundation security tests failed: SUPABASE_DB_URL is missing.\n",
+    `Foundation security tests failed: ${error instanceof Error ? error.message : "unsafe_target"}.\n`,
   );
   process.exitCode = 1;
-} else if (!new Set(["local", "test"]).has(appEnvironment)) {
-  process.stderr.write(
-    "Foundation security tests failed: APP_ENV must be local or test.\n",
-  );
-  process.exitCode = 1;
-} else {
+}
+
+if (!process.exitCode && databaseUrl) {
   const sql = postgres(databaseUrl, {
     connect_timeout: 10,
     idle_timeout: 2,
@@ -239,8 +247,8 @@ if (!databaseUrl) {
       `;
       await tx.unsafe("reset role");
       assert(
-        platformBusinesses.length === 2,
-        "platform owner cannot read account metadata",
+        platformBusinesses.length === 0,
+        "platform owner bypassed the session-bound metadata RPC",
       );
       assertions += 1;
       assert(
@@ -287,7 +295,7 @@ if (!databaseUrl) {
       );
     } else {
       process.stderr.write(
-        `Foundation security tests failed: ${error instanceof Error ? error.message : "unknown failure"}\n`,
+        `Foundation security tests failed: ${safeDatabaseFailure(error)}.\n`,
       );
       process.exitCode = 1;
     }

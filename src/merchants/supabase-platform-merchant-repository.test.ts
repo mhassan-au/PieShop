@@ -13,36 +13,43 @@ const row = {
   created_at: "2026-09-01T00:00:00.000Z",
   updated_at: "2026-09-01T00:00:00.000Z",
 };
+const ownerSessionHash = "f".repeat(64);
 
 describe("SupabasePlatformMerchantRepository", () => {
   it("lists only runtime-validated platform metadata", async () => {
     const rpc = vi.fn().mockResolvedValue({ data: [row], error: null });
     const repository = new SupabasePlatformMerchantRepository({ rpc });
 
-    await expect(repository.list()).resolves.toEqual([
+    await expect(repository.list(ownerSessionHash)).resolves.toEqual([
       expect.objectContaining({
         publicId: "biz_12345678",
         name: "Example Pies",
       }),
     ]);
-    expect(rpc).toHaveBeenCalledWith("list_platform_merchants");
+    expect(rpc).toHaveBeenCalledWith("list_platform_merchants", {
+      p_owner_session_token_hash: ownerSessionHash,
+    });
   });
 
   it("passes only normalized create parameters to the self-authorizing RPC", async () => {
     const rpc = vi.fn().mockResolvedValue({ data: [row], error: null });
     const repository = new SupabasePlatformMerchantRepository({ rpc });
 
-    await repository.create({
-      name: "Example Pies",
-      ownerEmail: "owner@example.test",
-      timezone: "Australia/Sydney",
-      currencyCode: "AUD",
-    });
+    await repository.create(
+      {
+        name: "Example Pies",
+        ownerEmail: "owner@example.test",
+        timezone: "Australia/Sydney",
+        currencyCode: "AUD",
+      },
+      ownerSessionHash,
+    );
 
     expect(rpc).toHaveBeenCalledWith("create_platform_merchant", {
       p_currency_code: "AUD",
       p_name: "Example Pies",
       p_owner_email: "owner@example.test",
+      p_owner_session_token_hash: ownerSessionHash,
       p_timezone: "Australia/Sydney",
     });
   });
@@ -50,12 +57,16 @@ describe("SupabasePlatformMerchantRepository", () => {
   it("changes status only through the self-authorizing RPC", async () => {
     const rpc = vi.fn().mockResolvedValue({ data: true, error: null });
     const repository = new SupabasePlatformMerchantRepository({ rpc });
-    await repository.changeStatus({
-      businessId: "11111111-1111-4111-8111-111111111111",
-      targetStatus: "suspended",
-    });
+    await repository.changeStatus(
+      {
+        businessId: "11111111-1111-4111-8111-111111111111",
+        targetStatus: "suspended",
+      },
+      ownerSessionHash,
+    );
     expect(rpc).toHaveBeenCalledWith("change_platform_merchant_status", {
       p_business_id: "11111111-1111-4111-8111-111111111111",
+      p_owner_session_token_hash: ownerSessionHash,
       p_target_status: "suspended",
     });
   });
@@ -66,10 +77,12 @@ describe("SupabasePlatformMerchantRepository", () => {
         .fn()
         .mockResolvedValue({ data: null, error: { message: "email secret" } }),
     });
-    await expect(providerFailure.list()).rejects.toThrow(
+    await expect(providerFailure.list(ownerSessionHash)).rejects.toThrow(
       "Merchant operation failed",
     );
-    await expect(providerFailure.list()).rejects.not.toThrow("email secret");
+    await expect(providerFailure.list(ownerSessionHash)).rejects.not.toThrow(
+      "email secret",
+    );
 
     const forbiddenRow = new SupabasePlatformMerchantRepository({
       rpc: vi.fn().mockResolvedValue({
@@ -77,7 +90,7 @@ describe("SupabasePlatformMerchantRepository", () => {
         error: null,
       }),
     });
-    await expect(forbiddenRow.list()).rejects.toThrow(
+    await expect(forbiddenRow.list(ownerSessionHash)).rejects.toThrow(
       "Merchant operation failed",
     );
 
@@ -85,12 +98,15 @@ describe("SupabasePlatformMerchantRepository", () => {
       rpc: vi.fn().mockResolvedValue({ data: [row, row], error: null }),
     });
     await expect(
-      duplicateResult.create({
-        name: "Example Pies",
-        ownerEmail: "owner@example.test",
-        timezone: "Australia/Sydney",
-        currencyCode: "AUD",
-      }),
+      duplicateResult.create(
+        {
+          name: "Example Pies",
+          ownerEmail: "owner@example.test",
+          timezone: "Australia/Sydney",
+          currencyCode: "AUD",
+        },
+        ownerSessionHash,
+      ),
     ).rejects.toThrow("Merchant operation failed");
   });
 });

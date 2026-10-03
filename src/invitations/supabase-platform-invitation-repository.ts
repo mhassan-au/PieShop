@@ -64,20 +64,26 @@ export class SupabasePlatformInvitationRepository {
 
   async issue(
     input: InvitationTarget & { tokenHash: string; expiresAt: string },
+    ownerSessionTokenHash: string,
   ): Promise<void> {
     requireOneRow(
       await this.client.rpc("issue_platform_merchant_invitation", {
         p_business_id: input.businessId,
         p_expires_at: input.expiresAt,
+        p_owner_session_token_hash: ownerSessionTokenHash,
         p_token_hash_hex: input.tokenHash,
       }),
     );
   }
 
-  async revoke(input: InvitationTarget): Promise<void> {
+  async revoke(
+    input: InvitationTarget,
+    ownerSessionTokenHash: string,
+  ): Promise<void> {
     requireOneRow(
       await this.client.rpc("revoke_platform_merchant_invitation", {
         p_business_id: input.businessId,
+        p_owner_session_token_hash: ownerSessionTokenHash,
       }),
     );
   }

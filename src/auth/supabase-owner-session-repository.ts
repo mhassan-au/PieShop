@@ -90,9 +90,11 @@ export class SupabaseOwnerSessionRepository {
   async revoke(
     sessionId: string,
     reason: OwnerSessionRevocationReason,
+    ownerSessionTokenHash: string,
   ): Promise<boolean> {
     const result = await this.client.rpc("revoke_current_owner_session", {
       p_reason: reason,
+      p_owner_session_token_hash: ownerSessionTokenHash,
       p_session_id: sessionId,
     });
     return parseResult(result, z.boolean());

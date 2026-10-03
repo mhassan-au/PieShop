@@ -80,9 +80,9 @@ describe("SupabaseOwnerSessionRepository", () => {
     const repository = new SupabaseOwnerSessionRepository(client);
 
     await expect(repository.touch("b".repeat(64))).resolves.toBe(true);
-    await expect(repository.revoke("session-2", "owner_action")).resolves.toBe(
-      true,
-    );
+    await expect(
+      repository.revoke("session-2", "owner_action", "d".repeat(64)),
+    ).resolves.toBe(true);
     await expect(
       repository.revokeCurrentByTokenHash("c".repeat(64)),
     ).resolves.toBe(true);
@@ -91,6 +91,7 @@ describe("SupabaseOwnerSessionRepository", () => {
     });
     expect(rpc).toHaveBeenNthCalledWith(2, "revoke_current_owner_session", {
       p_reason: "owner_action",
+      p_owner_session_token_hash: "d".repeat(64),
       p_session_id: "session-2",
     });
     expect(rpc).toHaveBeenNthCalledWith(

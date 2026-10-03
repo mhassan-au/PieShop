@@ -223,21 +223,21 @@ When reporting a failure, provide the command, failing test or final error, firs
 
 ## 13. Current boundary
 
-Implemented: project quality pipeline, central messages/errors, structured observability, Supabase migration/seed workflow, foundation identity/tenancy schema, RLS, platform privacy, immutability protection, and the responsive foundation screen.
+Implemented: project quality pipeline, central messages/errors, structured observability, guarded Supabase Cloud migration/test workflow, foundation identity/tenancy schema, RLS, platform privacy, immutability protection, owner control plane, merchant invitation/magic-link authentication, session management, merchant status controls, and the Part 2.1 merchant shell/settings flow.
 
-Planned: platform login, merchant provisioning and magic links, merchant application, catalogue, customers, delivery, orders, payments, fulfilment, notifications, support, channels, archives, and production hardening.
+Planned: catalogue, customers, delivery, orders, payments, fulfilment, notifications, support, conversational channels, archives, and production hardening. SH-1 through SH-5 must close the pre-Part 2.2 security gate before catalogue work starts.
 
 # Case Study: Platform-Owner Email and Password Login
 
 ## A. Define the outcome
 
-The owner manually creates one platform-owner user in Supabase Auth. The user enters email and password at `/login` and reaches `/platform` only when authentication succeeds and an active protected `platform_owner` assignment exists. Email is the login identifier; PieShop creates no separate username lookup.
+The owner manually creates one platform-owner user in Supabase Auth. The user enters email and password at `/login` and reaches `/control` only when authentication succeeds and an active protected `platform_owner` assignment exists. Email is the login identifier; PieShop creates no separate username lookup.
 
 ## B. Establish scope
 
 In scope: login form, password visibility, loading, safe errors, protected route, logout, session restoration, role verification, rate-limit baseline, redacted security events, and accessible phone/desktop UI.
 
-Out of scope: signup, in-app owner creation, merchant login, magic links, password reset UI, MFA, support, merchant features, real data, staging, and production.
+At the time of this Part 1.1 case study, signup, in-app owner creation, merchant login, magic links, password reset UI, MFA, support, merchant features, real data, staging, and production were out of scope. Later completed parts added the merchant invitation and magic-link flow; this historical case study still describes only owner login.
 
 ## C. Review the project
 
@@ -249,10 +249,10 @@ Create `PART_1_1_ACCEPTANCE.md` with scope, scenarios, threats, automated eviden
 
 | Scenario                                | Expected result                            |
 | --------------------------------------- | ------------------------------------------ |
-| Correct active-owner credentials        | Session established; `/platform` opens     |
+| Correct active-owner credentials        | Session established; `/control` opens      |
 | Unknown email or incorrect password     | Same generic response                      |
 | Valid user without active platform role | Access denied and session ended            |
-| Signed-out request to `/platform`       | Redirect to `/login`                       |
+| Signed-out request to `/control`        | Redirect to `/login`                       |
 | Authorised owner opens `/login`         | Redirect to `/platform`                    |
 | Double submit                           | Only one attempt proceeds                  |
 | Provider unavailable                    | Safe retryable response                    |

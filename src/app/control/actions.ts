@@ -65,6 +65,7 @@ export async function revokeOwnerSessionAction(
   await createSupabaseOwnerSessionRepository(client).revoke(
     input.sessionId,
     "owner_action",
+    access.sessionTokenHash,
   );
   revalidatePath("/control");
 }
@@ -104,7 +105,7 @@ export async function changeMerchantStatusAction(
     });
     await createSupabasePlatformMerchantRepository(
       await createRequestSupabaseClient(),
-    ).changeStatus(input);
+    ).changeStatus(input, access.sessionTokenHash);
     revalidatePath("/control");
     return {
       status: "success",
@@ -119,18 +120,22 @@ export async function changeMerchantStatusAction(
 }
 
 async function requireOwnerForInvitation(): Promise<
-  "authorized" | "unavailable"
+  | Readonly<{ status: "authorized"; sessionTokenHash: string }>
+  | Readonly<{ status: "unavailable" }>
 > {
   const access = await verifyRequestPlatformOwnerAccess();
   if (access.status === "denied") redirect("/login");
-  return access.status === "authorized" ? "authorized" : "unavailable";
+  return access.status === "authorized"
+    ? { status: "authorized", sessionTokenHash: access.sessionTokenHash }
+    : { status: "unavailable" };
 }
 
 export async function issueMerchantInvitationAction(
   _previousState: InvitationActionState,
   formData: FormData,
 ): Promise<InvitationActionState> {
-  if ((await requireOwnerForInvitation()) === "unavailable") {
+  const access = await requireOwnerForInvitation();
+  if (access.status === "unavailable") {
     return {
       status: "error",
       message: formatMessage("error.unexpected.message"),
@@ -153,18 +158,21 @@ export async function issueMerchantInvitationAction(
       createSupabaseAdminClient(environment),
       target.businessId,
     );
-    await repository.issue({
-      ...target,
-      tokenHash: hashInvitationToken(token),
-      expiresAt: invitationExpiry(new Date()).toISOString(),
-    });
+    await repository.issue(
+      {
+        ...target,
+        tokenHash: hashInvitationToken(token),
+        expiresAt: invitationExpiry(new Date()).toISOString(),
+      },
+      access.sessionTokenHash,
+    );
     try {
       await createMailtrapInvitationDelivery(environment).send({
         ...deliveryTarget,
         invitationUrl,
       });
     } catch {
-      await repository.revoke(target);
+      await repository.revoke(target, access.sessionTokenHash);
       throw new Error("Invitation delivery failed");
     }
     revalidatePath("/control");
@@ -184,7 +192,8 @@ export async function revokeMerchantInvitationAction(
   _previousState: InvitationActionState,
   formData: FormData,
 ): Promise<InvitationActionState> {
-  if ((await requireOwnerForInvitation()) === "unavailable") {
+  const access = await requireOwnerForInvitation();
+  if (access.status === "unavailable") {
     return {
       status: "error",
       message: formatMessage("error.unexpected.message"),
@@ -196,7 +205,7 @@ export async function revokeMerchantInvitationAction(
     });
     await createSupabasePlatformInvitationRepository(
       await createRequestSupabaseClient(),
-    ).revoke(target);
+    ).revoke(target, access.sessionTokenHash);
     revalidatePath("/control");
     return {
       status: "success",
@@ -231,7 +240,7 @@ export async function createMerchantAction(
     const repository = createSupabasePlatformMerchantRepository(
       await createRequestSupabaseClient(),
     );
-    await repository.create(input);
+    await repository.create(input, access.sessionTokenHash);
     revalidatePath("/control");
     return {
       status: "success",

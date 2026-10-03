@@ -61,6 +61,15 @@ Support sessions preserve the real support actor. Expiry or grant revocation inv
 
 ## 2. Catalogue
 
+### merchant_settings
+
+- `business_id` primary key and restrictive reference to `businesses`
+- synthetic-only `contact_email`, `contact_phone` during private development
+- optimistic concurrency `version`, `created_at`, `updated_at`
+- business name, currency, timezone, and status remain authoritative on `businesses`
+- no direct browser table privileges; self-bound merchant-owner RPCs require a live PieShop application-session hash
+- setup completion is derived from valid authoritative fields and is not stored as a client-controlled percentage
+
 ### categories
 
 - `id`, `business_id`, `name`, `sort_order`, `active`

@@ -240,6 +240,12 @@ Tests first:
 
 User check: complete and resume onboarding on a phone-sized screen.
 
+#### Pre-Part 2.2 security hardening gate — five parts of 1–2 days
+
+Before catalogue mutations are introduced, complete SH-1 through SH-5 in `SECURITY_IMPROVEMENT_HANDOFF_SOL.md`. These parts reconcile security evidence, establish executable database tests, bind owner and merchant operations to the accepted exact-session model, remove legacy authorization bypasses, make settings persistence atomic, and verify authentication/browser protections.
+
+Each SH part follows the normal TDD and owner-acceptance workflow. Review proposed security-boundary designs before implementation, and obtain explicit owner authorization before applying each reviewed migration to development Supabase. Part 2.2 remains blocked until the SH-1 through SH-5 evidence is verified and the owner accepts the security gate. Release-only work S12, S13, and S15 remains outside this gate.
+
 #### Part 2.2: Add and edit a basic product — 1–2 days
 
 Build:

@@ -6,34 +6,38 @@ This folder is the source of truth for the MVP. If implementation and documentat
 
 ## Document map
 
-| Document                                                   | Purpose                                                                                 |
-| ---------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| [MVP_PRODUCT_REQUIREMENTS.md](MVP_PRODUCT_REQUIREMENTS.md) | Product scope, actors, requirements, acceptance criteria, and exclusions                |
-| [WORKFLOWS_AND_STATES.md](WORKFLOWS_AND_STATES.md)         | Customer, merchant, payment, delivery, notification, and order-state flows              |
-| [TECHNICAL_ARCHITECTURE.md](TECHNICAL_ARCHITECTURE.md)     | Proposed stack, system boundaries, integrations, tenancy, and deployment                |
-| [DATA_MODEL.md](DATA_MODEL.md)                             | Initial entities, relationships, constraints, and data-handling rules                   |
-| [CODING_STANDARDS.md](CODING_STANDARDS.md)                 | Mandatory implementation, error-handling, messaging, testing, and time standards        |
-| [SECURITY_OBSERVABILITY.md](SECURITY_OBSERVABILITY.md)     | Security controls, structured logging, audit history, Telegram alerts, and retention    |
-| [SECURITY_PRIVACY_REVIEW.md](SECURITY_PRIVACY_REVIEW.md)   | Security/privacy assessment, hardening baseline, required tests, and residual decisions |
-| [DELIVERY_PLAN.md](DELIVERY_PLAN.md)                       | Milestones, priorities, test strategy, launch gates, and deferred work                  |
-| [DEVELOPMENT_ROADMAP.md](DEVELOPMENT_ROADMAP.md)           | TDD roadmap split into 1–2 day parts with UI acceptance gates                           |
-| [PROJECT_CHECKLISTS.md](PROJECT_CHECKLISTS.md)             | Prerequisite, development-tool, MVP hosting, production hosting, and operations gates   |
-| [DEVELOPMENT_STATUS.md](DEVELOPMENT_STATUS.md)             | Current roadmap part, automated evidence, blockers, and user acceptance                 |
-| [WORKFLOW_CLASSIFICATION.md](WORKFLOW_CLASSIFICATION.md)   | Token-efficient task classification, document routing, verification, and approval rules |
-| [DEVELOPER_WALKTHROUGH.md](DEVELOPER_WALKTHROUGH.md)       | Repository tour, change guide, and end-to-end login development case study              |
-| [THREAT_MODELING_STANDARD.md](THREAT_MODELING_STANDARD.md) | Required phase-entry threat-model process, risk rating, evidence, and review triggers   |
-| [PHASE_0_THREAT_MODEL.md](PHASE_0_THREAT_MODEL.md)         | Retrospective threat model and remediation register for completed foundation work       |
-| [PHASE_1_THREAT_MODEL.md](PHASE_1_THREAT_MODEL.md)         | Phase-entry threat assessment for owner login and merchant account administration       |
-| [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md)       | Planned environment-variable names, classification, ownership, and introduction point   |
-| [UI_MAP.md](UI_MAP.md)                                     | Initial platform, merchant, support, customer, and shared-state screen map              |
-| [UI_TEST_CHECKLISTS.md](UI_TEST_CHECKLISTS.md)             | Reusable owner UI test cases and milestone-specific manual acceptance records           |
-| [PART_0_1_ACCEPTANCE.md](PART_0_1_ACCEPTANCE.md)           | Test-first acceptance examples for the first development part                           |
-| [PART_0_2_ACCEPTANCE.md](PART_0_2_ACCEPTANCE.md)           | Test-first acceptance examples for central messages and safe application errors         |
-| [PART_0_3_ACCEPTANCE.md](PART_0_3_ACCEPTANCE.md)           | Test-first acceptance examples for structured logging and critical alerts               |
-| [PART_0_4_ACCEPTANCE.md](PART_0_4_ACCEPTANCE.md)           | Test-first acceptance examples for the Supabase and RLS security foundation             |
-| [PART_1_1_ACCEPTANCE.md](PART_1_1_ACCEPTANCE.md)           | Threat-mapped acceptance examples for internal platform-owner password login            |
-| [AI_CONTEXT.md](AI_CONTEXT.md)                             | Compact operating context and instructions for AI coding agents                         |
-| [DECISIONS.md](DECISIONS.md)                               | Architecture and product decision log                                                   |
+Current implementation review: [SECURITY_IMPROVEMENT_HANDOFF_SOL.md](SECURITY_IMPROVEMENT_HANDOFF_SOL.md) contains prioritized security findings, evidence gaps, and bounded implementation instructions for SOL following the Part 2.1 UI acceptance.
+
+| Document                                                                       | Purpose                                                                                              |
+| ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| [MVP_PRODUCT_REQUIREMENTS.md](MVP_PRODUCT_REQUIREMENTS.md)                     | Product scope, actors, requirements, acceptance criteria, and exclusions                             |
+| [WORKFLOWS_AND_STATES.md](WORKFLOWS_AND_STATES.md)                             | Customer, merchant, payment, delivery, notification, and order-state flows                           |
+| [TECHNICAL_ARCHITECTURE.md](TECHNICAL_ARCHITECTURE.md)                         | Proposed stack, system boundaries, integrations, tenancy, and deployment                             |
+| [DATA_MODEL.md](DATA_MODEL.md)                                                 | Initial entities, relationships, constraints, and data-handling rules                                |
+| [CODING_STANDARDS.md](CODING_STANDARDS.md)                                     | Mandatory implementation, error-handling, messaging, testing, and time standards                     |
+| [SECURITY_OBSERVABILITY.md](SECURITY_OBSERVABILITY.md)                         | Security controls, structured logging, audit history, Telegram alerts, and retention                 |
+| [SECURITY_PRIVACY_REVIEW.md](SECURITY_PRIVACY_REVIEW.md)                       | Security/privacy assessment, hardening baseline, required tests, and residual decisions              |
+| [DELIVERY_PLAN.md](DELIVERY_PLAN.md)                                           | Milestones, priorities, test strategy, launch gates, and deferred work                               |
+| [DEVELOPMENT_ROADMAP.md](DEVELOPMENT_ROADMAP.md)                               | TDD roadmap split into 1–2 day parts with UI acceptance gates                                        |
+| [PROJECT_CHECKLISTS.md](PROJECT_CHECKLISTS.md)                                 | Prerequisite, development-tool, MVP hosting, production hosting, and operations gates                |
+| [DEVELOPMENT_STATUS.md](DEVELOPMENT_STATUS.md)                                 | Current roadmap part, automated evidence, blockers, and user acceptance                              |
+| [WORKFLOW_CLASSIFICATION.md](WORKFLOW_CLASSIFICATION.md)                       | Token-efficient task classification, document routing, verification, and approval rules              |
+| [SECURITY_HARDENING_SH_1_ACCEPTANCE.md](SECURITY_HARDENING_SH_1_ACCEPTANCE.md) | Proposed acceptance contract for evidence reconciliation and safe executable database security tests |
+| [SECURITY_HARDENING_SH_2_DESIGN.md](SECURITY_HARDENING_SH_2_DESIGN.md)         | Proposed exact owner-session database-boundary design and acceptance examples                        |
+| [DEVELOPER_WALKTHROUGH.md](DEVELOPER_WALKTHROUGH.md)                           | Repository tour, change guide, and end-to-end login development case study                           |
+| [THREAT_MODELING_STANDARD.md](THREAT_MODELING_STANDARD.md)                     | Required phase-entry threat-model process, risk rating, evidence, and review triggers                |
+| [PHASE_0_THREAT_MODEL.md](PHASE_0_THREAT_MODEL.md)                             | Retrospective threat model and remediation register for completed foundation work                    |
+| [PHASE_1_THREAT_MODEL.md](PHASE_1_THREAT_MODEL.md)                             | Phase-entry threat assessment for owner login and merchant account administration                    |
+| [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md)                           | Planned environment-variable names, classification, ownership, and introduction point                |
+| [UI_MAP.md](UI_MAP.md)                                                         | Initial platform, merchant, support, customer, and shared-state screen map                           |
+| [UI_TEST_CHECKLISTS.md](UI_TEST_CHECKLISTS.md)                                 | Reusable owner UI test cases and milestone-specific manual acceptance records                        |
+| [PART_0_1_ACCEPTANCE.md](PART_0_1_ACCEPTANCE.md)                               | Test-first acceptance examples for the first development part                                        |
+| [PART_0_2_ACCEPTANCE.md](PART_0_2_ACCEPTANCE.md)                               | Test-first acceptance examples for central messages and safe application errors                      |
+| [PART_0_3_ACCEPTANCE.md](PART_0_3_ACCEPTANCE.md)                               | Test-first acceptance examples for structured logging and critical alerts                            |
+| [PART_0_4_ACCEPTANCE.md](PART_0_4_ACCEPTANCE.md)                               | Test-first acceptance examples for the Supabase and RLS security foundation                          |
+| [PART_1_1_ACCEPTANCE.md](PART_1_1_ACCEPTANCE.md)                               | Threat-mapped acceptance examples for internal platform-owner password login                         |
+| [AI_CONTEXT.md](AI_CONTEXT.md)                                                 | Compact operating context and instructions for AI coding agents                                      |
+| [DECISIONS.md](DECISIONS.md)                                                   | Architecture and product decision log                                                                |
 
 ## Product statement
 
