@@ -8,10 +8,17 @@ import { loadEnvironment } from "@/config/env";
 import { MerchantWorkspace } from "@/components/MerchantWorkspace";
 import { createSupabaseMerchantSettingsRepository } from "@/merchant-settings/supabase-merchant-settings-repository";
 import { createRequestSupabaseClient } from "@/supabase/server";
+import { formatMessage } from "@/messages/catalogue";
 
 export const dynamic = "force-dynamic";
 
-export default async function MerchantPage() {
+type MerchantPageProps = Readonly<{
+  searchParams: Promise<{ settings?: string | string[] }>;
+}>;
+
+export default async function MerchantPage({
+  searchParams,
+}: MerchantPageProps) {
   const access = await verifyRequestMerchantAccess();
   if (!access) redirect("/merchant/login");
   const environment = loadEnvironment(process.env);
@@ -21,5 +28,23 @@ export default async function MerchantPage() {
   const settings = await createSupabaseMerchantSettingsRepository(
     await createRequestSupabaseClient(),
   ).get(sessionTokenHash);
-  return <MerchantWorkspace settings={settings} />;
+  const result = (await searchParams).settings;
+  const feedback =
+    result === "saved"
+      ? {
+          status: "success" as const,
+          message: formatMessage("merchant.settings.update.success"),
+        }
+      : result === "conflict"
+        ? {
+            status: "error" as const,
+            message: formatMessage("merchant.settings.update.conflict"),
+          }
+        : result === "failed"
+          ? {
+              status: "error" as const,
+              message: formatMessage("merchant.settings.update.failure"),
+            }
+          : { status: "idle" as const };
+  return <MerchantWorkspace initialFeedback={feedback} settings={settings} />;
 }

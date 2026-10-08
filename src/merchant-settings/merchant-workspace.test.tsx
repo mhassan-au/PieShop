@@ -2,15 +2,8 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { MerchantWorkspace } from "@/components/MerchantWorkspace";
 
-const refresh = vi.fn();
-
-vi.mock("next/navigation", () => ({
-  useRouter: () => ({ refresh }),
-}));
-
 vi.mock("@/app/merchant/actions", () => ({
   merchantLogoutAction: vi.fn(),
-  updateMerchantSettingsAction: vi.fn(),
 }));
 
 const settings = {
@@ -52,8 +45,11 @@ describe("MerchantWorkspace", () => {
     expect(container.querySelector("[onclick]")).toBeNull();
   });
 
-  it("refreshes page data from the client after a successful save", () => {
-    expect(MerchantWorkspace.toString()).toContain("router.refresh()");
+  it("posts settings through a conventional same-origin route", () => {
+    const { container } = render(<MerchantWorkspace settings={settings} />);
+    const form = container.querySelector('form[action="/merchant/settings"]');
+    expect(form).not.toBeNull();
+    expect(form).toHaveAttribute("method", "post");
   });
 
   it("synchronizes uncontrolled fields when a newer settings version renders", () => {

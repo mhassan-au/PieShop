@@ -1,11 +1,9 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import {
   merchantLogoutAction,
-  updateMerchantSettingsAction,
   type MerchantSettingsActionState,
 } from "@/app/merchant/actions";
 import { deriveSetupState } from "@/merchant-settings/merchant-settings";
@@ -23,24 +21,19 @@ type Settings = Readonly<{
   updatedAt: string;
 }>;
 
-const initialState: MerchantSettingsActionState = { status: "idle" };
 const destinations = ["Today", "Orders", "Catalogue", "Settings"] as const;
 
 export function MerchantWorkspace({
+  initialFeedback,
   settings,
-}: Readonly<{ settings: Settings }>) {
-  const router = useRouter();
+}: Readonly<{
+  initialFeedback?: MerchantSettingsActionState;
+  settings: Settings;
+}>) {
   const [destination, setDestination] =
     useState<(typeof destinations)[number]>("Settings");
-  const [state, action, pending] = useActionState(
-    updateMerchantSettingsAction,
-    initialState,
-  );
+  const [submitting, setSubmitting] = useState(false);
   const progress = deriveSetupState(settings);
-
-  useEffect(() => {
-    if (state.status === "success") router.refresh();
-  }, [router, state]);
 
   return (
     <main className="mx-auto min-h-screen max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
@@ -109,10 +102,12 @@ export function MerchantWorkspace({
               Private synthetic development data only.
             </p>
             <form
-              action={action}
+              action="/merchant/settings"
               className="mt-6 space-y-4"
               key={settings.version}
+              method="post"
               noValidate
+              onSubmit={() => setSubmitting(true)}
             >
               <label
                 className="block text-sm font-semibold"
@@ -180,11 +175,13 @@ export function MerchantWorkspace({
               <input name="version" type="hidden" value={settings.version} />
               <button
                 className="min-h-12 w-full rounded-xl bg-orange-400 px-4 font-bold text-stone-950 disabled:opacity-60"
-                disabled={pending}
+                disabled={submitting}
               >
-                {pending ? "Saving…" : "Save settings"}
+                {submitting ? "Saving…" : "Save settings"}
               </button>
-              <ActionFeedbackDialog state={state} />
+              <ActionFeedbackDialog
+                state={initialFeedback ?? { status: "idle" }}
+              />
             </form>
           </section>
         </section>
