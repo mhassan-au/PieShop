@@ -53,10 +53,13 @@ export class SupabaseOwnerSessionRepository {
   constructor(private readonly client: SessionRpcClient) {}
 
   async create(tokenHash: string, deviceLabel: string | null): Promise<string> {
-    const result = await this.client.rpc("create_current_owner_session", {
-      p_device_label: deviceLabel,
-      p_token_hash: tokenHash,
-    });
+    const result = await this.client.rpc(
+      "create_current_owner_session_from_password",
+      {
+        p_device_label: deviceLabel,
+        p_token_hash: tokenHash,
+      },
+    );
     return parseResult(result, sessionIdSchema);
   }
 

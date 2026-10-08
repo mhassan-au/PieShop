@@ -5,24 +5,49 @@ This file records the single current roadmap part and its acceptance evidence. I
 ## Project state
 
 - **Overall state:** Phase 1 complete; Phase 2 security gate accepted for private synthetic development
-- **Current approved part:** Emergency owner password recovery — private synthetic development
-- **Part status:** Acceptance contract approved — TDD implementation in progress
+- **Current approved part:** SH-3 implementation and acceptance — session creation and legacy access (S03, S04)
+- **Part status:** Migration applied and automated gates passed — grouped browser checkpoint in progress
+- **Completed current part:** Emergency owner password recovery — implementation, development migration, security gates, browser checkpoint, and owner acceptance passed
 - **Completed security part:** SH-2 — exact-session migration, application gates, grouped UI/process checkpoint, and owner acceptance passed
-- **Next part:** Complete the emergency recovery owner-acceptance gate, then prepare SH-3 session creation and legacy access (S03, S04)
-- **Next part authorised:** No — recovery acceptance must close before any SH-3 work
+- **Next part:** Complete the remaining SH-3 merchant browser checkpoints and request owner acceptance
+- **Next part authorised:** Yes — synthetic local browser verification against the owner-authorized development migration
+- **Execution mode:** Quick mode activated by Mehedi Hassan on 2026-10-08 Australia/Sydney for ordinary in-scope implementation, guarded synthetic-development migrations, verification, commits, and pushes. Pause only for required owner testing/intervention or existing non-delegable safety gates.
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
-- **Last updated:** 2026-10-04 Australia/Sydney
+- **Last updated:** 2026-10-08 Australia/Sydney
 - **CI mode:** Manual GitHub Actions dispatch during private synthetic development; automatic push/PR triggers must be restored and green before staging, real-vendor demo, or production
 
 ## Current part objective
 
-Implement a private-development-only platform-owner password recovery flow that fails toward session revocation, preserves account-enumeration resistance and audit integrity, and does not weaken the external-release MFA/AAL2 gate.
+Design SH-3 so refreshed or retained provider sessions cannot mint a new PieShop application-session lifetime, and retire legacy direct-table paths that bypass merchant suspension and exact-session enforcement.
 
 ## Acceptance source
 
-The owner accepted the 14 recovery examples in `doc/OWNER_PASSWORD_RECOVERY_ACCEPTANCE.md` on 2026-10-03 Australia/Sydney and explicitly authorized pausing SH-2 for this Release-mode recovery part. Completed Part 2.1 evidence remains in `doc/PART_2_1_ACCEPTANCE.md` and `doc/PHASE_2_THREAT_MODEL.md`; SH-2 evidence remains preserved below.
+The accepted SH-3 security boundary and 16 acceptance examples are in `doc/SECURITY_HARDENING_SH_3_DESIGN.md`. Mehedi Hassan authorized local TDD and reviewable migration preparation on 2026-10-04 Australia/Sydney, then separately authorized applying the migration to development Supabase on 2026-10-06. Completed recovery, SH-2, Part 2.1, and earlier evidence remains preserved below.
 
 ## TDD evidence
+
+### Current SH-3
+
+- Authorization: Mehedi Hassan instructed progression to the next roadmap step on 2026-10-04 Australia/Sydney, authorizing design and acceptance preparation only.
+- Design acceptance: Mehedi Hassan accepted the fresh-authentication boundary, five-minute creation window, legacy grant removal, and all 16 examples on 2026-10-04 Australia/Sydney. This authorizes local TDD and migration preparation but not cloud application.
+- Evidence reviewed: The current owner and returning-merchant creation RPCs accept caller-selected application hashes without binding to provider `session_id`, authentication method/time, or a consumed ceremony. Foundation placeholder grants still expose catalogue and transaction paths whose policies check membership but not merchant status or the exact PieShop session.
+- Proposed boundary: Derive signed provider session/method/time only from verified JWT claims, confirm the live provider session, anchor application expiry to the authentication instant, enforce a five-minute creation window and one binding per provider session/context, and fail closed on insufficient evidence. Remove obsolete creation signatures and legacy placeholder table grants/policies without deleting rows.
+- External validation: Current Supabase documentation confirms that access tokens carry a `session_id` corresponding to `auth.sessions`, refresh stays within the provider session, and authentication-method claims include method timestamps. A redacted integration probe against the pinned development provider remains mandatory before migration implementation.
+- TDD red evidence: The focused SH-3 run failed in all expected new boundaries before implementation: seven missing migration-contract expectations and four adapters still calling the obsolete owner, returning-merchant, and invitation-redemption signatures.
+- Local draft evidence: The three adapters now target fresh-authentication RPC names; the reviewable forward migration draft derives signed provider evidence, binds provider sessions, anchors deadlines to authentication time, makes exact retries idempotent, retires old grants, and removes the catalogue/transaction bypass. The focused run passes 21 assertions across four files. Nothing has been applied to Supabase.
+- Redacted live provider evidence: A fresh owner password login produced a signed UUID-shaped `session_id`, `aal1`, and exactly one `amr` entry with method `password` and an integer authentication timestamp. Merchant invitation and returning-login PKCE completions each produced a distinct UUID-shaped provider session, `aal1`, and exactly one integer-timestamped `magiclink` AMR entry. Recovery produced another distinct UUID-shaped provider session with one integer-timestamped `recovery` AMR entry, so it cannot satisfy password or merchant session creation. Explicit token refreshes retained every provider-session binding and original authentication method/timestamp rather than creating fresh authentication evidence. No token, provider-session identifier, user identifier, email, or password was exposed by the temporary local-only probe, which was removed after the checkpoint.
+- Rollback SQL evidence: The guarded SH-3 test applies the forward migration inside a transaction, exercises fresh owner password and merchant magic-link creation, exact retry idempotency, conflicting hash and recovery denial, deadline anchoring, audit redaction/count, old/new function grants, direct-table privilege removal, and obsolete policy removal, then rolls back both migration and synthetic fixtures. Seven grouped assertions pass. Provider-session advisory transaction locks and unique indexes serialize concurrent creation; the post-application gate must still exercise true multi-connection contention.
+- Migration dry-run: Passed — exactly `20261004010000_fresh_session_creation_and_legacy_access.sql` is pending; no database change was made.
+- Dependency remediation: Mehedi Hassan approved the non-breaking transitive update from `source-map-js@1.2.1` to `1.2.2` on 2026-10-06 Australia/Sydney. The lockfile changed only that package entry; the production dependency audit now reports zero vulnerabilities.
+- Local Release gate: Formatting, lint, TypeScript, 83 Vitest files/325 assertions, notification/tooling tests, the Next.js production build, secret scan, production dependency audit, guarded SH-3 rollback SQL test, and migration dry-run pass. The full all-dependency audit remains non-green only for the owner-accepted ADR-030 development lint-chain advisory, whose automated fix would downgrade `eslint-config-next` incompatibly.
+- Effective privilege diff: The migration revokes authenticated catalogue `SELECT`/`INSERT`/`UPDATE` and transaction `SELECT`/`INSERT`, removes all five obsolete membership-only policies, and revokes authenticated execution of the three caller-mintable session-creation signatures. It grants authenticated execution only to the new password- or magic-link-bound creation signatures; `anon` receives none. Existing rows, constraints, immutability triggers, and control-plane metadata boundaries are preserved.
+- Development database: Mehedi Hassan explicitly authorized and the guarded target applied `20261004010000_fresh_session_creation_and_legacy_access.sql` on 2026-10-06 Australia/Sydney. The follow-up dry-run reports the remote database is up to date.
+- Post-application database gate: Passed — schema, hardening, owner exact-session, merchant settings, updated foundation isolation/immutability, and SH-3 fresh-authentication/idempotency/audit/privilege tests pass with synthetic fixtures rolled back. The migration includes provider-session advisory transaction locks plus unique binding indexes; exact multi-connection RPC contention remains a grouped post-application acceptance observation because successful RPC creation writes an intentionally immutable audit event.
+- Post-application application gate: Passed — formatting, lint, TypeScript, 83 Vitest files/325 assertions, production build, secret scan, production dependency audit, and diff hygiene are green.
+- Owner browser checkpoint: Passed on 2026-10-06 Australia/Sydney — a fresh password-authenticated owner reached the protected `/control` page. Refresh retained the same `2026-10-06 02:41:27 UTC` application-session creation time and `2026-10-06 14:41:27 UTC` absolute expiry while only last activity advanced; no duplicate current application session appeared and no credential or session identifier was exposed.
+- Invitation browser checkpoint: Passed on 2026-10-08 Australia/Sydney — the manually pre-provisioned synthetic merchant identity completed invitation-bound PKCE, consumed the invitation, reached `/merchant`, and remained signed in across refresh without exposing authentication material.
+- Checkpoint repair: The first protected merchant render exposed that merchants created after the original settings migration lacked a required `merchant_settings` row. Migration `20261008010000_provision_merchant_settings.sql` non-destructively backfills missing rows and installs a private trigger for future businesses. The guarded development migration is applied; 17 live authorization/persistence/isolation assertions, 8 focused tests, the 84-file/327-assertion application suite, formatting, lint, TypeScript, production build, secret scan, migration dry-run, and production dependency audit pass. The newly reported Sharp production advisory was removed by the non-breaking `0.35.5` lockfile update; only the owner-accepted ADR-030 development lint-chain advisory remains.
+- Next gate: Complete the remaining grouped browser checkpoint against the applied migration: returning merchant PKCE, refresh/idempotent behavior, and protected merchant-page rendering. Recovery-method denial is already evidenced by the redacted live provider probe and post-application database test. Then request SH-3 owner acceptance.
 
 ### Current owner password recovery
 
@@ -33,8 +58,11 @@ The owner accepted the 14 recovery examples in `doc/OWNER_PASSWORD_RECOVERY_ACCE
 - Revocation boundary: The forward migration derives `auth.uid()`, requires an active platform-owner role, revokes every live PieShop owner session before password mutation, and writes an actor-unclaimed value-free audit event. Global Supabase sign-out follows a successful password update.
 - Local Release gate: Formatting, lint, TypeScript, 82 Vitest files/317 assertions, tooling tests, Next.js `16.3.8` production build, and secret scan pass. The full dependency audit remains non-green only for the owner-accepted ADR-030 development-lint advisory; the production dependency audit remains clean.
 - Live checkpoint repair: A successful recovery and fresh login exposed an obsolete owner-session list parameter (`p_current_token_hash`) left in the application adapter after the SH-2 RPC hardening migration. A regression test reproduced the contract mismatch; the adapter now passes the required exact-session parameter (`p_owner_session_token_hash`) so `/control` can list only the freshly authenticated owner session.
-- Migration dry-run: Passed — exactly `20261003010000_owner_password_recovery.sql` is pending; no database change was made.
-- Next gate: Explicit owner authorization is required before applying the exact recovery migration to development Supabase. Then run database security checks and the owner recovery browser checkpoint.
+- Development database: Owner-authorized migration `20261003010000_owner_password_recovery.sql` is applied; the guarded follow-up dry-run reports the remote database is up to date.
+- Post-application database gate: Passed — schema, hardening, rollback-safe foundation security, and owner exact-session authorization/privacy/revocation checks pass against the guarded synthetic development target.
+- Browser checkpoint: Passed — generic recovery request, same-browser callback, reset form, eight-character complexity policy, password mutation, login redirect, fresh exact-bound owner login, protected control-page rendering, and recovery-driven session revocation were observed in the local synthetic flow. Mehedi Hassan separately confirmed on 2026-10-04 Australia/Sydney that the old password is rejected and the new password succeeds.
+- Owner acceptance: Passed — Mehedi Hassan accepted the emergency owner password-recovery result on 2026-10-04 Australia/Sydney.
+- Completion: The emergency recovery part is complete for private synthetic development only. MFA/AAL2 recovery, durable throttling, notification, and external-environment controls remain mandatory before any real-vendor demo, real data, staging, production, or external release.
 
 ### Current SH-2
 

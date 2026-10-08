@@ -199,8 +199,6 @@ if (!process.exitCode && databaseUrl) {
       await tx.unsafe("set local role authenticated");
       const merchantBusinesses =
         await tx`select id from public.businesses order by id`;
-      const merchantCatalogue =
-        await tx`select business_id from public.catalogue_entries order by business_id`;
       const [merchantAuthorization] = await tx`
         select
           app_private.is_current_user_active_platform_owner() as is_platform_owner,
@@ -222,13 +220,6 @@ if (!process.exitCode && databaseUrl) {
         "authorization helpers are not bound to the current merchant identity",
       );
       assertions += 1;
-      assert(
-        merchantCatalogue.length === 1 &&
-          merchantCatalogue[0]?.business_id === businessA,
-        "merchant crossed the catalogue boundary",
-      );
-      assertions += 1;
-
       await tx`select set_config('request.jwt.claims', ${jwtFor(platformOwner)}, true)`;
       await tx.unsafe("set local role authenticated");
       const platformBusinesses = await tx`
@@ -236,10 +227,6 @@ if (!process.exitCode && databaseUrl) {
         from public.businesses
         where id in (${businessA}, ${businessB})
       `;
-      const platformCatalogue =
-        await tx`select id from public.catalogue_entries`;
-      const platformTransactions =
-        await tx`select id from public.transaction_records`;
       const [platformAuthorization] = await tx`
         select
           app_private.is_current_user_active_platform_owner() as is_platform_owner,
@@ -258,19 +245,13 @@ if (!process.exitCode && databaseUrl) {
         "platform authorization helper grants an unintended merchant membership",
       );
       assertions += 1;
-      assert(
-        platformCatalogue.length === 0,
-        "platform owner can read merchant catalogue",
-      );
-      assertions += 1;
-      assert(
-        platformTransactions.length === 0,
-        "platform owner can read merchant transactions",
-      );
-      assertions += 1;
-
       const [immutability] = await tx`
         select
+          has_table_privilege('authenticated', 'public.catalogue_entries', 'select') as catalogue_select,
+          has_table_privilege('authenticated', 'public.catalogue_entries', 'insert') as catalogue_insert,
+          has_table_privilege('authenticated', 'public.catalogue_entries', 'update') as catalogue_update,
+          has_table_privilege('authenticated', 'public.transaction_records', 'select') as transaction_select,
+          has_table_privilege('authenticated', 'public.transaction_records', 'insert') as transaction_insert,
           has_table_privilege('authenticated', 'public.audit_events', 'update') as audit_update,
           has_table_privilege('authenticated', 'public.audit_events', 'delete') as audit_delete,
           has_table_privilege('authenticated', 'public.transaction_records', 'update') as transaction_update,
@@ -278,11 +259,16 @@ if (!process.exitCode && databaseUrl) {
       `;
       assert(
         immutability &&
+          !immutability.catalogue_select &&
+          !immutability.catalogue_insert &&
+          !immutability.catalogue_update &&
+          !immutability.transaction_select &&
+          !immutability.transaction_insert &&
           !immutability.audit_update &&
           !immutability.audit_delete &&
           !immutability.transaction_update &&
           !immutability.transaction_delete,
-        "application role can rewrite immutable records",
+        "application role has legacy content access or can rewrite immutable records",
       );
       assertions += 1;
 

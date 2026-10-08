@@ -146,12 +146,30 @@ if (!process.exitCode && databaseUrl) {
           (${merchantB}, ${businessB}, ${sessionB}, ${sessionTime}, ${sessionTime}, ${sessionExpiry}),
           (${merchantStaff}, ${businessA}, ${staffSession}, ${sessionTime}, ${sessionTime}, ${sessionExpiry})
       `;
-      stage = "create_settings";
+      stage = "verify_settings_provisioning";
+      const [provisionedSettings] = await tx`
+        select count(*)::int as count
+        from public.merchant_settings
+        where business_id in (${businessA}, ${businessB})
+      `;
+      assert(
+        provisionedSettings?.count === 2,
+        "merchant_settings_not_provisioned",
+      );
+      assertions += 1;
+
+      stage = "configure_settings_fixtures";
       await tx`
-        insert into public.merchant_settings (business_id, contact_email, contact_phone)
-        values
-          (${businessA}, 'synthetic-a@example.invalid', '+61400000001'),
-          (${businessB}, 'synthetic-b@example.invalid', '+61400000002')
+        update public.merchant_settings
+        set contact_email = case
+              when business_id = ${businessA} then 'synthetic-a@example.invalid'
+              else 'synthetic-b@example.invalid'
+            end,
+            contact_phone = case
+              when business_id = ${businessA} then '+61400000001'
+              else '+61400000002'
+            end
+        where business_id in (${businessA}, ${businessB})
       `;
 
       stage = "merchant_context";

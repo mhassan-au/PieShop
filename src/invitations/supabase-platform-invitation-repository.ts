@@ -105,10 +105,13 @@ export class SupabasePlatformInvitationRepository {
   }
 
   async redeem(tokenHash: string, sessionTokenHash: string) {
-    const result = await this.client.rpc("redeem_merchant_invitation", {
-      p_session_token_hash: sessionTokenHash,
-      p_token_hash_hex: tokenHash,
-    });
+    const result = await this.client.rpc(
+      "redeem_merchant_invitation_from_magic_link",
+      {
+        p_session_token_hash: sessionTokenHash,
+        p_token_hash_hex: tokenHash,
+      },
+    );
     if (result.error || !Array.isArray(result.data) || result.data.length !== 1)
       throw new InvitationOperationError(providerCode(result.error));
     try {

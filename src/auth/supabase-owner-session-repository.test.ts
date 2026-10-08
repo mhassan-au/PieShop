@@ -18,17 +18,23 @@ function createClient(
 describe("SupabaseOwnerSessionRepository", () => {
   it("creates a self-bound session using only its hash and safe device label", async () => {
     const { client, rpc } = createClient({
-      create_current_owner_session: { data: "session-1", error: null },
+      create_current_owner_session_from_password: {
+        data: "session-1",
+        error: null,
+      },
     });
     const repository = new SupabaseOwnerSessionRepository(client);
 
     await expect(
       repository.create("a".repeat(64), "Firefox on Windows"),
     ).resolves.toBe("session-1");
-    expect(rpc).toHaveBeenCalledWith("create_current_owner_session", {
-      p_device_label: "Firefox on Windows",
-      p_token_hash: "a".repeat(64),
-    });
+    expect(rpc).toHaveBeenCalledWith(
+      "create_current_owner_session_from_password",
+      {
+        p_device_label: "Firefox on Windows",
+        p_token_hash: "a".repeat(64),
+      },
+    );
   });
 
   it("returns safe session metadata without credential hashes", async () => {
@@ -103,7 +109,7 @@ describe("SupabaseOwnerSessionRepository", () => {
 
   it("fails closed without exposing provider error details", async () => {
     const { client } = createClient({
-      create_current_owner_session: {
+      create_current_owner_session_from_password: {
         data: null,
         error: { message: "credential hash duplicated: secret-value" },
       },

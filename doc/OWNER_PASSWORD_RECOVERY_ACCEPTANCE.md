@@ -2,7 +2,7 @@
 
 **Mode:** Release
 **Scope:** Private local development with synthetic data only
-**Status:** Accepted by Mehedi Hassan on 2026-10-03
+**Status:** Acceptance examples approved on 2026-10-03; implemented result accepted by Mehedi Hassan on 2026-10-04
 
 ## Boundary
 
@@ -31,3 +31,7 @@ PieShop may offer recovery only for the manually provisioned platform-owner acco
 - Open the sandbox recovery email in the same browser and reach the reset form without token material remaining in the URL.
 - Confirm mismatch validation, then set a new strong password.
 - Confirm redirect to login, denial of the old PieShop session, rejection of the old password, successful new-password login, and a fresh session list.
+
+## Completion record
+
+Passed on 2026-10-04 Australia/Sydney. The guarded development migration and security checks passed; the same-browser recovery flow reset the synthetic platform-owner password; the old password was rejected; the new password created a fresh exact-bound owner session; and Mehedi Hassan accepted the result. This acceptance does not authorize external use or relax the documented MFA/AAL2 release gate.

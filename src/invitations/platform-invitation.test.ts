@@ -97,10 +97,13 @@ describe("platform invitation boundary", () => {
       businessId,
       role: "merchant_owner",
     });
-    expect(rpc).toHaveBeenCalledWith("redeem_merchant_invitation", {
-      p_session_token_hash: "b".repeat(64),
-      p_token_hash_hex: "a".repeat(64),
-    });
+    expect(rpc).toHaveBeenCalledWith(
+      "redeem_merchant_invitation_from_magic_link",
+      {
+        p_session_token_hash: "b".repeat(64),
+        p_token_hash_hex: "a".repeat(64),
+      },
+    );
   });
 
   it("allows previews only in synthetic local or test environments", () => {

@@ -48,9 +48,12 @@ export class SupabaseMerchantSessionRepository {
   }
 
   async startCurrent(tokenHash: string) {
-    const result = await this.client.rpc("start_current_merchant_session", {
-      p_session_token_hash: tokenHash,
-    });
+    const result = await this.client.rpc(
+      "start_current_merchant_session_from_magic_link",
+      {
+        p_session_token_hash: tokenHash,
+      },
+    );
     if (result.error || !Array.isArray(result.data) || result.data.length !== 1)
       throw new Error(OPERATION_ERROR);
     try {

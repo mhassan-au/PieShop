@@ -66,8 +66,11 @@ describe("SupabaseMerchantSessionRepository", () => {
       role: "merchant_owner",
       absoluteExpiresAt: "2026-10-06T00:00:00.000Z",
     });
-    expect(rpc).toHaveBeenCalledWith("start_current_merchant_session", {
-      p_session_token_hash: "b".repeat(64),
-    });
+    expect(rpc).toHaveBeenCalledWith(
+      "start_current_merchant_session_from_magic_link",
+      {
+        p_session_token_hash: "b".repeat(64),
+      },
+    );
   });
 });
