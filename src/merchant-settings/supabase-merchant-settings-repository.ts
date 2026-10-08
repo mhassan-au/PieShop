@@ -7,13 +7,21 @@ import {
 } from "./merchant-settings";
 
 const OPERATION_ERROR = "Merchant settings operation failed";
+const CONFLICT_CODE = "40001";
+
+export class MerchantSettingsConflictError extends Error {
+  constructor() {
+    super("Merchant settings conflict");
+    this.name = "MerchantSettingsConflictError";
+  }
+}
 const updateRowSchema = z
   .object({
     business_id: z.uuid(),
     version: z.number().int().positive(),
     updated_at: z.iso.datetime({ offset: true }),
   })
-  .passthrough();
+  .strict();
 
 type RpcClient = {
   rpc(
@@ -53,7 +61,17 @@ export class SupabaseMerchantSettingsRepository {
       p_expected_version: input.version,
       p_session_token_hash: sessionTokenHash,
     });
-    if (result.error) throw new Error(OPERATION_ERROR);
+    if (result.error) {
+      if (
+        typeof result.error === "object" &&
+        result.error !== null &&
+        "code" in result.error &&
+        result.error.code === CONFLICT_CODE
+      ) {
+        throw new MerchantSettingsConflictError();
+      }
+      throw new Error(OPERATION_ERROR);
+    }
     try {
       return updateRowSchema.parse(oneRow(result.data));
     } catch {

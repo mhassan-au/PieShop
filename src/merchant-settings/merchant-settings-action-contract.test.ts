@@ -28,9 +28,9 @@ describe("merchant settings action contract", () => {
     expect(action).toContain(
       'formatMessage("merchant.settings.update.success")',
     );
-    expect(action).toContain(
-      'formatMessage("merchant.settings.update.failure")',
-    );
+    expect(action).toContain('"merchant.settings.update.failure"');
+    expect(action).toContain('"merchant.settings.update.conflict"');
+    expect(action).toContain("MerchantSettingsConflictError");
     expect(action).toContain('revalidatePath("/merchant")');
   });
 });

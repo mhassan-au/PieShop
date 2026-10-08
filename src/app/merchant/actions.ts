@@ -16,7 +16,10 @@ import { hashSessionToken } from "@/auth/session-token";
 import { loadEnvironment } from "@/config/env";
 import { formatMessage } from "@/messages/catalogue";
 import { parseMerchantSettingsUpdate } from "@/merchant-settings/merchant-settings";
-import { createSupabaseMerchantSettingsRepository } from "@/merchant-settings/supabase-merchant-settings-repository";
+import {
+  createSupabaseMerchantSettingsRepository,
+  MerchantSettingsConflictError,
+} from "@/merchant-settings/supabase-merchant-settings-repository";
 import { createRequestSupabaseClient } from "@/supabase/server";
 
 export async function merchantLogoutAction(): Promise<void> {
@@ -66,10 +69,14 @@ export async function updateMerchantSettingsAction(
       status: "success",
       message: formatMessage("merchant.settings.update.success"),
     };
-  } catch {
+  } catch (error) {
     return {
       status: "error",
-      message: formatMessage("merchant.settings.update.failure"),
+      message: formatMessage(
+        error instanceof MerchantSettingsConflictError
+          ? "merchant.settings.update.conflict"
+          : "merchant.settings.update.failure",
+      ),
     };
   }
 }

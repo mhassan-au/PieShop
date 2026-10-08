@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import { SupabaseMerchantSettingsRepository } from "./supabase-merchant-settings-repository";
+import {
+  MerchantSettingsConflictError,
+  SupabaseMerchantSettingsRepository,
+} from "./supabase-merchant-settings-repository";
 
 const row = {
   business_id: "123e4567-e89b-12d3-a456-426614174000",
@@ -62,6 +65,52 @@ describe("Supabase merchant settings repository", () => {
       .mockResolvedValue({ data: null, error: { message: "provider-secret" } });
     await expect(
       new SupabaseMerchantSettingsRepository({ rpc }).get("hash"),
+    ).rejects.toThrow("Merchant settings operation failed");
+  });
+
+  it("maps only the stable database conflict code", async () => {
+    const rpc = vi
+      .fn()
+      .mockResolvedValue({ data: null, error: { code: "40001" } });
+    await expect(
+      new SupabaseMerchantSettingsRepository({ rpc }).update(
+        {
+          businessName: "Harbour Pies",
+          contactEmail: "test@example.com",
+          contactPhone: "+61412345678",
+          currencyCode: "AUD",
+          timezone: "Australia/Sydney",
+          version: 1,
+        },
+        "hash",
+      ),
+    ).rejects.toBeInstanceOf(MerchantSettingsConflictError);
+  });
+
+  it("rejects additional acknowledgement fields", async () => {
+    const rpc = vi.fn().mockResolvedValue({
+      data: [
+        {
+          business_id: row.business_id,
+          version: 2,
+          updated_at: row.updated_at,
+          contact_email: "must-not-leak@example.invalid",
+        },
+      ],
+      error: null,
+    });
+    await expect(
+      new SupabaseMerchantSettingsRepository({ rpc }).update(
+        {
+          businessName: "Harbour Pies",
+          contactEmail: "test@example.com",
+          contactPhone: "+61412345678",
+          currencyCode: "AUD",
+          timezone: "Australia/Sydney",
+          version: 1,
+        },
+        "hash",
+      ),
     ).rejects.toThrow("Merchant settings operation failed");
   });
 });

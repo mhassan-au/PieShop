@@ -1,4 +1,6 @@
 import { randomBytes, randomUUID } from "node:crypto";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 
 import postgres from "postgres";
 
@@ -8,6 +10,9 @@ import {
 } from "./supabase-test-target.mjs";
 
 const databaseUrl = process.env.SUPABASE_DB_URL;
+const migrationPath = path.resolve(
+  "supabase/migrations/20261008020000_harden_merchant_settings_integrity.sql",
+);
 
 class RollbackAfterSuccess extends Error {}
 class InjectedRollbackFailure extends Error {}
@@ -26,6 +31,10 @@ function tokenHash() {
 
 function publicId() {
   return `biz_sh1${randomBytes(6).toString("hex")}`;
+}
+
+function migrationBody(source) {
+  return source.replace(/^\s*begin;\s*/iu, "").replace(/\s*commit;\s*$/iu, "");
 }
 
 async function expectDatabaseDenial(tx, action, expectedMessage) {
@@ -66,8 +75,18 @@ if (!process.exitCode && databaseUrl) {
   });
   let assertions = 0;
   let stage = "connect";
+  let migrationAlreadyApplied = false;
 
   try {
+    const migration = migrationBody(await readFile(migrationPath, "utf8"));
+    const [migrationState] = await sql`
+      select exists (
+        select 1 from supabase_migrations.schema_migrations
+        where version = '20261008020000'
+      ) as applied
+    `;
+    migrationAlreadyApplied = migrationState?.applied === true;
+
     stage = "verify_failure_rollback";
     const rollbackBusinessId = randomUUID();
     try {
@@ -90,6 +109,10 @@ if (!process.exitCode && databaseUrl) {
     assertions += 1;
 
     await sql.begin(async (tx) => {
+      if (!migrationAlreadyApplied) {
+        stage = "apply_sh4_migration_in_rollback";
+        await tx.unsafe(migration);
+      }
       const merchantA = randomUUID();
       const merchantB = randomUUID();
       const merchantStaff = randomUUID();
@@ -379,6 +402,57 @@ if (!process.exitCode && databaseUrl) {
       assert(
         !anonymousPrivilege?.can_execute,
         "anonymous_rpc_privilege_present",
+      );
+      assertions += 1;
+
+      stage = "deny_exactly_one_membership_ambiguity";
+      await tx`
+        insert into public.memberships (business_id, user_id, role, status)
+        values (${businessB}, ${merchantA}, 'merchant_owner', 'active')
+      `;
+      await tx`select set_config('request.jwt.claims', ${jwtFor(merchantA)}, true)`;
+      await tx.unsafe("set local role authenticated");
+      const ambiguousRead = await tx`
+        select * from public.get_current_merchant_settings(${sessionA})
+      `;
+      assert(ambiguousRead.length === 0, "ambiguous_owner_membership_accepted");
+      assertions += 1;
+      await tx.unsafe("reset role");
+
+      stage = "missing_settings_invariant";
+      await tx`
+        delete from public.memberships
+        where business_id = ${businessB} and user_id = ${merchantA}
+      `;
+      await tx`delete from public.merchant_settings where business_id = ${businessB}`;
+      await tx`select set_config('request.jwt.claims', ${jwtFor(merchantB)}, true)`;
+      await tx.unsafe("set local role authenticated");
+      await expectDatabaseDenial(
+        tx,
+        (savepoint) => savepoint`
+          select * from public.update_current_merchant_settings(
+            'Must Not Partially Update', 'missing@example.invalid', '+61400000008',
+            'AUD', 'Australia/Sydney', 1, ${sessionB}
+          )
+        `,
+        "settings_unavailable",
+      );
+      await tx.unsafe("reset role");
+      const [missingInvariant] = await tx`
+        select
+          b.name,
+          count(a.id)::int as audit_count
+        from public.businesses b
+        left join public.audit_events a
+          on a.effective_business_id = b.id
+          and a.event_type = 'merchant.settings_updated'
+        where b.id = ${businessB}
+        group by b.name
+      `;
+      assert(
+        missingInvariant?.name === "SH1 Synthetic Merchant B" &&
+          missingInvariant.audit_count === 0,
+        "missing_settings_partial_mutation",
       );
       assertions += 1;
 

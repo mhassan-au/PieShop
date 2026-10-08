@@ -29,6 +29,7 @@
     "test:supabase:settings-security": "node --env-file=.env.local scripts/test-merchant-settings-security.mjs",
     "test:supabase:owner-security": "node --env-file=.env.local scripts/test-owner-exact-session-security.mjs",
     "test:supabase:sh3-security": "node --env-file=.env.local scripts/test-sh3-session-security.mjs",
+    "test:supabase:sh4-concurrency": "node --env-file=.env.local scripts/test-sh4-settings-concurrency.mjs",
     "test:supabase:hardening": "node --env-file=.env.local scripts/check-foundation-hardening.mjs",
     "test:supabase:seed": "node --env-file=.env.local scripts/check-development-seed.mjs",
     "test:supabase:owner-link": "node --env-file=.env.local scripts/check-owner-linkage.mjs",

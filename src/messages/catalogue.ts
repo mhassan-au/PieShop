@@ -605,6 +605,11 @@ const catalogue = {
       "We couldn’t save these settings. Check the details or refresh and try again.",
     placeholders: [],
   },
+  "merchant.settings.update.conflict": {
+    template:
+      "These settings changed in another session. Refresh the page and try again.",
+    placeholders: [],
+  },
   "auth.owner.control.empty.title": {
     template: "Control plane ready",
     placeholders: [],

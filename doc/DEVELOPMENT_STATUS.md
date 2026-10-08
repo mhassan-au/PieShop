@@ -6,11 +6,11 @@ This file records the single current roadmap part and its acceptance evidence. I
 
 - **Overall state:** Phase 1 complete; Phase 2 security gate accepted for private synthetic development
 - **Current approved part:** SH-4 design and acceptance preparation — merchant settings integrity (S06)
-- **Part status:** Security-boundary design and 16 acceptance examples prepared — owner review required before TDD implementation
+- **Part status:** Design accepted, migration applied, and automated gates passed — final merchant settings UI/process checkpoint pending
 - **Completed current part:** Emergency owner password recovery — implementation, development migration, security gates, browser checkpoint, and owner acceptance passed
 - **Completed security part:** SH-2 — exact-session migration, application gates, grouped UI/process checkpoint, and owner acceptance passed
 - **Next part:** SH-4 design and acceptance preparation — merchant settings integrity (S06)
-- **Next part authorised:** Design preparation only — implementation begins after explicit acceptance of the SH-4 boundary and examples
+- **Next part authorised:** Yes — SH-4 implementation and guarded synthetic-development verification; final owner acceptance remains required
 - **Execution mode:** Quick mode activated by Mehedi Hassan on 2026-10-08 Australia/Sydney for ordinary in-scope implementation, guarded synthetic-development migrations, verification, commits, and pushes. Pause only for required owner testing/intervention or existing non-delegable safety gates.
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
 - **Last updated:** 2026-10-08 Australia/Sydney
@@ -29,9 +29,15 @@ The proposed SH-4 boundary and 16 acceptance examples are in `doc/SECURITY_HARDE
 ### Current SH-4
 
 - Authorization: Mehedi Hassan explicitly started SH-4 design and requested autonomous implementation, small automated tests, guarded development work, commits, and pushes on 2026-10-08 Australia/Sydney.
+- Design acceptance: Mehedi Hassan accepted the SH-4 security boundary and all 16 merchant-settings integrity examples on 2026-10-08 Australia/Sydney, authorizing TDD implementation and the reviewed non-destructive guarded development migration under quick mode.
 - Evidence reviewed: The settings-row trigger/backfill now covers provisioning, but the effective update RPC still has nullable-input, pre-lock authorization, exactly-one-membership, broad acknowledgement, generic-conflict, and untested concurrency gaps identified by S06.
 - Proposed boundary: Preserve the single-business owner rule; explicitly reject required NULLs; serialize on the business row; recheck business, membership, and exact session after locking; fail atomically on a missing settings invariant; keep identical retries idempotent; return a strict three-field acknowledgement; map only the stable conflict classification to central safe copy; and prove both suspension/update orderings with two connections.
-- Acceptance gate: Owner review of all 16 examples in `doc/SECURITY_HARDENING_SH_4_DESIGN.md` is required before TDD implementation.
+- TDD red evidence: Focused tests failed because the SH-4 migration, stable conflict type/copy, and strict acknowledgement parsing were absent; the repository accepted an unexpected contact field in the update response.
+- Implementation: Migration `20261008020000_harden_merchant_settings_integrity.sql` explicitly rejects required NULLs, enforces exactly one eligible owner business, serializes on the business row, rechecks membership/business/exact-session state under locks, fails atomically on missing settings, preserves identical-retry idempotency, uses stable conflict SQLSTATE `40001`, returns only business/version/time acknowledgement fields, and keeps value-free real-actor auditing. The repository strictly parses that acknowledgement and maps only `40001` to centralized conflict copy.
+- Development database: The accepted non-destructive SH-4 migration is applied to the guarded synthetic development target; follow-up dry-run reports the remote database is up to date.
+- Database gate: Passed — 19 rollback-safe live settings authorization/persistence/isolation assertions, two deterministic two-connection business-lock ordering probes with all probe mutations rolled back, schema/hardening/foundation/owner/SH-3 regression gates, and the migration dry-run are green.
+- Application gate: Passed — formatting, lint, TypeScript, 85 Vitest files/333 assertions, notification/tooling tests, production build, secret scan, and production dependency audit with zero vulnerabilities are green. The full audit remains non-green only for the owner-accepted ADR-030 development lint-chain advisory; the offered force fix remains an incompatible downgrade.
+- Next gate: Complete one final merchant settings UI/process checkpoint covering a valid save/read-back, identical resubmission, and safe stale-version conflict feedback, then request SH-4 owner acceptance.
 
 ### Current SH-3
 
