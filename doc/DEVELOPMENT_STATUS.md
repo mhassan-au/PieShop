@@ -6,10 +6,10 @@ This file records the single current roadmap part and its acceptance evidence. I
 
 - **Overall state:** Phase 1 complete; Phase 2 security gate accepted for private synthetic development
 - **Current approved part:** SH-3 implementation and acceptance — session creation and legacy access (S03, S04)
-- **Part status:** Migration applied and automated gates passed — grouped browser checkpoint in progress
+- **Part status:** Migration, automated gates, and grouped browser checkpoint passed — owner acceptance pending
 - **Completed current part:** Emergency owner password recovery — implementation, development migration, security gates, browser checkpoint, and owner acceptance passed
 - **Completed security part:** SH-2 — exact-session migration, application gates, grouped UI/process checkpoint, and owner acceptance passed
-- **Next part:** Complete the remaining SH-3 merchant browser checkpoints and request owner acceptance
+- **Next part:** Record SH-3 owner acceptance, then identify the next authorized security-hardening part
 - **Next part authorised:** Yes — synthetic local browser verification against the owner-authorized development migration
 - **Execution mode:** Quick mode activated by Mehedi Hassan on 2026-10-08 Australia/Sydney for ordinary in-scope implementation, guarded synthetic-development migrations, verification, commits, and pushes. Pause only for required owner testing/intervention or existing non-delegable safety gates.
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
@@ -47,7 +47,9 @@ The accepted SH-3 security boundary and 16 acceptance examples are in `doc/SECUR
 - Owner browser checkpoint: Passed on 2026-10-06 Australia/Sydney — a fresh password-authenticated owner reached the protected `/control` page. Refresh retained the same `2026-10-06 02:41:27 UTC` application-session creation time and `2026-10-06 14:41:27 UTC` absolute expiry while only last activity advanced; no duplicate current application session appeared and no credential or session identifier was exposed.
 - Invitation browser checkpoint: Passed on 2026-10-08 Australia/Sydney — the manually pre-provisioned synthetic merchant identity completed invitation-bound PKCE, consumed the invitation, reached `/merchant`, and remained signed in across refresh without exposing authentication material.
 - Checkpoint repair: The first protected merchant render exposed that merchants created after the original settings migration lacked a required `merchant_settings` row. Migration `20261008010000_provision_merchant_settings.sql` non-destructively backfills missing rows and installs a private trigger for future businesses. The guarded development migration is applied; 17 live authorization/persistence/isolation assertions, 8 focused tests, the 84-file/327-assertion application suite, formatting, lint, TypeScript, production build, secret scan, migration dry-run, and production dependency audit pass. The newly reported Sharp production advisory was removed by the non-breaking `0.35.5` lockfile update; only the owner-accepted ADR-030 development lint-chain advisory remains.
-- Next gate: Complete the remaining grouped browser checkpoint against the applied migration: returning merchant PKCE, refresh/idempotent behavior, and protected merchant-page rendering. Recovery-method denial is already evidenced by the redacted live provider probe and post-application database test. Then request SH-3 owner acceptance.
+- Returning-merchant browser checkpoint: Passed on 2026-10-08 Australia/Sydney — the synthetic merchant signed out, requested a fresh returning-login magic link, completed PKCE at `/auth/merchant-confirm`, reached the protected `/merchant` workspace, and refreshed successfully. Redacted server evidence shows the callback redirect followed by two successful merchant renders and no application error.
+- Grouped browser checkpoint: Passed — fresh owner password login and refresh/idempotency, invitation PKCE, returning-merchant PKCE, protected owner/merchant rendering, and refreshed-session behavior are complete. Recovery-method denial is separately evidenced by the redacted live provider probe and post-application database test.
+- Next gate: Request SH-3 owner acceptance. Do not advance to the next security-hardening part until acceptance is recorded.
 
 ### Current owner password recovery
 
