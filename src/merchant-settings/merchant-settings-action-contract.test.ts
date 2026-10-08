@@ -24,13 +24,13 @@ describe("merchant settings action contract", () => {
     expect(action).not.toContain('formData.get("businessId")');
   });
 
-  it("uses central feedback and revalidates only the merchant page", () => {
+  it("returns central feedback without coupling the action result to page revalidation", () => {
     expect(action).toContain(
       'formatMessage("merchant.settings.update.success")',
     );
     expect(action).toContain('"merchant.settings.update.failure"');
     expect(action).toContain('"merchant.settings.update.conflict"');
     expect(action).toContain("MerchantSettingsConflictError");
-    expect(action).toContain('revalidatePath("/merchant")');
+    expect(action).not.toContain("revalidatePath");
   });
 });

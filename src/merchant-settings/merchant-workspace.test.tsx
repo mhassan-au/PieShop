@@ -2,6 +2,12 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { MerchantWorkspace } from "@/components/MerchantWorkspace";
 
+const refresh = vi.fn();
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ refresh }),
+}));
+
 vi.mock("@/app/merchant/actions", () => ({
   merchantLogoutAction: vi.fn(),
   updateMerchantSettingsAction: vi.fn(),
@@ -44,5 +50,32 @@ describe("MerchantWorkspace", () => {
       expect(container.querySelector(`[name="${name}"]`)).not.toBeNull();
     expect(container.querySelector('[name="businessId"]')).toBeNull();
     expect(container.querySelector("[onclick]")).toBeNull();
+  });
+
+  it("refreshes page data from the client after a successful save", () => {
+    expect(MerchantWorkspace.toString()).toContain("router.refresh()");
+  });
+
+  it("synchronizes uncontrolled fields when a newer settings version renders", () => {
+    const { rerender } = render(<MerchantWorkspace settings={settings} />);
+    const businessName = screen.getByRole("textbox", {
+      name: /business name/i,
+    });
+    expect(businessName).toHaveValue("Harbour Pies");
+
+    rerender(
+      <MerchantWorkspace
+        settings={{
+          ...settings,
+          businessName: "Harbour Pies Updated",
+          version: 2,
+        }}
+      />,
+    );
+
+    expect(businessName).not.toHaveValue("Harbour Pies Updated");
+    expect(screen.getByRole("textbox", { name: /business name/i })).toHaveValue(
+      "Harbour Pies Updated",
+    );
   });
 });

@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import {
   merchantLogoutAction,
@@ -28,6 +29,7 @@ const destinations = ["Today", "Orders", "Catalogue", "Settings"] as const;
 export function MerchantWorkspace({
   settings,
 }: Readonly<{ settings: Settings }>) {
+  const router = useRouter();
   const [destination, setDestination] =
     useState<(typeof destinations)[number]>("Settings");
   const [state, action, pending] = useActionState(
@@ -35,6 +37,10 @@ export function MerchantWorkspace({
     initialState,
   );
   const progress = deriveSetupState(settings);
+
+  useEffect(() => {
+    if (state.status === "success") router.refresh();
+  }, [router, state]);
 
   return (
     <main className="mx-auto min-h-screen max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
@@ -102,7 +108,12 @@ export function MerchantWorkspace({
             <p className="mt-2 text-sm text-stone-400">
               Private synthetic development data only.
             </p>
-            <form action={action} className="mt-6 space-y-4" noValidate>
+            <form
+              action={action}
+              className="mt-6 space-y-4"
+              key={settings.version}
+              noValidate
+            >
               <label
                 className="block text-sm font-semibold"
                 htmlFor="businessName"

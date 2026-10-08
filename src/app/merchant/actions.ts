@@ -1,7 +1,6 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { logoutMerchant } from "@/auth/merchant-logout-service";
@@ -64,7 +63,6 @@ export async function updateMerchantSettingsAction(
     await createSupabaseMerchantSettingsRepository(
       await createRequestSupabaseClient(),
     ).update(input, sessionTokenHash);
-    revalidatePath("/merchant");
     return {
       status: "success",
       message: formatMessage("merchant.settings.update.success"),
