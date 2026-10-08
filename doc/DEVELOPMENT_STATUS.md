@@ -5,12 +5,12 @@ This file records the single current roadmap part and its acceptance evidence. I
 ## Project state
 
 - **Overall state:** Phase 1 complete; Phase 2 security gate accepted for private synthetic development
-- **Current approved part:** SH-3 complete — session creation and legacy access (S03, S04)
-- **Part status:** Implementation, migrations, automated gates, grouped browser checkpoint, and owner acceptance passed
+- **Current approved part:** SH-4 design and acceptance preparation — merchant settings integrity (S06)
+- **Part status:** Security-boundary design and 16 acceptance examples prepared — owner review required before TDD implementation
 - **Completed current part:** Emergency owner password recovery — implementation, development migration, security gates, browser checkpoint, and owner acceptance passed
 - **Completed security part:** SH-2 — exact-session migration, application gates, grouped UI/process checkpoint, and owner acceptance passed
 - **Next part:** SH-4 design and acceptance preparation — merchant settings integrity (S06)
-- **Next part authorised:** No — SH-4 must be explicitly started and its security-boundary design reviewed before implementation
+- **Next part authorised:** Design preparation only — implementation begins after explicit acceptance of the SH-4 boundary and examples
 - **Execution mode:** Quick mode activated by Mehedi Hassan on 2026-10-08 Australia/Sydney for ordinary in-scope implementation, guarded synthetic-development migrations, verification, commits, and pushes. Pause only for required owner testing/intervention or existing non-delegable safety gates.
 - **Remote repository:** `https://github.com/mhassan-au/PieShop.git`
 - **Last updated:** 2026-10-08 Australia/Sydney
@@ -18,13 +18,20 @@ This file records the single current roadmap part and its acceptance evidence. I
 
 ## Current part objective
 
-Design SH-3 so refreshed or retained provider sessions cannot mint a new PieShop application-session lifetime, and retire legacy direct-table paths that bypass merchant suspension and exact-session enforcement.
+Make merchant settings creation, validation, locking, authorization, versioning, acknowledgement, and auditing atomic while preserving the accepted single-business merchant-owner and privacy boundaries.
 
 ## Acceptance source
 
-The accepted SH-3 security boundary and 16 acceptance examples are in `doc/SECURITY_HARDENING_SH_3_DESIGN.md`. Mehedi Hassan authorized local TDD and reviewable migration preparation on 2026-10-04 Australia/Sydney, then separately authorized applying the migration to development Supabase on 2026-10-06. Completed recovery, SH-2, Part 2.1, and earlier evidence remains preserved below.
+The proposed SH-4 boundary and 16 acceptance examples are in `doc/SECURITY_HARDENING_SH_4_DESIGN.md`. Mehedi Hassan explicitly started SH-4 on 2026-10-08 Australia/Sydney and requested a large autonomous implementation workstream with pauses only for mandatory owner gates and final manual review. Implementation remains gated on acceptance of the proposed design. Completed SH-3, recovery, SH-2, Part 2.1, and earlier evidence remains preserved below.
 
 ## TDD evidence
+
+### Current SH-4
+
+- Authorization: Mehedi Hassan explicitly started SH-4 design and requested autonomous implementation, small automated tests, guarded development work, commits, and pushes on 2026-10-08 Australia/Sydney.
+- Evidence reviewed: The settings-row trigger/backfill now covers provisioning, but the effective update RPC still has nullable-input, pre-lock authorization, exactly-one-membership, broad acknowledgement, generic-conflict, and untested concurrency gaps identified by S06.
+- Proposed boundary: Preserve the single-business owner rule; explicitly reject required NULLs; serialize on the business row; recheck business, membership, and exact session after locking; fail atomically on a missing settings invariant; keep identical retries idempotent; return a strict three-field acknowledgement; map only the stable conflict classification to central safe copy; and prove both suspension/update orderings with two connections.
+- Acceptance gate: Owner review of all 16 examples in `doc/SECURITY_HARDENING_SH_4_DESIGN.md` is required before TDD implementation.
 
 ### Current SH-3
 
